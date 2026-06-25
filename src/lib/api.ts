@@ -86,12 +86,13 @@ class ApiClient {
       const errorData = await response.json().catch(() => ({}));
       throw {
         statusCode: response.status,
-        message: errorData.message || `Erreur ${response.status}`,
-        code: errorData.code,
+        message: errorData.message || "Une erreur est survenue",
       } as ApiError;
     }
 
-    return response.status === 204 ? ({} as T) : response.json();
+    const jsonResponse = await response.json();
+
+    return jsonResponse.data ? jsonResponse.data : jsonResponse;
   }
 
   // --- Méthodes publiques ---
