@@ -1,59 +1,110 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 222.2 84% 4.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 84% 4.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 84% 4.9%;
-		--primary: 222.2 47.4% 11.2%;
-		--primary-foreground: 210 40% 98%;
-		--secondary: 210 40% 96.1%;
-		--secondary-foreground: 222.2 47.4% 11.2%;
-		--muted: 210 40% 96.1%;
-		--muted-foreground: 215.4 16.3% 46.9%;
-		--accent: 210 40% 96.1%;
-		--accent-foreground: 222.2 47.4% 11.2%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-		--ring: 222.2 84% 4.9%;
-		--radius: 0.5rem;
+@theme {
+	/* --- Polices --- */
+	--font-sans: 'Inter', 'Geist', system-ui, sans-serif;
+
+	/* --- Couleurs --- */
+	/* Background: #f6f8fa | rgb(246 248 250) */
+	--color-background: 246 248 250;
+	/* Surface: #ffffff | rgb(255 255 255) */
+	--color-surface: 255 255 255;
+	/* Foreground: #0f172a | rgb(15 23 42) */
+	--color-foreground: 15 23 42;
+	/* Border: #e2e8f0 | rgb(226 232 240) */
+	--color-border: 226 232 240;
+	/* Input: #e2e8f0 | rgb(226 232 240) */
+	--color-input: 226 232 240;
+	/* Ring: #103b4a | rgb(16 59 74) */
+	--color-ring: 16 59 74;
+
+	/* Primary: #103b4a | rgb(16 59 74) */
+	--color-primary: 16 59 74;
+	--color-primary-foreground: 255 255 255;
+	/* Primary-50: #e8f0f2 | rgb(232 240 242) */
+	--color-primary-50: 232 240 242;
+	/* Primary-500: #103b4a | rgb(16 59 74) */
+	--color-primary-500: 16 59 74;
+
+	/* Secondary: #6d8b74 | rgb(109 139 116) */
+	--color-secondary: 109 139 116;
+	--color-secondary-foreground: 255 255 255;
+
+	/* --- Typographie --- */
+	--text-h1: 3rem;
+	--text-h1-leading: 1.15;
+	--text-h1-weight: 700;
+
+	--text-h2: 2.25rem;
+	--text-h2-leading: 1.25;
+	--text-h2-weight: 600;
+
+	--text-body: 1rem;
+	--text-body-leading: 1.5;
+	--text-body-weight: 400;
+
+	/* --- Border Radius --- */
+	--radius-lg: 0.75rem;
+	--radius-md: 0.5rem;
+	--radius-sm: 0.25rem;
+
+	/* --- Animations --- */
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* --- Animations --- */
+@keyframes accordion-down {
+	from {
+		height: 0;
 	}
+	to {
+		height: var(--radix-accordion-content-height);
+	}
+}
 
-	* {
-		@apply border-border;
+@keyframes accordion-up {
+	from {
+		height: var(--radix-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+
+/* --- Base --- */
+@layer base {
+	*,
+	::after,
+	::before {
+		border-color: rgb(var(--color-border));
 	}
 
 	body {
-		@apply bg-background text-foreground antialiased;
+		background-color: rgb(var(--color-background));
+		color: rgb(var(--color-foreground));
+		font-family: var(--font-sans);
 		font-feature-settings:
 			'rlig' 1,
 			'calt' 1;
 	}
-
-	html {
-		scroll-behavior: smooth;
-	}
 }
 
+/* --- Components --- */
 @layer components {
 	.glass {
-		@apply bg-white/70 backdrop-blur-md border border-white/20;
+		/* Blanc avec opacité 0.85 */
+		background-color: rgb(255 255 255 / 1);
+		backdrop-filter: blur(12px);
+		border: 1px solid rgb(255 255 255 / 0.2);
 	}
+	
 
 	.bento-card {
-		@apply bg-surface rounded-xl border border-border p-6 shadow-sm;
-	}
-}
-
-@layer utilities {
-	.text-balance {
-		text-wrap: balance;
+		background-color: rgb(var(--color-surface));
+		border-radius: var(--radius-lg);
+		border: 1px solid rgb(var(--color-border));
+		padding: 1.5rem;
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	}
 }
