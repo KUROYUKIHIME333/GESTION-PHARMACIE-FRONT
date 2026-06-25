@@ -89,7 +89,7 @@ export function Sidebar() {
 
 	return (
 		<>
-			{/* Mobile */}
+			{/* Mobile: Header fixe */}
 			<div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 glass border-b border-border flex items-center px-4">
 				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
 					<SheetTrigger
@@ -99,24 +99,20 @@ export function Sidebar() {
 							</Button>
 						}
 					/>
-					<SheetContent side="left" className="w-[280px] p-0 bg-surface">
+					{/* w-fit permet d'adapter la largeur au contenu uniquement */}
+					<SheetContent side="left" className="w-fit min-w-[280px] p-0 bg-surface/95 backdrop-blur-md">
 						<NavContent />
 					</SheetContent>
 				</Sheet>
-				<div className="flex items-center gap-2">
-					<div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-						<Pill className="h-4 w-4 text-primary-foreground" />
-					</div>
-					<span className="text-small font-semibold text-primary">Pharmacie</span>
-				</div>
 			</div>
 
-			{/* Desktop */}
-			<aside className="hidden lg:flex w-72 flex-col bg-surface border-r border-border fixed inset-y-0 left-0 z-40">
+			{/* Desktop: Sidebar "à côté" du contenu */}
+			{/* On retire "fixed" et on ajoute "h-screen sticky top-0" */}
+			<aside className="hidden lg:flex w-72 flex-col bg-surface border-r border-border h-screen sticky top-0 shrink-0">
 				<NavContent />
 			</aside>
 
-			{/* Spacer for mobile header */}
+			{/* Spacer mobile uniquement */}
 			<div className="lg:hidden h-16" />
 		</>
 	);
