@@ -98,7 +98,6 @@
 		backdrop-filter: blur(12px);
 		border: 1px solid rgb(255 255 255 / 0.2);
 	}
-	
 
 	.bento-card {
 		background-color: rgb(var(--color-surface));
@@ -107,4 +106,19 @@
 		padding: 1.5rem;
 		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	}
+}
+
+/* Pour Firefox, Internet Explorer et Edge legacy */
+.no-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+/* Pour Chrome, Safari et Edge */
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.full-height {
+	height: 100vh;
 }
