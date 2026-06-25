@@ -47,12 +47,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		async (credentials: LoginCredentials) => {
 			setIsLoading(true);
 			try {
-				const response = await api.post<LoginResponse>('/api/auth/login', credentials);
-				const { accessToken: token, refreshToken, user: userData } = response;
+				// L'API renvoie { data: { user, token } } donc response directement { user, token }
+				const response = await api.post<{ user: User; token: string }>('/api/auth/login', credentials);
+
+				const { token, user: userData } = response;
 
 				localStorage.setItem(TOKEN_KEY, token);
-				localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-				api.setTokens(token, refreshToken);
+				api.setTokens(token, '');
 
 				setAccessToken(token);
 				setUser(userData);
