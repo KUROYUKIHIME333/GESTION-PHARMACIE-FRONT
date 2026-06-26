@@ -55,8 +55,8 @@ export function LoginForm() {
 							</Label>
 							<Input id="email" type="email" placeholder="votre@email.com" autoComplete="email" disabled={isLoading} className="h-11" {...register('email')} />
 							{errors.email && (
-								<p className="text-small text-error flex items-center gap-1">
-									<AlertCircle className="h-3.5 w-3.5" />
+								<p className="text-small text-error flex items-center gap-1 text-red-500">
+									<AlertCircle className="h-3.5 w-3.5 text-red-500" />
 									{errors.email.message}
 								</p>
 							)}
@@ -68,8 +68,8 @@ export function LoginForm() {
 							</Label>
 							<Input id="password" type="password" placeholder="••••••••" autoComplete="current-password" disabled={isLoading} className="h-11" {...register('password')} />
 							{errors.password && (
-								<p className="text-small text-error flex items-center gap-1">
-									<AlertCircle className="h-3.5 w-3.5" />
+								<p className="text-small text-error flex items-center gap-1 text-red-500">
+									<AlertCircle className="h-3.5 w-3.5 text-red-500" />
 									{errors.password.message}
 								</p>
 							)}
@@ -77,7 +77,7 @@ export function LoginForm() {
 					</div>
 
 					{error && (
-						<div className="p-3 rounded-lg bg-error/10 border border-error/20 text-small text-error flex items-center gap-2">
+						<div className="p-3 rounded-lg bg-error/10 border border-error/20 text-small text-error flex items-center gap-2 text-red-500">
 							<AlertCircle className="h-4 w-4 shrink-0" />
 							{error}
 						</div>
