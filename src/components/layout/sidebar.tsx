@@ -43,11 +43,10 @@ export function Sidebar() {
 	const NavContent = ({ userDisplay = true }: SidebarUserDisplay) => (
 		<div className="flex flex-col h-full">
 			<div className="p-6 pb-4">
-					<div className='flex items-center'>
-						<Search className="h-4 w-4 text-muted-foreground" />
-						<Input placeholder="Rechercher... (Ctrl+K)" className="pl-10 h-10 bg-muted/50 border-0 focus-visible:ring-1" readOnly />
-					</div>
-				
+				<div className="flex items-center">
+					<Search className="h-4 w-4 text-muted-foreground" />
+					<Input placeholder="Rechercher... (Ctrl+K)" className="pl-10 h-10 bg-muted/50 border-0 focus-visible:ring-1" readOnly />
+				</div>
 			</div>
 
 			<nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto no-scrollbar">
