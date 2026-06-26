@@ -34,7 +34,7 @@ import { Badge } from '../../../components/ui/badge';
 import { Separator } from '../../../components/ui/separator';
 import { cn } from '../../../lib/utils';
 
-// ─── OpenAPI Spec Embedded ─────────────────────────────────────────────────
+// OpenAPI Spec Embedded──────────────────────────────────────────────
 
 const OPENAPI_SPEC = {
 	openapi: '3.0.3',
@@ -324,7 +324,7 @@ const OPENAPI_SPEC = {
 	},
 };
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// Helpers───
 
 const METHOD_COLORS: Record<string, { bg: string; text: string; border: string }> = {
 	GET: {
@@ -555,7 +555,7 @@ function buildCurlCommand(endpoint: Endpoint, baseUrl: string): string {
 	return cmd;
 }
 
-// ─── Components ──────────────────────────────────────────────────────────────
+// Components
 
 function MethodBadge({ method }: { method: string }) {
 	const colors = METHOD_COLORS[method] || METHOD_COLORS.GET;
@@ -722,7 +722,7 @@ function TagSection({ tag, endpoints, baseUrl, expanded, onToggle }: { tag: stri
 	);
 }
 
-// ─── Main Page ───────────────────────────────────────────────────────────────
+// Main Page─
 
 export default function ApiDocsPage() {
 	const [search, setSearch] = useState('');
