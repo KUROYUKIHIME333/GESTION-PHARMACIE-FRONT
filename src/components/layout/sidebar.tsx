@@ -32,7 +32,6 @@ export function Sidebar() {
 	const userRole = user?.role;
 	const userName = user ? `${user.firstName} ${user.lastName}` : '';
 	const userInitials = user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}` : '';
-	const test = NAV_ITEMS[0].roles;
 
 	const filteredNavItems = NAV_ITEMS.filter((item) => (userRole ? (item.roles as readonly UserRole[]).includes(userRole) : false));
 
