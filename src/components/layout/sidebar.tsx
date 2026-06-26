@@ -110,7 +110,7 @@ export function Sidebar() {
 			</div>
 
 			{/* Desktop: Sidebar "à côté" du contenu */}
-			<aside className="hidden lg:flex w-72 flex-col bg-surface border-r  h-screen sticky top-0 shrink-0 full-height">
+			<aside className="hidden max-h-[calc(100vh-4rem)] lg:flex w-72 flex-col bg-surface border-r  h-screen sticky top-0 shrink-0 full-height">
 				<NavContent userDisplay={false} />
 			</aside>
 
