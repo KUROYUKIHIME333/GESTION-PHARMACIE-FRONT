@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
-import { useAuth } from '../../../hooks/use-auth.hooks';
+import { useAuthStore } from '../../../store/auth.store';
 
 export default function DashboardPage() {
-	const { user } = useAuth();
+	const user = useAuthStore((s: any) => s.user);
 
 	return (
 		<div className="space-y-8">
