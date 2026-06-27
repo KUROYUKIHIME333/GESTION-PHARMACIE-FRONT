@@ -1,21 +1,49 @@
 'use client';
 
-import React from 'react';
-import { useAuth } from '../../hooks/use-auth.hooks';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../../store/auth.store';
+import { api } from '../../lib/api';
 import { Sidebar } from '../../components/layout/sidebar';
 import { Header } from '../../components/layout/header';
 import { Loader2 } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-	const { isAuthenticated, isLoading } = useAuth();
 	const router = useRouter();
+	const { user, isLoading, isAuthenticated, setUser, setLoading, logout } = useAuthStore();
 
-	React.useEffect(() => {
-		if (!isLoading && !isAuthenticated) {
-			router.push('/login');
+	// Vérifie la session au chargement
+	useEffect(() => {
+		if (isAuthenticated) return; // Déjà authentifié
+
+		let cancelled = false;
+
+		api.get<{ user: any }>('/api/auth/me')
+			.then((data: any) => {
+				if (!cancelled) setUser(data.user);
+			})
+			.catch(() => {
+				if (!cancelled) {
+					setLoading(false);
+					router.push('/login');
+				}
+			});
+
+		return () => {
+			cancelled = true;
+		};
+	}, [isAuthenticated, setUser, setLoading, router]);
+
+	// Déconnexion handler
+	const handleLogout = async () => {
+		try {
+			await api.post('/api/auth/logout', {});
+		} catch {
+			// Ignore
 		}
-	}, [isLoading, isAuthenticated, router]);
+		logout();
+		router.push('/login');
+	};
 
 	if (isLoading) {
 		return (
@@ -30,20 +58,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	}
 
 	return (
-		// <div className="min-h-screen bg-background flex">
-		// 	<Sidebar />
-		// 	<div className="flex-1 flex flex-col min-w-0">
-		// 		<Header />
-		// 		<main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-		// 			<div className="max-w-7xl mx-auto">{children}</div>
-		// 		</main>
-		// 	</div>
-		// </div>
-
 		<div className="flex-1 flex flex-col min-w-0">
 			<Header />
 			<div className="min-h-screen bg-background flex">
-				<Sidebar />
+				<Sidebar onLogout={handleLogout} />
 				<main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
 					<div className="max-w-7xl mx-auto">{children}</div>
 				</main>
