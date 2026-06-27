@@ -5,54 +5,49 @@
 	--font-sans: 'Inter', 'Geist', system-ui, sans-serif;
 
 	/* --- Couleurs --- */
-	/* Background: hsl(var(--background)) */
 	--color-background: var(--background);
-	/* Foreground: hsl(var(--foreground)) */
 	--color-foreground: var(--foreground);
-	/* Border: hsl(var(--border)) */
 	--color-border: var(--border);
-	/* Input: hsl(var(--input)) */
 	--color-input: var(--input);
-	/* Ring: hsl(var(--ring)) */
 	--color-ring: var(--ring);
 
-	/* Primary: #103B4A | rgb(16 59 74) */
-	--color-primary: 16 59 74;
-	--color-primary-foreground: 255 255 255;
+	/* Primary: #103B4A | hsl(199 66% 17%) */
+	--color-primary: 199 66% 17%;
+	--color-primary-foreground: 210 40% 98%;
 
-	/* Secondary: #6D8B74 | rgb(109 139 116) */
-	--color-secondary: 109 139 116;
-	--color-secondary-foreground: 255 255 255;
+	/* Secondary: #6D8B74 | hsl(137 14% 49%) */
+	--color-secondary: 137 14% 49%;
+	--color-secondary-foreground: 210 40% 98%;
 
-	/* Accent: #B87333 | rgb(184 115 51) */
-	--color-accent: 184 115 51;
-	--color-accent-foreground: 255 255 255;
+	/* Accent: #B87333 | hsl(28 56% 46%) */
+	--color-accent: 28 56% 46%;
+	--color-accent-foreground: 210 40% 98%;
 
-	/* Destructive: #DC2626 | rgb(220 38 38) */
-	--color-destructive: 220 38 38;
-	--color-destructive-foreground: 255 255 255;
+	/* Destructive: #DC2626 | hsl(0 84.2% 60.2%) */
+	--color-destructive: 0 84.2% 60.2%;
+	--color-destructive-foreground: 210 40% 98%;
 
-	/* Success: #16A34A | rgb(22 163 74) */
-	--color-success: 22 163 74;
+	/* Success: #16A34A | hsl(142 71% 45%) */
+	--color-success: 142 71% 45%;
 	--color-success-foreground: 255 255 255;
 
-	/* Warning: #D97706 | rgb(217 119 6) */
-	--color-warning: 217 119 6;
+	/* Warning: #D97706 | hsl(32 95% 43%) */
+	--color-warning: 32 95% 43%;
 	--color-warning-foreground: 255 255 255;
 
-	/* Info: #0284C7 | rgb(2 132 199) */
-	--color-info: 2 132 199;
+	/* Info: #0284C7 | hsl(200 98% 40%) */
+	--color-info: 200 98% 40%;
 	--color-info-foreground: 255 255 255;
 
-	/* Muted: hsl(var(--muted)) */
+	/* Muted */
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
 
-	/* Popover: hsl(var(--popover)) */
+	/* Popover */
 	--color-popover: var(--popover);
 	--color-popover-foreground: var(--popover-foreground);
 
-	/* Card: hsl(var(--card)) */
+	/* Card */
 	--color-card: var(--card);
 	--color-card-foreground: var(--card-foreground);
 
@@ -95,6 +90,54 @@
 	--animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
+/* --- Variables CSS (light mode par défaut) --- */
+@layer base {
+	:root {
+		--background: 210 20% 98%;
+		--foreground: 222.2 84% 4.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 222.2 84% 4.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 222.2 84% 4.9%;
+		--primary: 199 66% 17%;
+		--primary-foreground: 210 40% 98%;
+		--secondary: 137 14% 49%;
+		--secondary-foreground: 210 40% 98%;
+		--muted: 210 40% 96.1%;
+		--muted-foreground: 215.4 16.3% 46.9%;
+		--accent: 28 56% 46%;
+		--accent-foreground: 210 40% 98%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 210 40% 98%;
+		--border: 214.3 31.8% 91.4%;
+		--input: 214.3 31.8% 91.4%;
+		--ring: 199 66% 17%;
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--background: 222.2 84% 4.9%;
+		--foreground: 210 40% 98%;
+		--card: 222.2 84% 4.9%;
+		--card-foreground: 210 40% 98%;
+		--popover: 222.2 84% 4.9%;
+		--popover-foreground: 210 40% 98%;
+		--primary: 199 66% 17%;
+		--primary-foreground: 210 40% 98%;
+		--secondary: 137 14% 49%;
+		--secondary-foreground: 210 40% 98%;
+		--muted: 217.2 32.6% 17.5%;
+		--muted-foreground: 215 20.2% 65.1%;
+		--accent: 28 56% 46%;
+		--accent-foreground: 210 40% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 210 40% 98%;
+		--border: 217.2 32.6% 17.5%;
+		--input: 217.2 32.6% 17.5%;
+		--ring: 199 66% 17%;
+	}
+}
+
 /* --- Animations --- */
 @keyframes accordion-down {
 	from {
@@ -123,12 +166,38 @@
 	}
 
 	body {
-		background-color: hsl(var(--color-background));
+		background-color: #F6F8FA;
 		color: hsl(var(--color-foreground));
 		font-family: var(--font-sans);
 		font-feature-settings:
 			'rlig' 1,
 			'calt' 1;
+	}
+
+	h1 {
+		font-size: var(--text-h1);
+		line-height: var(--text-h1-leading);
+		font-weight: var(--text-h1-weight);
+		letter-spacing: -0.025em;
+	}
+
+	h2 {
+		font-size: var(--text-h2);
+		line-height: var(--text-h2-leading);
+		font-weight: var(--text-h2-weight);
+		letter-spacing: -0.025em;
+	}
+
+	h3 {
+		font-size: var(--text-h3);
+		line-height: var(--text-h3-leading);
+		font-weight: var(--text-h3-weight);
+	}
+
+	h4 {
+		font-size: var(--text-h4);
+		line-height: var(--text-h4-leading);
+		font-weight: 500;
 	}
 }
 
@@ -144,6 +213,47 @@
 	@media (min-width: 1400px) {
 		.container {
 			max-width: 1400px;
+		}
+	}
+}
+
+/* --- Utilities (Bento Grid) --- */
+@layer utilities {
+	.bento-grid {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: 24px;
+	}
+
+	.bento-item-6 {
+		grid-column: span 6;
+	}
+
+	.bento-item-4 {
+		grid-column: span 4;
+	}
+
+	.bento-item-3 {
+		grid-column: span 3;
+	}
+
+	.bento-item-12 {
+		grid-column: span 12;
+	}
+
+	@media (max-width: 1024px) {
+		.bento-item-6,
+		.bento-item-4,
+		.bento-item-3 {
+			grid-column: span 6;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.bento-item-6,
+		.bento-item-4,
+		.bento-item-3 {
+			grid-column: span 12;
 		}
 	}
 }
