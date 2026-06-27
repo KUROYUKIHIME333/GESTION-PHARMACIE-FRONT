@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '../../hooks/use-auth.hooks';
+import { useAuthStore } from '../../store/auth.store';
 import { Pill } from 'lucide-react';
 
 export function Header() {
-	const { user } = useAuth();
+	const user = useAuthStore((s: any) => s.user);
 
 	return (
 		<header className="h-16 glass border-b  flex items-center justify-between px-4 sm:px-6 lg:px-8 sticky top-0 z-30">
