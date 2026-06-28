@@ -30,12 +30,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	}
 
 	return (
-		<div className="min-h-screen bg-[#F6F8FA]">
-			<Sidebar onLogout={logout} />
+		<div className="flex-1 flex flex-col min-w-0 [#F6F8FA] overflow-hidden">
+			<Header />
+			<div className="bg-background flex overflow-hidden h-screen">
+				<Sidebar onLogout={logout} />
 
-			<div className="lg:ml-72">
-				<Header />
-				<main className="p-6 lg:p-8">{children}</main>
+				<main className="p-6 lg:p-8 overflow-y-auto no-scrollbar">{children}</main>
 			</div>
 		</div>
 	);
