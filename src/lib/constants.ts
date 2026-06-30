@@ -116,3 +116,42 @@ export const STORAGE_CONDITION_LABELS: Record<string, string> = {
 
 export const HOVER_COLOR = "#0CBFC3"
 
+// Labels pour les enums Jour 3
+export const GENDER_LABELS: Record<string, string> = {
+  MALE: "Masculin",
+  FEMALE: "Féminin",
+  OTHER: "Autre",
+  UNKNOWN: "Non précisé",
+}
+
+export const ALLERGY_SEVERITY_LABELS: Record<string, string> = {
+  MILD: "Légère",
+  MODERATE: "Modérée",
+  SEVERE: "Sévère",
+  ANAPHYLAXIS: "Anaphylaxie",
+}
+
+export const ALLERGY_SEVERITY_COLORS: Record<string, string> = {
+  MILD: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  MODERATE: "bg-orange-100 text-orange-700 border-orange-200",
+  SEVERE: "bg-red-100 text-red-700 border-red-200",
+  ANAPHYLAXIS: "bg-red-200 text-red-800 border-red-300 font-semibold",
+}
+
+export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
+  DRAFT: "Brouillon",
+  PENDING: "En attente",
+  PARTIALLY_DISPENSED: "Partiellement dispensée",
+  DISPENSED: "Dispensée",
+  CANCELLED: "Annulée",
+  EXPIRED: "Expirée",
+}
+
+export const PRESCRIPTION_STATUS_COLORS: Record<string, string> = {
+  DRAFT: "bg-slate-100 text-slate-600 border-slate-200",
+  PENDING: "bg-sky-100 text-sky-700 border-sky-200",
+  PARTIALLY_DISPENSED: "bg-amber-100 text-amber-700 border-amber-200",
+  DISPENSED: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  CANCELLED: "bg-red-100 text-red-700 border-red-200",
+  EXPIRED: "bg-slate-100 text-slate-500 border-slate-200",
+}
