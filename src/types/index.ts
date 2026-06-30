@@ -341,3 +341,176 @@ export interface StorageLocation {
   zone: string | null;
   isActive: boolean;
 }
+
+// ============================================
+// TYPES JOUR 3 — PATIENTS
+// ============================================
+
+export type Gender = "MALE" | "FEMALE" | "OTHER" | "UNKNOWN"
+
+export type AllergySeverity = "MILD" | "MODERATE" | "SEVERE" | "ANAPHYLAXIS"
+
+export interface Patient {
+  id: string
+  hospitalNumber: string
+  externalId: string | null
+  firstName: string
+  lastName: string
+  dateOfBirth: string | null
+  gender: Gender
+  nationalId: string | null
+  phone: string | null
+  address: string | null
+  commune: string | null
+  territoire: string | null
+  province: string | null
+  insuranceId: string | null
+  ongCoverageRef: string | null
+  isHivPatient: boolean | null
+  arvCode: string | null
+  isTbPatient: boolean | null
+  tbCode: string | null
+  chronicConditions: string[]
+  isActive: boolean
+  notes: string | null
+  _count?: {
+    prescriptions: number
+    dispensations: number
+  }
+}
+
+export interface PatientCreateInput {
+  hospitalNumber: string
+  firstName: string
+  lastName: string
+  dateOfBirth?: string
+  gender?: Gender
+  nationalId?: string
+  phone?: string
+  address?: string
+  commune?: string
+  territoire?: string
+  province?: string
+  insuranceId?: string
+  ongCoverageRef?: string
+  isHivPatient?: boolean
+  arvCode?: string
+  isTbPatient?: boolean
+  tbCode?: string
+  chronicConditions?: string[]
+  isActive?: boolean
+  notes?: string
+}
+
+export interface PatientUpdateInput extends Partial<PatientCreateInput> {}
+
+export interface PatientAllergy {
+  id: string
+  patientId: string
+  substance: string
+  reaction: string | null
+  severity: AllergySeverity
+  confirmedAt: string | null
+  confirmedBy: string | null
+  notes: string | null
+}
+
+export interface AllergyCreateInput {
+  substance: string
+  reaction?: string
+  severity: AllergySeverity
+  confirmedAt?: string
+  confirmedBy?: string
+  notes?: string
+}
+
+// ============================================
+// TYPES JOUR 3 — ORDONNANCES
+// ============================================
+
+export type PrescriptionStatus = "DRAFT" | "PENDING" | "PARTIALLY_DISPENSED" | "DISPENSED" | "CANCELLED" | "EXPIRED"
+
+export interface Prescription {
+  id: string
+  prescriptionNumber: string
+  patientId: string
+  patient?: {
+    id: string
+    firstName: string
+    lastName: string
+    hospitalNumber: string
+  }
+  prescribedById: string
+  prescribedBy?: {
+    id: string
+    firstName: string
+    lastName: string
+  }
+  serviceId: string | null
+  service?: {
+    id: string
+    name: string
+  }
+  isInpatient: boolean
+  admissionRef: string | null
+  visitDate: string
+  validUntil: string | null
+  status: PrescriptionStatus
+  diagnosisCode: string | null
+  diagnosisLabel: string | null
+  notes: string | null
+  lines: PrescriptionLine[]
+  dispensations: any[]
+  createdAt: string
+}
+
+export interface PrescriptionLine {
+  id: string
+  prescriptionId: string
+  drugId: string
+  drug?: {
+    id: string
+    name: string
+    code: string
+  }
+  lineNumber: number
+  quantityPrescribed: number
+  dosage: string
+  frequency: string | null
+  durationDays: number | null
+  route: string | null
+  instructions: string | null
+  quantityDispensed: number
+  isFulfilled: boolean
+  substituteUsed: boolean
+}
+
+export interface PrescriptionCreateInput {
+  patientId: string
+  prescribedById?: string
+  serviceId?: string
+  isInpatient?: boolean
+  admissionRef?: string
+  diagnosisCode?: string
+  diagnosisLabel?: string
+  notes?: string
+}
+
+export interface PrescriptionLineCreateInput {
+  drugId: string
+  quantityPrescribed: number
+  dosage: string
+  frequency?: string
+  durationDays?: number
+  route?: string
+  instructions?: string
+}
+
+export interface HospitalService {
+  id: string
+  code: string
+  name: string
+  description: string | null
+  floor: string | null
+  isActive: boolean
+}
