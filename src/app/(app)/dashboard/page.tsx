@@ -66,7 +66,7 @@ export default function DashboardPage() {
 					<CardHeader className="pb-2">
 						<CardTitle className="text-lg font-semibold text-slate-900 flex items-center gap-2">
 							<ShoppingCart className="w-5 h-5 text-secondary" />
-							Aujourd'hui
+							Aujourd&apos;hui
 						</CardTitle>
 					</CardHeader>
 					<CardContent>

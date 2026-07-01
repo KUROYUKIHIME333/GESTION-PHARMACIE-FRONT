@@ -31,7 +31,7 @@ export function Sidebar({ onLogout }: SidebarProps) {
 	const toggleMobile = () => setMobileOpen(!mobileOpen);
 
 	const navContent = (
-		<div className="flex flex-col h-fit">
+		<div className="flex flex-col h-fit bg-[rgb(241,242,247)]">
 			{/* Sidebar Search */}
 			<div className="p-6 pb-4">
 				<div className="flex items-center">

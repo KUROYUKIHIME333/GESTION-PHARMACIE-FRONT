@@ -52,7 +52,7 @@ export function LoginForm() {
 	};
 
 	return (
-		<Card className="w-full max-w-md shadow-lg border-slate-200 bg-[rgb(241,242,247)]">
+		<Card className="w-full max-w-md shadow-lg border-slate-200 bg-[rgb(241,242,247)] p-8">
 			<CardHeader className="space-y-1 pb-6">
 				{/* Logo */}
 				<div className="flex justify-center mb-6">

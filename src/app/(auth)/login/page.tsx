@@ -20,16 +20,16 @@ export default function LoginPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-[rgb(240,247,229)]">
 				{/* Logo */}
-				<div className="flex justify-center mb-6">
-					<Image
-						priority={true}
-						src="/name.jpg"
-						alt="Logo"
-						width={200}
-						height={200}
-						// className="w-30 h-30 rounded-full"
-					/>
-				</div>
+								<div className="flex justify-center mb-6">
+									<Image
+										priority={true}
+										src="/name.jpg"
+										alt="Logo"
+										width={200}
+										height={200}
+										// className="w-30 h-30 rounded-full"
+									/>
+								</div>
 			</div>
 		);
 	}
@@ -39,7 +39,7 @@ export default function LoginPage() {
 	}
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-[rgb(240,247,229)] p-4">
+		<div className="min-h-screen flex items-center justify-center p-4">
 			<div className="w-full max-w-md">
 				<LoginForm />
 			</div>

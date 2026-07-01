@@ -1,22 +1,97 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
-import { Drug, DrugForm, DrugCategory } from '@/src/types';
+import { api } from '@/src/lib/api';
+import { usePharmacyStore, useDrugList, useDrugLoading, useDrugError } from '@/src/stores/pharmacy.store';
 import { DRUG_FORM_LABELS, DRUG_CATEGORY_LABELS } from '@/src/lib/constants';
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Pencil, Trash2, Eye } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
+import type { Drug } from '@/src/stores/pharmacy.store';
 
-interface DrugTableProps {
-	drugs: Drug[];
-	onDelete: (drug: Drug) => void;
+interface DrugListResponse {
+	success: boolean;
+	data: {
+		drugs: Drug[];
+		total: number;
+		page: number;
+		limit: number;
+		totalPages: number;
+	};
 }
 
-export function DrugTable({ drugs, onDelete }: DrugTableProps) {
-	const getFormLabel = (form: DrugForm) => DRUG_FORM_LABELS[form] || form;
-	const getCategoryLabel = (category: DrugCategory) => DRUG_CATEGORY_LABELS[category] || category;
+export function DrugTable() {
+	const drugs = useDrugList();
+	const isLoading = useDrugLoading();
+	const error = useDrugError();
+	const { setDrugs, setDrugLoading, setDrugError, removeDrug } = usePharmacyStore();
+
+	useEffect(() => {
+		let cancelled = false;
+
+		async function loadDrugs() {
+			setDrugLoading(true);
+			setDrugError(null);
+
+			try {
+				const res = (await api.get('/api/drugs')) as DrugListResponse;
+				if (!cancelled && res.success) {
+					setDrugs(res.data.drugs, {
+						total: res.data.total,
+						page: res.data.page,
+						limit: res.data.limit,
+						totalPages: res.data.totalPages,
+					});
+				}
+			} catch (err) {
+				if (!cancelled) {
+					setDrugError(err instanceof Error ? err.message : 'Erreur de chargement');
+				}
+			} finally {
+				if (!cancelled) {
+					setDrugLoading(false);
+				}
+			}
+		}
+
+		loadDrugs();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [setDrugs, setDrugLoading, setDrugError]);
+
+	async function handleDelete(drug: Drug) {
+		if (!confirm(`Supprimer le médicament "${drug.name}" ?`)) return;
+
+		try {
+			await api.delete(`/api/drugs/${drug.id}`);
+			removeDrug(drug.id);
+		} catch (err) {
+			alert(err instanceof Error ? err.message : 'Erreur lors de la suppression');
+		}
+	}
+
+	if (isLoading) {
+		return <div className="py-12 text-center text-slate-400">Chargement...</div>;
+	}
+
+	if (error) {
+		return (
+			<div className="py-12 text-center">
+				<p className="text-red-500 mb-2">{error}</p>
+				<Button variant="outline" size="sm" onClick={() => window.location.reload()}>
+					Réessayer
+				</Button>
+			</div>
+		);
+	}
+
+	const getFormLabel = (form: string) => DRUG_FORM_LABELS[form as keyof typeof DRUG_FORM_LABELS] || form;
+	const getCategoryLabel = (category: string) => DRUG_CATEGORY_LABELS[category as keyof typeof DRUG_CATEGORY_LABELS] || category;
 
 	return (
 		<div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
@@ -30,7 +105,7 @@ export function DrugTable({ drugs, onDelete }: DrugTableProps) {
 						<TableHead className="font-semibold text-slate-700 hidden lg:table-cell">Catégorie</TableHead>
 						<TableHead className="font-semibold text-slate-700 text-center">Lots</TableHead>
 						<TableHead className="font-semibold text-slate-700 text-center">Statut</TableHead>
-						<TableHead className="font-semibold text-slate-700 text-right">Actions</TableHead>
+						<TableHead className="font-semibold text-slate-700 text-right"></TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -41,7 +116,7 @@ export function DrugTable({ drugs, onDelete }: DrugTableProps) {
 							</TableCell>
 						</TableRow>
 					) : (
-						drugs.map((drug) => (
+						drugs.map((drug: Drug) => (
 							<TableRow key={drug.id} className="hover:bg-slate-50/50">
 								<TableCell className="font-mono text-sm text-slate-600">{drug.code}</TableCell>
 								<TableCell>
@@ -77,7 +152,7 @@ export function DrugTable({ drugs, onDelete }: DrugTableProps) {
 												<Pencil className="h-4 w-4" />
 											</Link>
 										</Button>
-										<Button variant="ghost" size="sm" onClick={() => onDelete(drug)} className="h-8 w-8 p-0 text-slate-400 hover:text-red-600">
+										<Button variant="ghost" size="sm" onClick={() => handleDelete(drug)} className="h-8 w-8 p-0 text-slate-400 hover:text-red-600">
 											<Trash2 className="h-4 w-4" />
 										</Button>
 									</div>
