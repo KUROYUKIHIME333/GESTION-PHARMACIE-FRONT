@@ -1515,6 +1515,7 @@ export const useAlertSummary = () => usePharmacyStore((s) => s.alertSummary);
 export const useDashboardStats = () => usePharmacyStore((s) => s.stats);
 export const useDashboardLoading = () =>
   usePharmacyStore((s) => s.dashboardUI.isLoading);
+export const useDashboardError = () => usePharmacyStore((s) => s.dashboardUI.error);
 
 // ============================================================================
 // UTILITAIRE : Nombre total d'alertes actives (pour badge sidebar)

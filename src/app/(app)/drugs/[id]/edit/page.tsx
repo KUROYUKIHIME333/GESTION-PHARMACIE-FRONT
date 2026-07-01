@@ -20,15 +20,15 @@ export default function EditDrugPage() {
 		const loadDrug = async () => {
 			try {
 				const response = await api.get(`/api/drugs/${params.id}`);
-				if (response.success) {
-					setDrug(response.data);
+				if (response && typeof response === 'object' && 'success' in response && response.success && 'data' in response) {
+					setDrug((response as { data: Drug }).data);
 				}
-			} catch (err: any) {
-				if (err.status === 401) {
+			} catch (err: unknown) {
+				if (err && typeof err === 'object' && 'status' in err && err.status === 401) {
 					router.push('/login');
 					return;
 				}
-				setError(err.message || 'Erreur lors du chargement du médicament');
+				setError((err as Error).message || 'Erreur lors du chargement du médicament');
 			} finally {
 				setIsLoading(false);
 			}
