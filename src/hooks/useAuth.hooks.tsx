@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/src/stores/auth.store';
@@ -17,7 +18,7 @@ export function useAuth() {
 				} else {
 					setUser(null);
 				}
-			} catch (error: any) {
+			} catch (error: unknown) {
 				// Si 401 ou autre erreur, on considère que l'utilisateur n'est pas connecté
 				setUser(null);
 			} finally {
@@ -44,8 +45,8 @@ export function useAuth() {
 			}
 
 			return { success: false, error: 'Réponse invalide du serveur' };
-		} catch (error: any) {
-			const message = error.message || 'Erreur de connexion';
+		} catch (error: unknown) {
+			const message = 'Erreur de connexion';
 			return { success: false, error: message };
 		}
 	};

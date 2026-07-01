@@ -10,6 +10,7 @@ import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { AlertCircle } from 'lucide-react';
+import Image from 'next/image';
 
 const loginSchema = z.object({
 	email: z.string().email('Email invalide'),
@@ -42,7 +43,7 @@ export function LoginForm() {
 				setError(result.error || 'Erreur de connexion');
 			}
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (err) {
 			setError("Une erreur inattendue s'est produite");
 		} finally {
@@ -51,22 +52,20 @@ export function LoginForm() {
 	};
 
 	return (
-		<Card className="w-full max-w-md shadow-lg border-slate-200">
+		<Card className="w-full max-w-md shadow-lg border-slate-200 bg-[rgb(241,242,247)]">
 			<CardHeader className="space-y-1 pb-6">
-				<div className="flex items-center justify-center mb-4">
-					<div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-						<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-							/>
-						</svg>
-					</div>
+				{/* Logo */}
+				<div className="flex justify-center mb-6">
+					<Image
+						priority={true}
+						src="/name.jpg"
+						alt="Logo"
+						width={200}
+						height={200}
+						// className="w-30 h-30 rounded-full"
+					/>
 				</div>
 				<CardTitle className="text-2xl font-bold text-center text-primary">Connexion</CardTitle>
-				<CardDescription className="text-center text-slate-500">Accédez à la gestion de pharmacie</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -94,7 +93,11 @@ export function LoginForm() {
 						{errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
 					</div>
 
-					<Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 cursor-pointer font-medium" disabled={isLoading}>
+					<Button
+						type="submit"
+						className="w-full h-11 bg-[rgb(85,173,53)] hover:bg-[rgb(126,197,43)] cursor-pointer font-bold hover:font-medium text-[rgb(240,247,229)]"
+						disabled={isLoading}
+					>
 						{isLoading ? (
 							<span className="flex items-center gap-2">
 								<svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
