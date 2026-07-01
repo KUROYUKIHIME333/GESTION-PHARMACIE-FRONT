@@ -22,7 +22,6 @@ export default function DashboardPage() {
 	const stats = useDashboardStats();
 	const isLoading = useDashboardLoading();
 	const error = useDashboardError();
-	const alertSummary = useAlertSummary();
 
 	const { setDashboardStats, setDashboardLoading, setDashboardError, setAlertSummary } = usePharmacyStore();
 
