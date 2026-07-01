@@ -6,9 +6,9 @@ interface FetchOptions extends RequestInit {
 
 class ApiError extends Error {
   status: number;
-  data: any;
+  data: unknown;
 
-  constructor(message: string, status: number, data?: any) {
+  constructor(message: string, status: number, data?: unknown) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -19,7 +19,8 @@ class ApiError extends Error {
 export async function fetchApi(
   endpoint: string,
   options: FetchOptions = {}
-): Promise<any> {
+): Promise<unknown> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { skipAuth, ...fetchOptions } = options;
 
   const url = `${API_BASE_URL}${endpoint}`;
@@ -67,14 +68,14 @@ export const api = {
   get: (endpoint: string, options?: FetchOptions) =>
     fetchApi(endpoint, { ...options, method: "GET" }),
 
-  post: (endpoint: string, data: any, options?: FetchOptions) =>
+  post: (endpoint: string, data: unknown, options?: FetchOptions) =>
     fetchApi(endpoint, {
       ...options,
       method: "POST",
       body: JSON.stringify(data),
     }),
 
-  put: (endpoint: string, data: any, options?: FetchOptions) =>
+  put: (endpoint: string, data: unknown, options?: FetchOptions) =>
     fetchApi(endpoint, {
       ...options,
       method: "PUT",
