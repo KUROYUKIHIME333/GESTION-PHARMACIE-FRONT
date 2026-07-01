@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/src/lib/api';
-import { usePharmacyStore, useDashboardStats, useDashboardLoading, useDashboardError, useAlertSummary } from '@/src/stores/pharmacy.store';
+import { usePharmacyStore, useDashboardStats, useDashboardLoading, useDashboardError } from '@/src/stores/pharmacy.store';
 import type { DashboardStats } from '@/src/stores/pharmacy.store';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
