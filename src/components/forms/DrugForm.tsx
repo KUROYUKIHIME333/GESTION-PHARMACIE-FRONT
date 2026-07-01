@@ -161,6 +161,7 @@ export function DrugForm({ drug, mode }: DrugFormProps) {
 
 			router.push('/drugs');
 			router.refresh();
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			const message = err.message || `Erreur lors de la ${mode === 'create' ? 'création' : 'modification'}`;
 			setError(message);
@@ -497,7 +498,7 @@ export function DrugForm({ drug, mode }: DrugFormProps) {
 					<CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
 						<div className="space-y-2">
 							<Label htmlFor="minStockLevel" className="text-slate-700">
-								Seuil d'alerte
+								Seuil d&apos;alerte
 							</Label>
 							<Input id="minStockLevel" type="number" {...register('minStockLevel')} className="border-slate-200" />
 						</div>

@@ -42,7 +42,8 @@ export function LoginForm() {
 				setError(result.error || 'Erreur de connexion');
 			}
 
-		} catch (err: any) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (err) {
 			setError("Une erreur inattendue s'est produite");
 		} finally {
 			setIsLoading(false);

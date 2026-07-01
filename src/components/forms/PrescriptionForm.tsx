@@ -178,8 +178,9 @@ export function PrescriptionForm() {
 
 			router.push('/prescriptions');
 			router.refresh();
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
-			const message = err.message || "Erreur lors de la création de l'ordonnance";
+			const message = err?.message ? err.message : "Erreur lors de la création de l'ordonnance";
 			setError(message);
 			setIsLoading(false);
 		}

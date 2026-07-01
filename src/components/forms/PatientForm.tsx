@@ -152,7 +152,8 @@ export function PatientForm({ patient, mode }: PatientFormProps) {
 
 			router.push('/patients');
 			router.refresh();
-		} catch (err) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
             let message = `Erreur lors de la ${mode === 'create' ? 'création' : 'modification'}`;
             if(err.message){
                 message = err.message

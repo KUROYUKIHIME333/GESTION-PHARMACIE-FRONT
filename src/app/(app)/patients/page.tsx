@@ -64,7 +64,7 @@ export default function PatientsPage() {
 					</p>
 				</div>
 
-				<Button asChild className="bg-[rgb(25,119,119)] hover:bg-[rgb(25,119,119)]/90 text-white">
+				<Button className="bg-[rgb(25,119,119)] hover:bg-[rgb(25,119,119)]/90 text-white">
 					<Link href="/patients/new">
 						<Plus className="h-4 w-4 mr-2" />
 						Nouveau patient

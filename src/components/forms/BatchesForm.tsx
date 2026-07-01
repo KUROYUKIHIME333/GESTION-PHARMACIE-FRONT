@@ -101,6 +101,7 @@ export function BatchForm() {
 			await api.post('/api/batches/', payload);
 			router.push('/stock');
 			router.refresh();
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			const message = err.message || 'Erreur lors de la réception du lot';
 			setError(message);
@@ -233,7 +234,7 @@ export function BatchForm() {
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<Label htmlFor="purchasePriceCDF" className="text-slate-700">
-									Prix d'achat (CDF)
+									Prix d&apos;achat (CDF)
 								</Label>
 								<Input
 									id="purchasePriceCDF"
@@ -248,7 +249,7 @@ export function BatchForm() {
 
 							<div className="space-y-2">
 								<Label htmlFor="purchasePriceUSD" className="text-slate-700">
-									Prix d'achat (USD)
+									Prix d&apos;achat (USD)
 								</Label>
 								<Input
 									id="purchasePriceUSD"

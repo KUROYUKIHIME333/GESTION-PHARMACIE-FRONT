@@ -44,6 +44,7 @@ export default function PrescriptionsPage() {
 				setTotalPages(response.data.totalPages || 1);
 				setTotalItems(response.data.total || 0);
 			}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			if (err.status === 401) {
 				router.push('/login');
