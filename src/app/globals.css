@@ -11,7 +11,7 @@
 	--color-input: var(--input);
 	--color-ring: var(--ring);
 
-	/* Primary: #103B4A | hsl(199 66% 17%) */
+	/* Primary: #103B4A | rgb(0,0,0) | hsl(199 66% 17%) */
 	--color-primary: 199 66% 17%;
 	--color-primary-foreground: 210 40% 98%;
 

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/src/stores/auth.store';
 import { api } from '@/src/lib/api';
+import { User } from '../types';
 
 export function useAuth() {
 	const router = useRouter();
@@ -13,8 +14,8 @@ export function useAuth() {
 		const checkAuth = async () => {
 			try {
 				const response = await api.get('/api/auth/me');
-				if (response.success && response.data?.user) {
-					setUser(response.data.user);
+				if (response && typeof response === 'object' && 'success' in response && 'data' in response && response.data && typeof response.data === 'object' && 'user' in response.data) {
+					setUser(response.data.user as User);
 				} else {
 					setUser(null);
 				}
@@ -35,12 +36,22 @@ export function useAuth() {
 		try {
 			const response = await api.post('/api/auth/login', { email, password });
 
-			if (response.success && response.data?.user) {
-				setUser(response.data.user);
+			if (
+				response &&
+				typeof response === 'object' &&
+				'success' in response &&
+				response.success &&
+				'data' in response &&
+				response.data &&
+				typeof response.data === 'object' &&
+				'user' in response.data &&
+				response.data?.user
+			) {
+				setUser(response.data.user as User);
 				return { success: true };
 			}
 
-			if (!response.success && response.message) {
+			if (response && typeof response === 'object' && 'success' in response && !response.success && 'message' in response && response.message) {
 				return { success: false, error: response.message };
 			}
 
