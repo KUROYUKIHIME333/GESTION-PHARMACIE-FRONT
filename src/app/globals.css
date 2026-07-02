@@ -11,7 +11,7 @@
 	--color-input: var(--input);
 	--color-ring: var(--ring);
 
-	/* Primary: #103B4A | rgb(0,0,0) | hsl(199 66% 17%) */
+	/* Primary: #103B4A | hsl(199 66% 17%) */
 	--color-primary: 199 66% 17%;
 	--color-primary-foreground: 210 40% 98%;
 
@@ -93,48 +93,24 @@
 /* --- Variables CSS (light mode par défaut) --- */
 @layer base {
 	:root {
-		--background: 210 20% 98%;
-		--foreground: 222.2 84% 4.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 84% 4.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 84% 4.9%;
-		--primary: 199 66% 17%;
-		--primary-foreground: 210 40% 98%;
-		--secondary: 137 14% 49%;
-		--secondary-foreground: 210 40% 98%;
-		--muted: 210 40% 96.1%;
-		--muted-foreground: 215.4 16.3% 46.9%;
-		--accent: 28 56% 46%;
-		--accent-foreground: 210 40% 98%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-		--ring: 199 66% 17%;
+		--primary: 153 28% 41%;/* hsl(153, 28%, 41%) */
+		--primary-foreground: 200 25% 95%; /* hsl(200, 25%, 95%) */
+		--secondary: 103 53% 44%; /* hsl(103, 53%, 44%) */
+		--secondary-foreground: 83 53% 93%; /* hsl(83, 53%, 93%) */
+		--destructive: 0 84.2% 60.2%; /* hsl(0 84.2% 60.2%) */
+		--border: 205 9% 75%; /* hsl(205 9% 75%) */
+		--input: 0 0% 96%;
 		--radius: 0.5rem;
 	}
 
 	.dark {
-		--background: 222.2 84% 4.9%;
-		--foreground: 210 40% 98%;
-		--card: 222.2 84% 4.9%;
-		--card-foreground: 210 40% 98%;
-		--popover: 222.2 84% 4.9%;
-		--popover-foreground: 210 40% 98%;
 		--primary: 199 66% 17%;
 		--primary-foreground: 210 40% 98%;
 		--secondary: 137 14% 49%;
 		--secondary-foreground: 210 40% 98%;
-		--muted: 217.2 32.6% 17.5%;
-		--muted-foreground: 215 20.2% 65.1%;
-		--accent: 28 56% 46%;
-		--accent-foreground: 210 40% 98%;
 		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 210 40% 98%;
 		--border: 217.2 32.6% 17.5%;
 		--input: 217.2 32.6% 17.5%;
-		--ring: 199 66% 17%;
 	}
 }
 
