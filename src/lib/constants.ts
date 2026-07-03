@@ -26,7 +26,7 @@ export const API_ENDPOINTS = {
   stats: "/api/dashboard/stats",
 };
 
-export const APP_NAME = "Pharmacie Hospitalière";
+export const APP_NAME = "OfficIn";
 
 export const NAV_ITEMS = [
   {
@@ -101,7 +101,6 @@ export const DRUG_FORM_LABELS: Record<string, string> = {
   PESSARY: "Ovule",
   OTHER: "Autre",
 };
-
 export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   ANTIRETROVIRAL: "Antirétroviral",
   ANTIMALARIAL: "Antipaludéen",
@@ -129,7 +128,6 @@ export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   DIAGNOSTIC_REAGENT: "Réactif de diagnostic",
   OTHER: "Autre",
 };
-
 export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   ROOM_TEMP: "Température ambiante",
   COOL: "Zone fraîche (8-15°C)",
@@ -139,31 +137,24 @@ export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   PROTECT_HUMIDITY: "Protéger de l'humidité",
   CONTROLLED_SUBSTANCE: "Substance contrôlée",
 };
-
-export const HOVER_COLOR = "#0CBFC3";
-
-// Labels pour les enums Jour 3
 export const GENDER_LABELS: Record<string, string> = {
   MALE: "Masculin",
   FEMALE: "Féminin",
   OTHER: "Autre",
   UNKNOWN: "Non précisé",
 };
-
 export const ALLERGY_SEVERITY_LABELS: Record<string, string> = {
   MILD: "Légère",
   MODERATE: "Modérée",
   SEVERE: "Sévère",
   ANAPHYLAXIS: "Anaphylaxie",
 };
-
 export const ALLERGY_SEVERITY_COLORS: Record<string, string> = {
   MILD: "bg-yellow-100 text-yellow-700 border-yellow-200",
   MODERATE: "bg-orange-100 text-orange-700 border-orange-200",
   SEVERE: "bg-red-100 text-red-700 border-red-200",
   ANAPHYLAXIS: "bg-red-200 text-red-800 border-red-300 font-semibold",
 };
-
 export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   DRAFT: "Brouillon",
   PENDING: "En attente",
@@ -172,7 +163,6 @@ export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   CANCELLED: "Annulée",
   EXPIRED: "Expirée",
 };
-
 export const PRESCRIPTION_STATUS_COLORS: Record<string, string> = {
   DRAFT: "bg-slate-100 text-slate-600 border-slate-200",
   PENDING: "bg-sky-100 text-sky-700 border-sky-200",
