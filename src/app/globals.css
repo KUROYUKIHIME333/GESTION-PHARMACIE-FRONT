@@ -94,12 +94,13 @@
 @layer base {
 	:root {
 		--primary: 153 28% 41%;/* hsl(153, 28%, 41%) */
+		--test: rgb(86, 172, 53);
 		--primary-foreground: 200 25% 95%; /* hsl(200, 25%, 95%) */
 		--secondary: 103 53% 44%; /* hsl(103, 53%, 44%) */
 		--secondary-foreground: 83 53% 93%; /* hsl(83, 53%, 93%) */
 		--destructive: 0 84.2% 60.2%; /* hsl(0 84.2% 60.2%) */
 		--border: 205 9% 75%; /* hsl(205 9% 75%) */
-		--input: 0 0% 96%;
+		--input: 0 0% 96%; /* hsl(0 0% 96%) */
 		--radius: 0.5rem;
 	}
 
