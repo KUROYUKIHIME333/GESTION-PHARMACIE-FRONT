@@ -14,6 +14,7 @@ import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 import { useAuthStore } from '@/src/stores/auth.store';
 import { User } from '@/src/types';
+import { API_ENDPOINTS } from '@/src/lib/constants';
 
 const loginSchema = z.object({
 	email: z.string().email('Adresse email invalide'),
@@ -44,7 +45,9 @@ export default function LoginPage() {
 		loadingUserInStore(true);
 
 		try {
-			const response = await api.post('/auth/login', data);
+			const response = await api.post(API_ENDPOINTS.login, data);
+
+			console.log(response);
 
 			if (response && typeof response === 'object' && 'success' in response) {
 				if (response.success && 'data' in response && response.data && typeof response.data === 'object' && 'user' in response.data && response.data.user) {

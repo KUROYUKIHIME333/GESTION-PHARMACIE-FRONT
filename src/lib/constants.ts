@@ -1,6 +1,15 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-export const APP_NAME = "Pharmacie Hospitalière"
+export const API_ENDPOINTS = {
+  login: "/api/auth/login",
+  register: "/api/auth/register",
+  logout: "/api/auth/logout",
+  change_password: "/api/auth/change-password",
+  get_me: "/api/auth/me",
+};
+
+export const APP_NAME = "Pharmacie Hospitalière";
 
 export const NAV_ITEMS = [
   {
@@ -38,7 +47,7 @@ export const NAV_ITEMS = [
     href: "/alerts",
     icon: "AlertTriangle",
   },
-] as const
+] as const;
 
 export const ROLE_LABELS: Record<string, string> = {
   SUPERADMIN: "Super Administrateur",
@@ -49,7 +58,7 @@ export const ROLE_LABELS: Record<string, string> = {
   CASHIER: "Caissier",
   STOCK_MANAGER: "Gestionnaire de Stock",
   AUDITOR: "Auditeur",
-}
+};
 
 // Labels pour les enums
 export const DRUG_FORM_LABELS: Record<string, string> = {
@@ -74,7 +83,7 @@ export const DRUG_FORM_LABELS: Record<string, string> = {
   GEL: "Gel",
   PESSARY: "Ovule",
   OTHER: "Autre",
-}
+};
 
 export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   ANTIRETROVIRAL: "Antirétroviral",
@@ -102,7 +111,7 @@ export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   MEDICAL_CONSUMABLE: "Consommable médical",
   DIAGNOSTIC_REAGENT: "Réactif de diagnostic",
   OTHER: "Autre",
-}
+};
 
 export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   ROOM_TEMP: "Température ambiante",
@@ -112,9 +121,9 @@ export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   PROTECT_LIGHT: "Protéger de la lumière",
   PROTECT_HUMIDITY: "Protéger de l'humidité",
   CONTROLLED_SUBSTANCE: "Substance contrôlée",
-}
+};
 
-export const HOVER_COLOR = "#0CBFC3"
+export const HOVER_COLOR = "#0CBFC3";
 
 // Labels pour les enums Jour 3
 export const GENDER_LABELS: Record<string, string> = {
@@ -122,21 +131,21 @@ export const GENDER_LABELS: Record<string, string> = {
   FEMALE: "Féminin",
   OTHER: "Autre",
   UNKNOWN: "Non précisé",
-}
+};
 
 export const ALLERGY_SEVERITY_LABELS: Record<string, string> = {
   MILD: "Légère",
   MODERATE: "Modérée",
   SEVERE: "Sévère",
   ANAPHYLAXIS: "Anaphylaxie",
-}
+};
 
 export const ALLERGY_SEVERITY_COLORS: Record<string, string> = {
   MILD: "bg-yellow-100 text-yellow-700 border-yellow-200",
   MODERATE: "bg-orange-100 text-orange-700 border-orange-200",
   SEVERE: "bg-red-100 text-red-700 border-red-200",
   ANAPHYLAXIS: "bg-red-200 text-red-800 border-red-300 font-semibold",
-}
+};
 
 export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   DRAFT: "Brouillon",
@@ -145,7 +154,7 @@ export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   DISPENSED: "Dispensée",
   CANCELLED: "Annulée",
   EXPIRED: "Expirée",
-}
+};
 
 export const PRESCRIPTION_STATUS_COLORS: Record<string, string> = {
   DRAFT: "bg-slate-100 text-slate-600 border-slate-200",
@@ -154,4 +163,4 @@ export const PRESCRIPTION_STATUS_COLORS: Record<string, string> = {
   DISPENSED: "bg-emerald-100 text-emerald-700 border-emerald-200",
   CANCELLED: "bg-red-100 text-red-700 border-red-200",
   EXPIRED: "bg-slate-100 text-slate-500 border-slate-200",
-}
+};
