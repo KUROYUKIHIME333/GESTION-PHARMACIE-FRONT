@@ -24,10 +24,21 @@ import {
 	CheckCircle2,
 	HelpCircleIcon,
 	LogOutIcon,
+	Pill,
+	ShoppingCart,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { NAV_ITEMS } from '@/src/lib/constants';
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+	LayoutDashboard,
+	Pill,
+	Package,
+	Users,
+	FileText,
+	ShoppingCart,
+	AlertTriangle,
+};
 
 export default function SideBar() {
 	const pathname = usePathname();
@@ -44,12 +55,29 @@ export default function SideBar() {
 
 			{/* nav menu */}
 			<nav className="h-5/8 max-h-5/8 flex flex-col overflow-y-auto no-scrollbar">
-				{NAV_ITEMS.map((item, i) => (
+				{/* {NAV_ITEMS.map((item, i) => (
 					<Link key={i} href="#" className={`flex items-center gap-3 p-3 rounded-lg ${i === 0 ? 'bg-[#eff7e4] text-[#4B866B] font-bold' : 'text-slate-600 hover:bg-slate-50'}`}>
 						<item.icon size={20} />
 						<span className="text-sm">{item.label}</span>
 					</Link>
-				))}
+				))} */}
+
+				{NAV_ITEMS.map((item) => {
+					const Icon = iconMap[item.icon] || LayoutDashboard;
+					const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+					return (
+						<Link
+							key={item.href}
+							href={item.href}
+							onClick={() => setMobileOpen(false)}
+							className={`flex items-center gap-3 p-3 rounded-lg ${isActive ? 'bg-[#eff7e4] text-[#4B866B] font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
+						>
+							<Icon className="w-4 h-4" />
+							<span>{item.label}</span>
+						</Link>
+					);
+				})}
 			</nav>
 
 			{/* alert and options */}
