@@ -2,11 +2,28 @@ export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export const API_ENDPOINTS = {
+  // AUTH
   login: "/api/auth/login",
   register: "/api/auth/register",
   logout: "/api/auth/logout",
   change_password: "/api/auth/change-password",
   get_me: "/api/auth/me",
+  // DRUG
+  drugs: "/api/drugs/",
+  // BATCHES
+  batches: "/api/batches/",
+  // STOCK
+  stocks: "/api/stock/",
+  // PATIENT
+  patients: "/api/patients/",
+  // PRESCRIPTIONS
+  prescriptions: "/api/prescriptions/",
+  //DISPENSATIONS
+  dispensations: "/api/dispensations/",
+  // ALERTS
+  alerts: "/api/alerts/",
+  // DASHBOARD
+  stats: "/api/dashboard/stats",
 };
 
 export const APP_NAME = "Pharmacie Hospitalière";
