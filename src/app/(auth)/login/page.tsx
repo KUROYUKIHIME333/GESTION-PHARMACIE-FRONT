@@ -34,7 +34,7 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center p-6 bg-white">
+		<div className="min-h-screen flex flex-col items-center p-6 bg-[#eff3f5]">
 			{/* Header */}
 			<header className="mb-8 flex flex-col items-center text-center">
 				<div className="relative w-[200px] mb-3 mt-6">
@@ -43,7 +43,7 @@ export default function LoginPage() {
 				<h1 className="text-[18px] text-gray-500 tracking-[0.2em] uppercase">Portail d&apos;accès</h1>
 			</header>
 
-			<Card className="w-full max-w-[400px] p-8 border-outline-variant rounded-none shadow-sm">
+			<Card className="w-full max-w-[400px] p-8 border-outline-variant rounded-none shadow-sm bg-white">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
 					{/* Email */}
 					<div className="space-y-3">
@@ -62,9 +62,10 @@ export default function LoginPage() {
 					<div className="space-y-3">
 						<div className="flex justify-between items-end">
 							<Label htmlFor="password">Mot de Passe</Label>
-							<a href="#" className="text-[12px] text-secondary hover:underline">
+							{/* When we'll implement the recovery of password functionnality */}
+							{/* <a href="#" className="text-[12px] text-secondary hover:underline">
 								Forgot?
-							</a>
+							</a> */}
 						</div>
 						{errors.password && <span className="block text-[11px] text-red-500 uppercase tracking-wide">{errors.password.message}</span>}
 						<div className="relative">
