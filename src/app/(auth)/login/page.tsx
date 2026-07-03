@@ -72,7 +72,7 @@ const LoginPage = () => {
 			{/* Header */}
 			<header className="mb-8 flex flex-col items-center text-center">
 				<div className="relative w-[200px] mb-3 mt-6">
-					<Image priority={true} src="/name.jpg" alt="Logo" width={200} height={100} />
+					<Image priority={true} src="/name.jpg" alt="Logo" width={200} />
 				</div>
 				<h1 className="text-[18px] text-gray-500 tracking-[0.2em] uppercase">Portail d&apos;accès</h1>
 			</header>
