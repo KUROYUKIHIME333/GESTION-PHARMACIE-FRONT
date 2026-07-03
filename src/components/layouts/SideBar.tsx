@@ -18,7 +18,7 @@ export default function SideBar() {
 	const toggleMobile = () => setMobileOpen(!mobileOpen);
 
 	return (
-		<div>
+		<div className='h-screen w-1/5 bg-red-500'>
 			{/* logo */}
 			<Image priority={true} src="/jnapps-tracker/jnappsTrackerLogo.svg" alt="Logo" width={100} height={100} className="w-30 h-30 rounded-full" />
 

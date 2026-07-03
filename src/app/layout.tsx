@@ -9,10 +9,12 @@ export const metadata: Metadata = {
 	description: 'Système de gestion de pharmacie hospitalière',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang="fr">
 			<body className={`${inter.className}`}>{children}</body>
 		</html>
 	);
-}
+};
+
+export default RootLayout;

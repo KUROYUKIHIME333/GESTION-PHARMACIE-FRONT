@@ -7,31 +7,7 @@ import { Button } from '@/src/components/ui/button';
 
 const Dashboard = () => {
 	return (
-		<div className="flex min-h-screen bg-slate-50">
-			{/* Sidebar */}
-			<aside className="hidden md:flex flex-col w-64 border-r bg-white p-6">
-				<div className="mb-8">
-					<h1 className="text-xl font-bold text-primary">OfficIn+</h1>
-					<p className="text-xs text-slate-500">Pharmacy Command</p>
-				</div>
-
-				<nav className="flex-1 space-y-2">
-					{[
-						{ icon: LayoutDashboard, label: 'Dashboard' },
-						{ icon: Package, label: 'Inventory' },
-						{ icon: FileText, label: 'Prescriptions' },
-						{ icon: Users, label: 'Patients' },
-						{ icon: BarChart3, label: 'Analytics' },
-						{ icon: Settings, label: 'Settings' },
-					].map((item, i) => (
-						<a key={i} href="#" className={`flex items-center gap-3 p-3 rounded-lg ${i === 0 ? 'bg-slate-100 text-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}>
-							<item.icon size={20} />
-							<span className="text-sm">{item.label}</span>
-						</a>
-					))}
-				</nav>
-			</aside>
-
+		<>
 			{/* Main Content */}
 			<main className="flex-1 overflow-y-auto">
 				<header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b px-8 py-4 flex justify-between items-center">
@@ -114,7 +90,7 @@ const Dashboard = () => {
 			<Button className="fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-xl">
 				<Plus size={24} />
 			</Button>
-		</div>
+		</>
 	);
 };
 
