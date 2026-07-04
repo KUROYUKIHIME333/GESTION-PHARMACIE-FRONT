@@ -1,105 +1,125 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { LayoutDashboard, Package, FileText, Users, BarChart3, Settings, HelpCircle, LogOut, Bell, Search, Focus, Plus, TrendingUp, AlertTriangle, MoreVertical, CheckCircle2 } from 'lucide-react';
+import { useEffect, memo } from 'react';
+import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus, LucideIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
-
 import { Button } from '@/src/components/ui/button';
-import { DashboardStats as DashboardInterface } from '@/src/types';
-import { DashboardStats as statsInStore } from '@/src/stores/pharmacy.store';
-import { api } from '@/src/lib/api';
-import Spinner from '@/src/components/layouts/Spinner';
 import { useDashboardStore } from '@/src/stores/dashboard.store';
+import { api } from '@/src/lib/api';
+import { API_ENDPOINTS } from '@/src/lib/constants';
+import Spinner from '@/src/components/layouts/Spinner';
+import { DashboardStats } from '@/src/types';
+
+// Composant mémoïsé pour éviter les re-rendus inutiles
+const StatCard = memo(({ title, value, icon: Icon, others = [] }: { title: string; value: number | string; icon: LucideIcon; others: string[] }) => (
+	<Card>
+		<CardContent className="pt-6">
+			<Icon className="w-5 h-5 text-slate-500 mb-2" />
+			<p className="text-xs text-slate-500 uppercase font-bold">{title}</p>
+			<p className="text-3xl font-bold text-slate-900 mt-1">{value}</p>
+			{others.length > 0 && (
+				<div className="text-[10px] text-slate-400 mt-2 flex gap-2">
+					{others.map((el: string, i: number) => (
+						<span key={i}>{el}</span>
+					))}
+				</div>
+			)}
+		</CardContent>
+	</Card>
+));
+StatCard.displayName = 'StatCard';
 
 const Dashboard = () => {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [serverError, setServerError] = useState<string | null>(null);
+	const { stats, isLoading, lastError, setDashboardStats, setDashboardLoading, setDashboardLastError } = useDashboardStore();
 
-	const gettingStats = async () => {
-		setIsLoading(true);
-		setServerError(null);
-		try {
-		} catch (error) {
-		} finally {
-		}
-	};
+	useEffect(() => {
+		let isMounted = true;
+		const fetchData = async () => {
+			setDashboardLoading(true);
+			try {
+				const response = await api.get(API_ENDPOINTS.stats);
+				if (isMounted && response && typeof response === 'object' && 'success' in response && response.success && 'data' in response && response.data)
+					setDashboardStats(response.data as DashboardStats);
+				else if (response && typeof response === 'object' && 'success' in response && !response.success && 'message' in response && response.message && typeof response.message === 'string')
+					setDashboardLastError(response.message || 'Erreur chargement');
+				else setDashboardLastError('Erreur chargement');
+			} catch (error: unknown) {
+				if (isMounted) setDashboardLastError((error as Error).message);
+			} finally {
+				if (isMounted) setDashboardLoading(false);
+			}
+		};
+		fetchData();
+		return () => {
+			isMounted = false;
+		};
+	});
 
-	useEffect(() => {}, []);
+	if (isLoading) return <Spinner />;
 
 	return (
-		<>
-			{/* Main Content */}
-			<main className="flex-1 overflow-y-auto">
-				{isLoading ? (
-					<Spinner />
-				) : (
-					<div className="p-8 space-y-8">
-						<section className="grid grid-cols-1 md:grid-cols-4 gap-4">
-							{[
-								{ title: 'Drugs in Stock', value: '12,482', trend: '+2.4%' },
-								{ title: 'Prescriptions Today', value: '148', trend: '+12' },
-								{ title: 'Dispensations', value: '3,102', trend: 'Weekly Avg' },
-								{ title: 'Dispensations', value: '3,102', trend: 'Weekly Avg' },
-								{ title: 'Active Alerts', value: '09', trend: 'CRITICAL', error: true },
-							].map((kpi, i) => (
-								<Card key={i} className={kpi.error ? 'border-red-200' : ''}>
-									<CardContent className="pt-6">
-										<p className="text-xs text-slate-500 uppercase">{kpi.title}</p>
-										<div className="flex justify-between items-end mt-2">
-											<span className={`text-3xl font-bold ${kpi.error ? 'text-red-600' : 'text-slate-900'}`}>{kpi.value}</span>
-											<span className="text-xs font-medium text-slate-600 flex items-center gap-1">
-												{kpi.trend} <TrendingUp size={12} />
-											</span>
-										</div>
-									</CardContent>
-								</Card>
-							))}
-						</section>
-						<section className="grid grid-cols-12 gap-6">
-							<Card className="col-span-12 lg:col-span-6 h-[400px]">
-								<CardHeader className="flex flex-row items-center justify-between">
-									<CardTitle>Global Stock Summary</CardTitle>
-									<MoreVertical size={16} className="text-slate-400" />
-								</CardHeader>
-								<CardContent>
-									<div className="grid grid-cols-2 gap-8">
-										<div>
-											<p className="text-sm text-slate-500">Total Quantity</p>
-											<p className="text-4xl font-bold">842k</p>
-										</div>
-										<div>
-											<p className="text-sm text-slate-500">Inventory Value</p>
-											<p className="text-4xl font-bold">$2.4M</p>
-										</div>
-									</div>
-								</CardContent>
-							</Card>
-
-							<Card className="col-span-12 lg:col-span-3 h-[400px]">
-								<CardHeader>
-									<CardTitle>Active Alerts</CardTitle>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<div className="p-3 border-l-4 border-orange-500 bg-slate-50 rounded">
-										<p className="text-sm font-bold">Insulin Glargine</p>
-										<p className="text-xs text-slate-600">8 units remaining.</p>
-									</div>
-									<div className="p-3 border-l-4 border-red-500 bg-slate-50 rounded">
-										<p className="text-sm font-bold">Amoxicillin 500mg</p>
-										<p className="text-xs text-slate-600">Expires in 48h.</p>
-									</div>
-								</CardContent>
-							</Card>
-						</section>
-					</div>
+		<main className="flex-1 p-8 space-y-8">
+			{/* SECTION 1 : KPIs */}
+			<section className="grid grid-cols-1 md:grid-cols-5 gap-4">
+				{stats && (
+					<>
+						<StatCard title="En Stock" value={stats.stock.drugsInStock} icon={Package} others={[]} />
+						<StatCard title="Valeur" value={`${stats.stock.totalValueCDF} CDF`} icon={Banknote} others={[`${stats.stock.totalValueUSD} USD`]} />
+						<StatCard title="Alertes" value={stats.alerts.totalActive} icon={AlertTriangle} others={[`Critique: ${stats.alerts.critical}`, `Warn: ${stats.alerts.warning}`]} />
+						<StatCard title="Périmés" value={stats.expiries.expired} icon={CalendarX2} others={[`30j: ${stats.expiries.critical30Days}`]} />
+						<StatCard title="Dispensations" value={stats.activity.dispensationsToday} icon={Pill} others={[`Semaine: ${stats.activity.dispensationsWeek}`]} />
+					</>
 				)}
-			</main>
+			</section>
 
-			{/* FAB */}
+			{/* SECTION 2 : VUES DYNAMIQUES */}
+			<section className="grid grid-cols-12 gap-6">
+				<Card className="col-span-12 lg:col-span-8">
+					<CardHeader>
+						<CardTitle>Activité Récente</CardTitle>
+					</CardHeader>
+					<CardContent className="grid grid-cols-3 gap-4">
+						<div className="bg-slate-50 p-4 rounded-lg">
+							<p className="text-slate-500 text-sm">Nouveaux Patients</p>
+							<p className="text-2xl font-bold">{stats?.activity.newPatientsToday || 0}</p>
+						</div>
+						<div className="bg-slate-50 p-4 rounded-lg">
+							<p className="text-slate-500 text-sm">Prescriptions</p>
+							<p className="text-2xl font-bold">{stats?.activity.prescriptionsToday || 0}</p>
+						</div>
+						<div className="bg-slate-50 p-4 rounded-lg">
+							<p className="text-slate-500 text-sm">Total Dispensations</p>
+							<p className="text-2xl font-bold">{stats?.counts.totalDispensations || 0}</p>
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card className="col-span-12 lg:col-span-4">
+					<CardHeader>
+						<CardTitle>Inventaire Global</CardTitle>
+					</CardHeader>
+					<CardContent className="space-y-4">
+						<div className="flex justify-between">
+							<span>Total Médicaments</span>
+							<span className="font-bold">{stats?.counts.totalDrugs}</span>
+						</div>
+						<div className="flex justify-between">
+							<span>Lots actifs</span>
+							<span className="font-bold">{stats?.counts.totalBatches}</span>
+						</div>
+						<div className="flex justify-between">
+							<span>Total Patients</span>
+							<span className="font-bold">{stats?.counts.totalPatients}</span>
+						</div>
+					</CardContent>
+				</Card>
+			</section>
+
+			{lastError && <div className="fixed bottom-8 left-8 bg-red-100 text-red-700 p-4 rounded shadow-lg">{lastError}</div>}
 			<Button className="fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-xl">
 				<Plus size={24} />
 			</Button>
-		</>
+		</main>
 	);
 };
 
