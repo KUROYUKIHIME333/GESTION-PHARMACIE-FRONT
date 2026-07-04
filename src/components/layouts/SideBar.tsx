@@ -74,7 +74,7 @@ export default function SideBar() {
 							className={`flex items-center gap-3 p-3 rounded-lg ${isActive ? 'bg-[#eff7e4] text-[#4B866B] font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
 						>
 							<Icon className="w-4 h-4" />
-							<span>{item.label}</span>
+							<span className="text-sm">{item.label}</span>
 						</Link>
 					);
 				})}
