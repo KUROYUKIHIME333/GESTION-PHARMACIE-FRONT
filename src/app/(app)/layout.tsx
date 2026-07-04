@@ -9,7 +9,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 			{/* Sidebar */}
 			<SideBar />
 			{/* Main Content */}
-			<div>
+			<div className='w-4/5'>
 				<MainContentHeader />
 				{children}
 			</div>

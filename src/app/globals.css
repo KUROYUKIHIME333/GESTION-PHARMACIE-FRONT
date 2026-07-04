@@ -94,7 +94,7 @@
 @layer base {
 	:root {
 		--primary: 153 28% 41%;/* hsl(153, 28%, 41%) */
-		--test: #eff7e4;
+		--test:  #eff7e4;
 		--primary-foreground: 200 25% 95%; /* hsl(200, 25%, 95%) */
 		--secondary: 103 53% 44%; /* hsl(103, 53%, 44%) */
 		--secondary-foreground: 83 53% 93%; /* hsl(83, 53%, 93%) */
