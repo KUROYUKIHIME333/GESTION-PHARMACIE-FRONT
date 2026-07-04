@@ -10,7 +10,7 @@ const Dashboard = () => {
 		<>
 			{/* Main Content */}
 			<main className="flex-1 overflow-y-auto">
-				<header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b px-8 py-4 flex justify-between items-center">
+				<header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#C1C7CB] px-8 py-4 flex justify-between items-center">
 					<div className="flex items-center gap-4">
 						<h1 className="text-2xl font-bold">Command Center</h1>
 						<div className="relative w-96">
