@@ -1,6 +1,7 @@
 'use client';
 
 import SideBar from '@/src/components/layouts/SideBar';
+import MainContentHeader from '@/src/components/layouts/MainContentHeader';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -8,7 +9,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 			{/* Sidebar */}
 			<SideBar />
 			{/* Main Content */}
-			{children}
+			<div>
+				<MainContentHeader />
+				{children}
+			</div>
 		</div>
 	);
 };

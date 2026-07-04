@@ -95,7 +95,7 @@ export default function SideBar() {
 						</div>
 					</div>
 				)}
-				<Link href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-slate-50">
+				<Link href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-red-100">
 					<LogOutIcon size={20} />
 					<span className="text-sm ">Déconnexion</span>
 				</Link>
