@@ -61,17 +61,37 @@ export interface DashboardStats {
     totalActive: number;
     critical: number;
     warning: number;
+    byType: {
+      additionalProperties: number;
+    };
   };
   stock: {
     totalDrugs: number;
     drugsInStock: number;
     drugsCritical: number;
     drugsLow: number;
+    totalValueCDF: number;
+    totalValueUSD: number;
+  };
+  expiries: {
+    expired: number;
+    critical30Days: number;
+    warning90Days: number;
   };
   activity: {
     dispensationsToday: number;
+    dispensationsWeek: number;
     prescriptionsToday: number;
+    prescriptionsWeek: number;
     newPatientsToday: number;
+    newPatientsWeek: number;
+  };
+  counts: {
+    totalPatients: number;
+    totalPrescriptions: number;
+    totalDispensations: number;
+    totalDrugs: number;
+    totalBatches: number;
   };
 }
 
