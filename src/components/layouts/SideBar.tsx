@@ -1,5 +1,3 @@
-'use client';
-
 import { usePathname } from 'next/navigation';
 import { NAV_ITEMS } from '@/src/lib/constants';
 import { useState, useEffect } from 'react';
