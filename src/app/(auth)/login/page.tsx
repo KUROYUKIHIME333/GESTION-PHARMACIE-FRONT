@@ -72,7 +72,7 @@ const LoginPage = () => {
 			{/* Header */}
 			<header className="mb-8 flex flex-col items-center text-center">
 				<div className="relative w-[200px] mb-3 mt-6">
-					<Image priority={true} src="/name.jpg" alt="Logo" width={200} height={100}/>
+					<Image priority={true} src="/name.jpg" alt="Logo" width={200} height={100} />
 				</div>
 				<h1 className="text-[18px] text-gray-500 tracking-[0.2em] uppercase">Portail d&apos;accès</h1>
 			</header>
@@ -119,8 +119,12 @@ const LoginPage = () => {
 							</button>
 						</div>
 					</div>
-
-					<div className='space-y-3'></div>
+					{/* Erreurs dasn la reponse */}
+					{serverError && (
+						<div className="space-y-3">
+							<span className="block text-[11px] text-red-500 uppercase tracking-wide">{serverError}</span>
+						</div>
+					)}
 
 					<Button
 						type="submit"
