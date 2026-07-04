@@ -1,3 +1,5 @@
+'use client';
+
 import SideBar from '@/src/components/layouts/SideBar';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
