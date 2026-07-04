@@ -2,28 +2,14 @@
 
 import { usePathname } from 'next/navigation';
 import { NAV_ITEMS } from '@/src/lib/constants';
-import { cn } from '@/src/lib/utils';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/src/hooks/useAuth.hooks';
-import { Button } from '../ui/button';
 import {
 	LayoutDashboard,
 	Package,
 	FileText,
 	Users,
-	BarChart3,
-	Settings,
-	HelpCircle,
-	LogOut,
-	Bell,
-	Search,
-	Focus,
-	Plus,
-	TrendingUp,
 	AlertTriangle,
-	MoreVertical,
-	CheckCircle2,
-	HelpCircleIcon,
 	LogOutIcon,
 	Pill,
 	ShoppingCart,
@@ -90,7 +76,7 @@ export default function SideBar() {
 			{/* alert and options */}
 			<div className="h-2/8 max-h-2/8 py-6 border-t border-[#C1C7CB]">
 				{user && (
-					<div className="px-3 py-4 ">
+					<div className="p-3 ">
 						<div className="flex items-center gap-3">
 							<div className="w-9 h-9 rounded-full bg-secondary/20 flex items-center justify-center">
 								{user.profilePicture ? (
@@ -103,7 +89,7 @@ export default function SideBar() {
 								)}
 							</div>
 							<div className="min-w-0">
-								<p className="text-sm font-medium text-slate-900 truncate">
+								<p className="text-xs font-medium text-slate-900 truncate">
 									{user.firstName} {user.lastName}
 								</p>
 								<p className="text-xs text-slate-500">{ROLE_LABELS[user.role] || user.role}</p>
