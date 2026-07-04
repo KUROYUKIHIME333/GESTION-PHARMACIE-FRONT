@@ -68,7 +68,7 @@ const LoginPage = () => {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center p-6 bg-[#eff3f5]">
+		<div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#eff3f5]">
 			{/* Header */}
 			<header className="mb-8 flex flex-col items-center text-center">
 				<div className="relative w-[200px] mb-3 mt-6">
@@ -77,7 +77,7 @@ const LoginPage = () => {
 				<h1 className="text-[18px] text-gray-500 tracking-[0.2em] uppercase">Portail d&apos;accès</h1>
 			</header>
 
-			<Card className="w-full max-w-[400px] p-8 border-outline-variant border-[#B7BFC3] rounded-none shadow-sm bg-white">
+			<Card className="w-full max-w-[400px] p-8 lg:border-2 border-[#C1C7CB] rounded-none shadow-sm bg-[#eff3f5] lg:bg-white">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
 					{/* Email */}
 					<div className="space-y-3">
@@ -119,6 +119,8 @@ const LoginPage = () => {
 							</button>
 						</div>
 					</div>
+
+					<div className='space-y-3'></div>
 
 					<Button
 						type="submit"
