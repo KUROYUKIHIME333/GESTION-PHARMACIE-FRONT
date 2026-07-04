@@ -2,8 +2,8 @@ import { Loader2 } from 'lucide-react';
 
 const Spinner = () => {
 	return (
-		<div className="w-full h-full p-8 space-y-8 flex flex-col justify-center items-center">
-			<Loader2 className="bg-[#56AC35] animate-spin h-1/8 w-1/8" />
+		<div className="w-full h-full p-8 space-y-8 flex flex-col justify-center items-center  bg-[#eff7e4]">
+			<Loader2 className="text-[#56AC35] animate-spin h-1/8 w-1/8" />
 			{/* <svg className="animate-spin h-1/8 w-1/8" viewBox="0 0 24 24">
 			
 				<circle className="opacity-25" cx="12" cy="12" r="10" stroke="#4B866B" strokeWidth="4" fill="none" />

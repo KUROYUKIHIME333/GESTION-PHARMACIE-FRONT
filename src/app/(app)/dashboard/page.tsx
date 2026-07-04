@@ -22,89 +22,96 @@ const Dashboard = () => {
 
 			<main className="flex-1 overflow-y-auto bg-[#eff7e4] w-full">
 				<div className="p-8 space-y-8">
-					<section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-col-5 gap-4">
-						{[
-							{ title: 'Médicaments en stock', value: stats?.stock.drugsInStock || '---', icon: Package, others: [] },
-							{ title: 'Valeur du stock', value: `${stats?.stock.totalValueCDF} CDF ` || '---', icon: Banknote, others: [`${stats?.stock.totalValueUSD} USD`] },
+					{isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-col-5 gap-4">
+								{[
+									{ title: 'Médicaments en stock', value: stats?.stock.drugsInStock || '---', icon: Package, others: [] },
+									{ title: 'Valeur du stock', value: `${stats?.stock.totalValueCDF} CDF ` || '---', icon: Banknote, others: [`${stats?.stock.totalValueUSD} USD`] },
 
-							{ title: 'Dispensations', value: stats?.activity.dispensationsToday || '---', icon: Pill, others: [`Cette semaine : ${stats?.activity.dispensationsWeek}`] },
-							{
-								title: 'Périmés',
-								value: stats?.expiries.expired || '---',
-								icon: CalendarX2,
-								others: [`Dans 30 jours :${stats?.expiries.critical30Days}` || '---', `Dans 90 jours :${stats?.expiries.warning90Days}`],
-							},
-							{
-								title: 'Alertes',
-								value: stats?.alerts.totalActive || '---',
-								icon: AlertTriangle,
-								others: [`Critique: ${stats?.alerts.critical}`, `Attention: ${stats?.alerts.warning}`],
-							},
-						].map((kpi, i) => {
-							const Icon = kpi.icon;
-							const title = kpi.title || '';
-							const value = kpi.value || '';
-							const others = kpi.others || [];
-							return (
-								<Card key={`${i}-${title}`} className='rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white'>
-									<CardContent className="pt-6">
-										<Icon className="w-5 h-5 text-slate-500 mb-2" />
-										<p className="text-xs text-slate-500 uppercase font-bold">{title}</p>
-										<p className="text-xl font-bold text-slate-900 mt-1">{value}</p>
-										{others.length > 0 && (
-											<div className="text-md text-slate-400 mt-2 flex gap-2">
-												{others.map((el: string, i: number) => (
-													<span key={i}>{el}</span>
-												))}
-											</div>
-										)}
+									{ title: 'Dispensations', value: stats?.activity.dispensationsToday || '---', icon: Pill, others: [`Cette semaine : ${stats?.activity.dispensationsWeek}`] },
+									{
+										title: 'Périmés',
+										value: stats?.expiries.expired || '---',
+										icon: CalendarX2,
+										others: [`Dans 30 jours :${stats?.expiries.critical30Days}` || '---', `Dans 90 jours :${stats?.expiries.warning90Days}`],
+									},
+									{
+										title: 'Alertes',
+										value: stats?.alerts.totalActive || '---',
+										icon: AlertTriangle,
+										others: [`Critique: ${stats?.alerts.critical}`, `Attention: ${stats?.alerts.warning}`],
+									},
+								].map((kpi, i) => {
+									const Icon = kpi.icon;
+									const title = kpi.title || '';
+									const value = kpi.value || '';
+									const others = kpi.others || [];
+									return (
+										<Card key={`${i}-${title}`} className="rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
+											<CardContent className="pt-6">
+												<div className="flex gap-2">
+													<Icon className="w-5 h-5 text-slate-500 mb-2" />
+													<p className="text-xs text-slate-500 uppercase font-bold">{title}</p>
+												</div>
+												<p className="text-xl font-bold text-slate-900 mt-1">{value}</p>
+												{others.length > 0 && (
+													<div className="text-md text-slate-400 mt-2 flex gap-2">
+														{others.map((el: string, i: number) => (
+															<span key={i}>{el}</span>
+														))}
+													</div>
+												)}
+											</CardContent>
+										</Card>
+									);
+								})}
+							</section>
+							<section className="grid grid-cols-12 gap-6">
+								<Card className="col-span-12 lg:col-span-8">
+									<CardHeader>
+										<CardTitle>Activité Récente</CardTitle>
+									</CardHeader>
+									<CardContent className="grid grid-cols-3 gap-4">
+										<div className="bg-slate-50 p-4 rounded-lg">
+											<p className="text-slate-500 text-sm">Nouveaux Patients</p>
+											<p className="text-2xl font-bold">{stats?.activity.newPatientsToday || 0}</p>
+										</div>
+										<div className="bg-slate-50 p-4 rounded-lg">
+											<p className="text-slate-500 text-sm">Prescriptions</p>
+											<p className="text-2xl font-bold">{stats?.activity.prescriptionsToday || 0}</p>
+										</div>
+										<div className="bg-slate-50 p-4 rounded-lg">
+											<p className="text-slate-500 text-sm">Total Dispensations</p>
+											<p className="text-2xl font-bold">{stats?.counts.totalDispensations || 0}</p>
+										</div>
 									</CardContent>
 								</Card>
-							);
-						})}
-					</section>
 
-					<section className="grid grid-cols-12 gap-6">
-						<Card className="col-span-12 lg:col-span-8">
-							<CardHeader>
-								<CardTitle>Activité Récente</CardTitle>
-							</CardHeader>
-							<CardContent className="grid grid-cols-3 gap-4">
-								<div className="bg-slate-50 p-4 rounded-lg">
-									<p className="text-slate-500 text-sm">Nouveaux Patients</p>
-									<p className="text-2xl font-bold">{stats?.activity.newPatientsToday || 0}</p>
-								</div>
-								<div className="bg-slate-50 p-4 rounded-lg">
-									<p className="text-slate-500 text-sm">Prescriptions</p>
-									<p className="text-2xl font-bold">{stats?.activity.prescriptionsToday || 0}</p>
-								</div>
-								<div className="bg-slate-50 p-4 rounded-lg">
-									<p className="text-slate-500 text-sm">Total Dispensations</p>
-									<p className="text-2xl font-bold">{stats?.counts.totalDispensations || 0}</p>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="col-span-12 lg:col-span-4">
-							<CardHeader>
-								<CardTitle>Inventaire Global</CardTitle>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="flex justify-between">
-									<span>Total Médicaments</span>
-									<span className="font-bold">{stats?.counts.totalDrugs}</span>
-								</div>
-								<div className="flex justify-between">
-									<span>Lots actifs</span>
-									<span className="font-bold">{stats?.counts.totalBatches}</span>
-								</div>
-								<div className="flex justify-between">
-									<span>Total Patients</span>
-									<span className="font-bold">{stats?.counts.totalPatients}</span>
-								</div>
-							</CardContent>
-						</Card>
-					</section>
+								<Card className="col-span-12 lg:col-span-4">
+									<CardHeader>
+										<CardTitle>Inventaire Global</CardTitle>
+									</CardHeader>
+									<CardContent className="space-y-4">
+										<div className="flex justify-between">
+											<span>Total Médicaments</span>
+											<span className="font-bold">{stats?.counts.totalDrugs}</span>
+										</div>
+										<div className="flex justify-between">
+											<span>Lots actifs</span>
+											<span className="font-bold">{stats?.counts.totalBatches}</span>
+										</div>
+										<div className="flex justify-between">
+											<span>Total Patients</span>
+											<span className="font-bold">{stats?.counts.totalPatients}</span>
+										</div>
+									</CardContent>
+								</Card>
+							</section>{' '}
+						</>
+					)}
 				</div>
 			</main>
 
