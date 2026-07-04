@@ -47,8 +47,6 @@ const LoginPage = () => {
 		try {
 			const response = await api.post(API_ENDPOINTS.login, data);
 
-			console.log(response);
-
 			if (response && typeof response === 'object' && 'success' in response) {
 				if (response.success && 'data' in response && response.data && typeof response.data === 'object' && 'user' in response.data && response.data.user) {
 					loginUserInStore(response.data.user as User);
