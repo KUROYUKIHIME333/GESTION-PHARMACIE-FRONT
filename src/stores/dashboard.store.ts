@@ -19,6 +19,8 @@ interface DashboardStore extends DashboardState {
   setDashboardLastError: (lastError: string | null) => void;
   resetDashboardErrors: () => void;
   resetDashboardStore: () => void;
+  setDashboardGoodFetch: () => void;
+  setDashboardBadFetch: () => void;
 }
 
 const initialDashboardState: DashboardState = {
@@ -52,4 +54,21 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
     }),
 
   resetDashboardStore: () => set(initialDashboardState),
+  
+  setDashboardGoodFetch: () =>
+    set({
+      isLoading: false,
+      isFetched: true,
+      isError: false,
+      lastError: null,
+      lastFetched: new Date(),
+    }),
+
+    setDashboardBadFetch: () =>
+    set({
+      isLoading: false,
+      isFetched: true,
+      isError: true,
+      lastFetched: new Date(),
+    }),
 }));
