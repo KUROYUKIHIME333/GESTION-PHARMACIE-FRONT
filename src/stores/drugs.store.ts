@@ -87,7 +87,8 @@ export const useDrugStore = create<DrugStore>((set) => ({
       "Erreur inconnue lors de la récupération des médicaments";
     try {
       const response = (await api.get(API_ENDPOINTS.drugs)) as DrugsResponse;
-      console.log(response);
+      // console.log(response);
+      // console.log("La vrai de vrai",await api.get(API_ENDPOINTS.drugs));
 
       if (response.success && response.data) {
         const { drugs, total, page, limit, totalPages } = response.data;

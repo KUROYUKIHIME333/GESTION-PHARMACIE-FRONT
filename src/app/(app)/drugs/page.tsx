@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Pagination } from '@/src/components/ui/pagination';
 import { useDrugStore } from '@/src/stores/drugs.store';
 import Spinner from '@/src/components/layouts/Spinner';
+import { DrugCreateInput, DrugUpdateInput } from '@/src/types';
 
 export default function OfficInInventory() {
 	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
@@ -17,8 +18,8 @@ export default function OfficInInventory() {
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
 	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
-	const [drugToUpdate, setDrugToUpdate] = useState();
-	const [drugToCreate, setDrugToCreate] = useState();
+	const [drugToUpdate, setDrugToUpdate] = useState<DrugCreateInput | null>(null);
+	const [drugToCreate, setDrugToCreate] = useState<DrugUpdateInput|null>(null);
 	const LIMIT = 20;
 
 	// Chargement initial
