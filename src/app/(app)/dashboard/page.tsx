@@ -36,13 +36,16 @@ const Dashboard = () => {
 										title: 'Périmés',
 										value: stats?.expiries.expired || '---',
 										icon: CalendarX2,
-										others: [`Dans 30 jours :${stats?.expiries.critical30Days}` || '---', `Dans 90 jours :${stats?.expiries.warning90Days}`],
+										others: [`Dans 30 jours: ${stats?.expiries.critical30Days}` || '---', `Dans 90 jours: ${stats?.expiries.warning90Days}`],
 									},
 									{
 										title: 'Alertes',
 										value: stats?.alerts.totalActive || '---',
 										icon: AlertTriangle,
 										others: [`Critique: ${stats?.alerts.critical}`, `Attention: ${stats?.alerts.warning}`],
+										titleColour: '#FF0000',
+										valueColour: 'red-500',
+										colours: ['#FF8800', '#FF0000'],
 									},
 								].map((kpi, i) => {
 									const Icon = kpi.icon;
@@ -50,17 +53,48 @@ const Dashboard = () => {
 									const value = kpi.value || '';
 									const others = kpi.others || [];
 									return (
-										<Card key={`${i}-${title}`} className="rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
+										<Card key={`${i}-${title}`} className={`rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white`}>
 											<CardContent className="pt-6">
 												<div className="flex gap-2">
-													<Icon className="w-5 h-5 text-slate-500 mb-2" />
-													<p className="text-xs text-slate-500 uppercase font-bold">{title}</p>
+													<Icon
+														className={`w-5 h-5 ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-800' : 'text-slate-500'} mb-2`}
+													/>
+													<p
+														className={`text-xs ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-800' : 'text-slate-500'} uppercase font-bold`}
+													>
+														{title}
+													</p>
 												</div>
-												<p className="text-xl font-bold text-slate-900 mt-1">{value}</p>
+												<p
+													className={`text-xl font-bold mt-1 ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-500' : 'text-slate-900'} `}
+												>
+													{value}
+												</p>
 												{others.length > 0 && (
-													<div className="text-md text-slate-400 mt-2 flex gap-2">
+													<div className="text-md mt-2 flex justify-between">
 														{others.map((el: string, i: number) => (
-															<span key={i}>{el}</span>
+															<span
+																key={i}
+																className={`
+																	${
+																		others[i].startsWith('Critique:') ||
+																		others[i].startsWith('Dans 30 jours:') ||
+																		others[i].startsWith('In 30 days:') ||
+																		others[i].startsWith('Within 30 days:') ||
+																		others[i].startsWith('Critical:')
+																			? 'text-red-800'
+																			: others[i].startsWith('Attention:') ||
+																				others[i].startsWith('Warning:') ||
+																				others[i].startsWith('In 90 days') ||
+																				others[i].startsWith('Dans 90 jours:') ||
+																				others[i].startsWith('Within 90 days:')
+																				? 'text-orange-500'
+																				: 'text-slate-400'
+																	}
+																		`}
+															>
+																{el}
+															</span>
 														))}
 													</div>
 												)}
