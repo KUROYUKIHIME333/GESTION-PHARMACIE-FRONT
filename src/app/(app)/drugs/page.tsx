@@ -166,15 +166,15 @@ export default function OfficInInventory() {
 			{/* Modale de confirmation (Glass effect) */}
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="bg-white p-8 rounded-lg shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
-						<h3 className="font-bold text-lg">Confirmer la suppression</h3>
-						<p className="my-4">Supprimer {drugToDelete.name} ?</p>
+					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
+						<h3 className="text-slate-900 font-bold text-lg">Confirmer la suppression</h3>
+						<p className="text-slate-900 text-md my-4">Supprimer {drugToDelete.name} ?</p>
 						<div className="flex justify-end gap-2">
-							<Button variant="ghost" onClick={() => setDrugToDelete(null)}>
+							<Button className="text-slate-500 font-bold" variant="ghost" onClick={() => setDrugToDelete(null)}>
 								Annuler
 							</Button>
 							<Button
-								className="bg-red-600"
+								className="text-white font-bold bg-red-600 hover:bg-red-800 rounded-[2px]"
 								onClick={() => {
 									deleteDrug(drugToDelete.id);
 									setDrugToDelete(null);
