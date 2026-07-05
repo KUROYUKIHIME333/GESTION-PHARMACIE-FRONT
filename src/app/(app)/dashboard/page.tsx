@@ -26,7 +26,7 @@ const Dashboard = () => {
 						<Spinner />
 					) : (
 						<>
-							<section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-col-5 gap-4">
+							<section className="grid grid-cols-1  md:grid-cols-3 lg:grid-col-4 gap-4">
 								{[
 									{ title: 'Médicaments en stock', value: stats?.stock.drugsInStock || '---', icon: Package, others: [] },
 									{ title: 'Valeur du stock', value: `${stats?.stock.totalValueCDF} CDF ` || '---', icon: Banknote, others: [`${stats?.stock.totalValueUSD} USD`] },
@@ -50,7 +50,7 @@ const Dashboard = () => {
 									const value = kpi.value || '';
 									const others = kpi.others || [];
 									return (
-										<Card key={`${i}-${title}`} className="rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
+										<Card key={`${i}-${title}`} className="rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
 											<CardContent className="pt-6">
 												<div className="flex gap-2">
 													<Icon className="w-5 h-5 text-slate-500 mb-2" />
@@ -70,11 +70,11 @@ const Dashboard = () => {
 								})}
 							</section>
 							<section className="grid grid-cols-12 gap-6">
-								<Card className="col-span-12 lg:col-span-8">
+								<Card className="col-span-12 lg:col-span-8 rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
 									<CardHeader>
 										<CardTitle>Activité Récente</CardTitle>
 									</CardHeader>
-									<CardContent className="grid grid-cols-3 gap-4">
+									<CardContent className="grid lg:grid-cols-3 grid-cols-1 gap-4">
 										<div className="bg-slate-50 p-4 rounded-lg">
 											<p className="text-slate-500 text-sm">Nouveaux Patients</p>
 											<p className="text-2xl font-bold">{stats?.activity.newPatientsToday || 0}</p>
@@ -90,7 +90,7 @@ const Dashboard = () => {
 									</CardContent>
 								</Card>
 
-								<Card className="col-span-12 lg:col-span-4">
+								<Card className="col-span-12 lg:col-span-4 rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
 									<CardHeader>
 										<CardTitle>Inventaire Global</CardTitle>
 									</CardHeader>
