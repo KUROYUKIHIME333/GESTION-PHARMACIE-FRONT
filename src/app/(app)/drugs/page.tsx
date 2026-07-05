@@ -18,7 +18,7 @@ export default function OfficInInventory() {
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
 	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
-	const LIMIT = 2;
+	const LIMIT = 20;
 
 	// Chargement initial
 	useEffect(() => {

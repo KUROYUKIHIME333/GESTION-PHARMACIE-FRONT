@@ -1,5 +1,3 @@
-import { API_BASE_URL } from "./constants";
-
 interface FetchOptions extends RequestInit {
   skipAuth?: boolean;
 }
@@ -23,7 +21,7 @@ export async function fetchApi(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { skipAuth, ...fetchOptions } = options;
 
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `${endpoint}`;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
