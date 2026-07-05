@@ -162,70 +162,86 @@ export interface Drug {
   id: string;
   code: string;
   name: string;
-  genericName: string | null;
+  genericName: string | null | undefined;
   dci: string;
-  form: DrugForm;
-  category: DrugCategory;
-  therapeuticClass: string | null;
-  dosage: string;
-  concentration: string | null;
-  unitOfDispense: string;
-  packSize: number;
-  packUnit: string;
-  ammNumber: string | null;
+  form: string;
+  category: string;
   isEssential: boolean;
   isControlled: boolean;
-  controlledSchedule: string | null;
-  isProgramDrug: boolean;
-  programName: string | null;
-  storageConditions: StorageCondition[];
-  requiresColdChain: boolean;
-  minTemp: number | null;
-  maxTemp: number | null;
-  unitPriceCDF: number | null;
-  unitPriceUSD: number | null;
-  isPriceRegulated: boolean;
+  unitPriceCDF: number | null | undefined;
+  unitPriceUSD: number | null | undefined;
   minStockLevel: number;
   criticalStockLevel: number;
-  reorderPoint: number;
-  reorderQuantity: number;
   isActive: boolean;
-  notes: string | null;
-  _count?: {
+  _count: {
     batches: number;
   };
 }
 
 export interface DrugCreateInput {
-  code: string;
-  name: string;
-  genericName?: string;
-  dci: string;
-  form: DrugForm;
-  category: DrugCategory;
-  therapeuticClass?: string;
-  dosage: string;
-  concentration?: string;
-  unitOfDispense: string;
-  packSize?: number;
-  packUnit?: string;
-  ammNumber?: string;
+  code: string; //required maxLength: 50
+  name: string; //required maxLength: 255
+  unitOfDispense: string; //required maxLength: 50
+  dci: string; //required maxLength: 255
+  form: DrugForm; //required
+  category: DrugCategory; //required
+  dosage: string; //required maxLength: 100
+  genericName?: string; //maxLength: 255
+  therapeuticClass?: string; //maxLength: 255
+  concentration?: string; //maxLength: 100
+  packSize?: number; //minimum: 1
+  packUnit?: string; //maxLength: 50
+  ammNumber?: string; //maxLength: 100
   isEssential?: boolean;
   isControlled?: boolean;
-  controlledSchedule?: string;
+  controlledSchedule?: string; //maxLength: 10
   isProgramDrug?: boolean;
-  programName?: string;
+  programName?: string; //maxLength: 100
   storageConditions?: StorageCondition[];
   requiresColdChain?: boolean;
   minTemp?: number;
   maxTemp?: number;
-  unitPriceCDF?: number;
-  unitPriceUSD?: number;
-  isPriceRegulated?: boolean;
-  minStockLevel?: number;
-  criticalStockLevel?: number;
-  reorderPoint?: number;
-  reorderQuantity?: number;
+  unitPriceCDF?: number; //minimum: 0
+  unitPriceUSD?: number; //minimum: 0
+  isPriceRegulated?: boolean; //minimum: 0
+  minStockLevel?: number; //minimum: 0
+  criticalStockLevel?: number; //minimum: 0
+  reorderPoint?: number; //minimum: 0
+  reorderQuantity?: number; //minimum: 0
+  isActive?: boolean;
+  notes?: string;
+}
+
+export interface DrugUpdateInput {
+  name?: string; //required maxLength: 255
+  code?: string; //required maxLength: 50
+  unitOfDispense?: string; //required maxLength: 50
+  dci?: string; //required maxLength: 255
+  form?: DrugForm; //required
+  category?: DrugCategory; //required
+  dosage?: string; //required maxLength: 100
+  genericName?: string; //maxLength: 255
+  therapeuticClass?: string; //maxLength: 255
+  concentration?: string; //maxLength: 100
+  packSize?: number; //minimum: 1
+  packUnit?: string; //maxLength: 50
+  ammNumber?: string; //maxLength: 100
+  isEssential?: boolean;
+  isControlled?: boolean;
+  controlledSchedule?: string; //maxLength: 10
+  isProgramDrug?: boolean;
+  programName?: string; //maxLength: 100
+  storageConditions?: StorageCondition[];
+  requiresColdChain?: boolean;
+  minTemp?: number;
+  maxTemp?: number;
+  unitPriceCDF?: number; //minimum: 0
+  unitPriceUSD?: number; //minimum: 0
+  isPriceRegulated?: boolean; //minimum: 0
+  minStockLevel?: number; //minimum: 0
+  criticalStockLevel?: number; //minimum: 0
+  reorderPoint?: number; //minimum: 0
+  reorderQuantity?: number; //minimum: 0
   isActive?: boolean;
   notes?: string;
 }
