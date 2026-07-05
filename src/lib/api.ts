@@ -16,17 +16,21 @@ class ApiError extends Error {
 
 export async function fetchApi(
   endpoint: string,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
+  hasContent: boolean = true
 ): Promise<unknown> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { skipAuth, ...fetchOptions } = options;
 
   const url = `${endpoint}`;
 
+  const headerContent = hasContent? {"Content-Type": "application/json"}: undefined;
+
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+    ...headerContent,
     ...((fetchOptions.headers as Record<string, string>) || {}),
   };
+
 
   // Le cookie est automatiquement envoyé avec credentials: 'include'
   const response = await fetch(url, {
@@ -80,6 +84,6 @@ export const api = {
       body: JSON.stringify(data),
     }),
 
-  delete: (endpoint: string, options?: FetchOptions) =>
-    fetchApi(endpoint, { ...options, method: "DELETE" }),
+  delete: (endpoint: string) =>
+    fetchApi(endpoint, { method: "DELETE" }, false),
 };

@@ -45,7 +45,7 @@ export default function OfficInInventory() {
 			<div className="flex justify-between items-end">
 				<div>
 					<h2 className="text-2xl font-bold text-slate-900">Medication Inventory</h2>
-					<p className="text-slate-500 mt-2">{total !== null ? `${total} medicaments référencés` : 'Chargement...'}</p>
+					{drugs && drugs.length > 0 ? <p className="text-slate-500 mt-2">{`${drugs.length} medicaments référencés`}</p> : null}
 				</div>
 				<Link href="/drugs/new">
 					<button className="bg-primary text-white px-6 py-2 flex items-center gap-2 hover:opacity-90">
