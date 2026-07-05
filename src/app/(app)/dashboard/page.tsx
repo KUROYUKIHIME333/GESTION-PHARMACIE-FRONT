@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus, LucideIcon } from 'lucide-react';
+import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { useDashboardStore } from '@/src/stores/dashboard.store';
 import Spinner from '@/src/components/layouts/Spinner';
 
 const Dashboard = () => {
-	const { stats, isLoading, isFetched, isError, lastError, fetchStats } = useDashboardStore();
+	const { stats, isLoading, isError, lastError, fetchStats } = useDashboardStore();
 
 	useEffect(() => {
 		fetchStats();
