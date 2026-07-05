@@ -13,11 +13,13 @@ import Spinner from '@/src/components/layouts/Spinner';
 
 export default function OfficInInventory() {
 	// Récupération des données du store
-	const { drugs, total, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
+	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
 
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
 	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
+	const [drugToUpdate, setDrugToUpdate] = useState();
+	const [drugToCreate, setDrugToCreate] = useState();
 	const LIMIT = 20;
 
 	// Chargement initial
@@ -53,7 +55,7 @@ export default function OfficInInventory() {
 				</div>
 
 				<Link href="/drugs/new">
-					<button className="flex gap-2 items-center text-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
+					<button className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
 						<Plus size={18} />
 						<span>Nouveau médicament</span>
 					</button>
@@ -133,23 +135,23 @@ export default function OfficInInventory() {
 									</TableCell>
 									<TableCell className="text-right">
 										<div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-[rgb(25,119,119)]">
+											<Button variant="ghost"  className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(25,119,119)]">
 												<Link href={`/drugs/${drug.id}`}>
-													<Eye className="h-4 w-4" />
+													<Eye size={40} />
 												</Link>
 											</Button>
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-[rgb(40,185,180)]">
+											<Button variant="ghost"  className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]">
 												<Link href={`/drugs/${drug.id}/edit`}>
-													<Pencil className="h-4 w-4" />
+													<Pencil size={40} />
 												</Link>
 											</Button>
 											<Button
 												variant="ghost"
-												size="sm"
+												
 												onClick={() => setDrugToDelete({ id: drug.id, name: drug.name })}
-												className="h-8 w-8 p-0 text-slate-400 hover:text-red-600"
+												className="cursor-pointer px-2 text-slate-400 hover:text-red-600"
 											>
-												<Trash2 className="h-4 w-4" />
+												<Trash2 size={40} />
 											</Button>
 										</div>
 									</TableCell>
@@ -163,7 +165,7 @@ export default function OfficInInventory() {
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
-			{/* Modale de confirmation (Glass effect) */}
+			{/* Modale de confirmation (Glass effect)
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
 					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
@@ -175,6 +177,41 @@ export default function OfficInInventory() {
 							</Button>
 							<Button
 								className="text-white font-bold bg-red-600 hover:bg-red-800 rounded-[2px]"
+								onClick={() => {
+									deleteDrug(drugToDelete.id);
+									setDrugToDelete(null);
+								}}
+							>
+								Supprimer
+							</Button>
+						</div>
+					</div>
+				</div>
+			)} */}
+
+			{/* Modale de modification (Glass effect) */}
+			{drugToDelete && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-2/3 max-h-11/12 overflow-y-auto no-scrollbar">
+						<h3 className="text-slate-900 font-bold text-lg">Confirmer la suppression</h3>
+						<p className="text-slate-900 text-md my-4">Supprimer {drugToDelete.name} ?</p>
+						<div className="flex justify-end gap-2">
+							<Button className="text-slate-500 font-bold" variant="ghost" onClick={() => setDrugToDelete(null)}>
+								Annuler
+							</Button>
+
+							<Button
+								className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
+								onClick={() => {
+									deleteDrug(drugToDelete.id);
+									setDrugToDelete(null);
+								}}
+							>
+								<Pencil size={18} />
+								<span>Modifier</span>
+							</Button>
+							<Button
+								className="text-white font-bold  rounded-[2px] hover:bg-[#4B866B] bg-[#56AC35]"
 								onClick={() => {
 									deleteDrug(drugToDelete.id);
 									setDrugToDelete(null);
