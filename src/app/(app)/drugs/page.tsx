@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Search, Plus, MoreVertical, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Search, Plus, Eye, Pencil, Trash2 } from 'lucide-react';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import Link from 'next/link';
 import { Pagination } from '@/src/components/ui/pagination';
-import { useDrugStore } from '@/src/stores/drugs.store'; // Ajustez le chemin selon votre structure
+import { useDrugStore } from '@/src/stores/drugs.store';
 import Spinner from '@/src/components/layouts/Spinner';
 
 export default function OfficInInventory() {
@@ -16,10 +16,9 @@ export default function OfficInInventory() {
 	const { drugs, total, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
 
 	const [search, setSearch] = useState('');
-    const [page, setPage] = useState(1);
-    const [drugToDelete, setDrugToDelete] = useState<{id: string, name: string} | null>(null);
-    const LIMIT = 10;
-
+	const [page, setPage] = useState(1);
+	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
+	const LIMIT = 20;
 
 	// Chargement initial
 	useEffect(() => {
@@ -27,21 +26,18 @@ export default function OfficInInventory() {
 	}, [fetchDrugs]);
 
 	// 1. Filtrage local
-    const filteredDrugs = useMemo(() => {
-        if (!drugs) return [];
-        return drugs.filter(drug => 
-            drug.name.toLowerCase().includes(search.toLowerCase()) || 
-            drug.code.toLowerCase().includes(search.toLowerCase())
-        );
-    }, [drugs, search]);
+	const filteredDrugs = useMemo(() => {
+		if (!drugs) return [];
+		return drugs.filter((drug) => drug.name.toLowerCase().includes(search.toLowerCase()) || drug.code.toLowerCase().includes(search.toLowerCase()));
+	}, [drugs, search]);
 
-    // 2. Pagination locale
-    const paginatedDrugs = useMemo(() => {
-        const start = (page - 1) * LIMIT;
-        return filteredDrugs.slice(start, start + LIMIT);
-    }, [filteredDrugs, page]);
+	// 2. Pagination locale
+	const paginatedDrugs = useMemo(() => {
+		const start = (page - 1) * LIMIT;
+		return filteredDrugs.slice(start, start + LIMIT);
+	}, [filteredDrugs, page]);
 
-    const totalPages = Math.ceil(filteredDrugs.length / LIMIT);
+	const totalPages = Math.ceil(filteredDrugs.length / LIMIT);
 
 	return (
 		<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-8">
@@ -64,11 +60,13 @@ export default function OfficInInventory() {
 					<Input
 						placeholder="Rechercher par nom, code, ..."
 						className="pl-10 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-gray-100 focus-visible:border-primary"
-						onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+						onChange={(e) => {
+							setSearch(e.target.value);
+							setPage(1);
+						}}
 					/>
 				</div>
 			</div>
-			
 
 			{/* Table Container */}
 			<div className="bento-card bg-white border border-outline-variant overflow-hidden">
@@ -92,7 +90,7 @@ export default function OfficInInventory() {
 						{isLoading ? (
 							<TableRow>
 								<TableCell colSpan={8} className="text-center py-10">
-									<Spinner/>
+									<Spinner />
 								</TableCell>
 							</TableRow>
 						) : (
@@ -137,7 +135,12 @@ export default function OfficInInventory() {
 													<Pencil className="h-4 w-4" />
 												</Link>
 											</Button>
-											<Button variant="ghost" size="sm" onClick={() => setDrugToDelete({id: drug.id, name: drug.name})} className="h-8 w-8 p-0 text-slate-400 hover:text-red-600">
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => setDrugToDelete({ id: drug.id, name: drug.name })}
+												className="h-8 w-8 p-0 text-slate-400 hover:text-red-600"
+											>
 												<Trash2 className="h-4 w-4" />
 											</Button>
 										</div>
@@ -147,33 +150,34 @@ export default function OfficInInventory() {
 						)}
 					</TableBody>
 				</Table>
-
-				
 			</div>
 
-{/* Pagination locale */}
-                <div className="p-4">
-                    <Pagination 
-                        currentPage={page} 
-                        totalPages={totalPages || 1} 
-                        onPageChange={setPage} 
-                        totalItems={filteredDrugs.length} 
-                        itemsPerPage={LIMIT} 
-                    />
-                </div>
+			{/* Pagination locale */}
+			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
+
 			{/* Modale de confirmation (Glass effect) */}
-            {drugToDelete && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-                    <div className="bg-white p-8 rounded-lg shadow-xl border w-96">
-                        <h3 className="font-bold text-lg">Confirmer la suppression</h3>
-                        <p className="my-4">Supprimer {drugToDelete.name} ?</p>
-                        <div className="flex justify-end gap-2">
-                            <Button variant="ghost" onClick={() => setDrugToDelete(null)}>Annuler</Button>
-                            <Button className="bg-red-600" onClick={() => { deleteDrug(drugToDelete.id); setDrugToDelete(null); }}>Supprimer</Button>
-                        </div>
-                    </div>
-                </div>
-            )}
+			{drugToDelete && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+					<div className="bg-white p-8 rounded-lg shadow-xl border w-96">
+						<h3 className="font-bold text-lg">Confirmer la suppression</h3>
+						<p className="my-4">Supprimer {drugToDelete.name} ?</p>
+						<div className="flex justify-end gap-2">
+							<Button variant="ghost" onClick={() => setDrugToDelete(null)}>
+								Annuler
+							</Button>
+							<Button
+								className="bg-red-600"
+								onClick={() => {
+									deleteDrug(drugToDelete.id);
+									setDrugToDelete(null);
+								}}
+							>
+								Supprimer
+							</Button>
+						</div>
+					</div>
+				</div>
+			)}
 		</main>
 	);
 }
