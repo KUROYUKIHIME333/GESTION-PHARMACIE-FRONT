@@ -212,6 +212,12 @@ export interface DrugCreateInput {
   notes?: string;
 }
 
+export interface DrugCreateResponse {
+  success: boolean;
+  data?: Drug;
+  message?: string;
+}
+
 export interface DrugUpdateInput {
   name?: string; //required maxLength: 255
   code?: string; //required maxLength: 50
@@ -244,6 +250,23 @@ export interface DrugUpdateInput {
   reorderQuantity?: number; //minimum: 0
   isActive?: boolean;
   notes?: string;
+}
+
+export interface DrugsResponse {
+  success: boolean;
+  data?: {
+    drugs: Drug[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  message?: string;
+}
+
+export interface DrugDeleteResponse {
+  success: boolean;
+  message?: string;
 }
 
 // ============================================

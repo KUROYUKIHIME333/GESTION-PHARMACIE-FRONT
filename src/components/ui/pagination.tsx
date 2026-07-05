@@ -38,13 +38,13 @@ export function Pagination({ currentPage, totalPages, onPageChange, totalItems, 
 
 	return (
 		<div className="flex items-center justify-between px-4 py-3 bg-white border border-slate-200 rounded-lg">
-			<div className="text-sm text-slate-500">
+			<div className="text-[12px] text-slate-500">
 				{startItem}-{endItem} sur {totalItems}
 			</div>
 
 			<div className="flex items-center gap-1">
-				<Button variant="outline" size="sm" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} className="h-8 w-8 p-0 border-slate-200">
-					<ChevronLeft className="h-4 w-4" />
+				<Button variant="outline" size="sm" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} className="h-5 w-5 p-0 border-slate-200">
+					<ChevronLeft className="h-5 w-5" />
 				</Button>
 
 				{getPageNumbers().map((page, i) =>
@@ -59,7 +59,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, totalItems, 
 							size="sm"
 							onClick={() => onPageChange(page as number)}
 							className={cn(
-								'h-8 w-8 p-0 text-sm font-medium',
+								'h-5 w-5 p-0 text-[12px] font-medium',
 								currentPage === page ? 'bg-[rgb(25,119,119)] text-white hover:bg-[rgb(25,119,119)]/90' : 'border-slate-200 text-slate-600 hover:bg-slate-50',
 							)}
 						>
@@ -68,8 +68,8 @@ export function Pagination({ currentPage, totalPages, onPageChange, totalItems, 
 					),
 				)}
 
-				<Button variant="outline" size="sm" onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages} className="h-8 w-8 p-0 border-slate-200">
-					<ChevronRight className="h-4 w-4" />
+				<Button variant="outline" size="sm" onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages} className="h-5 w-5 p-0 border-slate-200">
+					<ChevronRight className="h-5 w-5" />
 				</Button>
 			</div>
 		</div>
