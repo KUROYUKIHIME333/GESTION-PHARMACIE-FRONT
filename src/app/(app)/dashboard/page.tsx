@@ -53,7 +53,7 @@ const Dashboard = () => {
 									const value = kpi.value || '';
 									const others = kpi.others || [];
 									return (
-										<Card key={`${i}-${title}`} className={`rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white`}>
+										<Card key={`${i}-${title}`} className={`rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white`}>
 											<CardContent className="pt-6">
 												<div className="flex gap-2">
 													<Icon
@@ -104,7 +104,7 @@ const Dashboard = () => {
 								})}
 							</section>
 							<section className="grid grid-cols-12 gap-6">
-								<Card className="col-span-12 lg:col-span-8 rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
+								<Card className="col-span-12 lg:col-span-8 rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
 									<CardHeader>
 										<CardTitle>Activité Récente</CardTitle>
 									</CardHeader>
@@ -124,7 +124,7 @@ const Dashboard = () => {
 									</CardContent>
 								</Card>
 
-								<Card className="col-span-12 lg:col-span-4 rounded-2 ring-0 border-1 border-[#C1C7CB] bg-white">
+								<Card className="col-span-12 lg:col-span-4 rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
 									<CardHeader>
 										<CardTitle>Inventaire Global</CardTitle>
 									</CardHeader>
