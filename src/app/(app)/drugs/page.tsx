@@ -1,172 +1,181 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import React from 'react';
+import {
+	FileText,
+	Users,
+	TrendingUp,
+	Settings,
+	HelpCircle,
+	LogOut,
+	Search,
+	Bell,
+	Plus,
+	MoreVertical,
+	ChevronLeft,
+	ChevronRight,
+	AlertTriangle,
+	CheckCircle2,
+	SlidersHorizontal,
+	Package,
+	Eye,
+	Pencil,
+	Badge,
+	Trash2,
+} from 'lucide-react';
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
+import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
-import { useDashboardStore } from '@/src/stores/dashboard.store';
-import Spinner from '@/src/components/layouts/Spinner';
+import Link from 'next/link';
+// Données fictives basées sur votre structure
+const drugs = [
+	{ id: 'DRG-4402', name: 'Amoxicilline 500mg', lab: 'Labo-Health Pharma', category: 'comprimés', dci: 'Amoxicillin', form: 'Tablet', stock: 12, threshold: 50, status: 'Critical' },
+	{ id: 'DRG-8911', name: 'Doliprane 1g', lab: 'Sanofi Excellence', category: 'comprimés', dci: 'Paracetamol', form: 'Capsule', stock: 45, threshold: 100, status: 'Low Stock' },
+	{ id: 'DRG-1205', name: 'Morphine HCl 10mg/ml', lab: 'Global Narcotics Div.', category: 'IV', dci: 'Morphine Hydrochloride', form: 'Injectable', stock: 284, threshold: 20, status: 'Stable' },
+];
 
-const DrugsPage = () => {
-	const { stats, isLoading, isError, lastError, fetchStats } = useDashboardStore();
-
-	useEffect(() => {
-		fetchStats();
-	}, [fetchStats]);
-
-	if (isLoading) return <Spinner />;
-
+export default function OfficInInventory() {
 	return (
 		<>
-			{/* Main Content */}
+			<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-8">
+				{/* Header */}
+				<div className="flex justify-between items-end">
+					<div>
+						<h2 className="text-2xl font-bold text-slate-900">Medication Inventory</h2>
+						{drugs.length > 0 && <p className="text-slate-500 mt-2">{drugs.length === 1 ? '1 medicament référencé' : `${drugs.length} medicaments référencés`}</p>}
+					</div>
+					<button className="bg-primary text-white px-6 py-2 flex items-center gap-2 hover:opacity-90">
+						<Plus size={18} /> Nouveau médicament
+					</button>
+				</div>
 
-			{/* perhaps bg-[#eff7e4] */}
-			<main className="flex-1 overflow-y-auto bg-[#F9F9FA] w-full">
-				<div className="p-8 space-y-8">
-					{isLoading ? (
-						<Spinner />
-					) : (
-						<>
-							<section className="grid grid-cols-1  md:grid-cols-3 lg:grid-col-4 gap-4">
-								{[
-									{ title: 'Médicaments en stock', value: stats?.stock.drugsInStock || '---', icon: Package, others: [] },
-									{ title: 'Valeur du stock', value: `${stats?.stock.totalValueCDF} CDF ` || '---', icon: Banknote, others: [`${stats?.stock.totalValueUSD} USD`] },
+				<div className="flex items-center gap-4">
+					{/* <h1 className="text-2xl font-bold">Command Center</h1> */}
+					<div className="relative w-full lg:w-1/2">
+						<Search className="absolute left-3 top-2.5 text-slate-400" size={18} />
+						<Input
+							placeholder="Global Search (⌘K)"
+							className="pl-10 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-gray-100 focus-visible:border-primary"
+						/>
+					</div>
+				</div>
 
-									{ title: 'Dispensations', value: stats?.activity.dispensationsToday || '---', icon: Pill, others: [`Cette semaine : ${stats?.activity.dispensationsWeek}`] },
-									{
-										title: 'Périmés',
-										value: stats?.expiries.expired || '---',
-										icon: CalendarX2,
-										others: [`Dans 30 jours: ${stats?.expiries.critical30Days}` || '---', `Dans 90 jours: ${stats?.expiries.warning90Days}`],
-									},
-									{
-										title: 'Alertes',
-										value: stats?.alerts.totalActive || '---',
-										icon: AlertTriangle,
-										others: [`Critique: ${stats?.alerts.critical}`, `Attention: ${stats?.alerts.warning}`],
-										titleColour: '#FF0000',
-										valueColour: 'red-500',
-										colours: ['#FF8800', '#FF0000'],
-									},
-								].map((kpi, i) => {
-									const Icon = kpi.icon;
-									const title = kpi.title || '';
-									const value = kpi.value || '';
-									const others = kpi.others || [];
-									return (
-										<Card key={`${i}-${title}`} className={`rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white`}>
-											<CardContent className="pt-6">
-												<div className="flex gap-2">
-													<Icon
-														className={`w-5 h-5 ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-800' : 'text-slate-500'} mb-2`}
-													/>
-													<p
-														className={`text-xs ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-800' : 'text-slate-500'} uppercase font-bold`}
-													>
-														{title}
-													</p>
-												</div>
-												<p
-													className={`text-xl font-bold mt-1 ${(value && title === 'Alertes') || title === 'Alerts' || title === 'Warning' || title === 'Périmés' || title === 'Rerime' || title === 'Spoiled' ? 'text-red-500' : 'text-slate-900'} `}
-												>
-													{value}
-												</p>
-												{others.length > 0 && (
-													<div className="text-md mt-2 flex justify-between">
-														{others.map((el: string, i: number) => (
-															<span
-																key={i}
-																className={`
-																	${
-																		others[i].startsWith('Critique:') ||
-																		others[i].startsWith('Dans 30 jours:') ||
-																		others[i].startsWith('In 30 days:') ||
-																		others[i].startsWith('Within 30 days:') ||
-																		others[i].startsWith('Critical:')
-																			? 'text-red-800'
-																			: others[i].startsWith('Attention:') ||
-																				  others[i].startsWith('Warning:') ||
-																				  others[i].startsWith('In 90 days') ||
-																				  others[i].startsWith('Dans 90 jours:') ||
-																				  others[i].startsWith('Within 90 days:')
-																				? 'text-orange-500'
-																				: 'text-slate-400'
-																	}
-																		`}
-															>
-																{el}
-															</span>
-														))}
-													</div>
-												)}
-											</CardContent>
-										</Card>
-									);
-								})}
-							</section>
-							<section className="grid grid-cols-12 gap-6">
-								<Card className="col-span-12 lg:col-span-8 rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
-									<CardHeader>
-										<CardTitle>Activité Récente</CardTitle>
-									</CardHeader>
-									<CardContent className="grid lg:grid-cols-3 grid-cols-1 gap-4">
-										<div className="bg-slate-50 p-4 rounded-lg">
-											<p className="text-slate-500 text-sm">Nouveaux Patients</p>
-											<p className="text-2xl font-bold">{stats?.activity.newPatientsToday || 0}</p>
+				{/* Table Container */}
+				<div className="bento-card bg-white border border-outline-variant overflow-hidden">
+					<Table className="no-scrollbar">
+						<TableHeader className="bg-surface-container-low">
+							<TableRow>
+								<TableHead className="uppercase text-xs">Code</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">Name</TableHead>
+								<TableHead className="uppercase text-xs">DCI</TableHead>
+								<TableHead className="uppercase text-xs text-right">Stock</TableHead>
+								<TableHead className="uppercase text-xs">Status</TableHead>
+								<TableHead></TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{drugs.map((drug) => (
+								<TableRow key={drug.id} className="hover:bg-surface-container-low/50">
+									<TableCell className="font-mono text-primary">{drug.id}</TableCell>
+									<TableCell>
+										<div className="font-bold text-primary">{drug.name}</div>
+										<div className="text-xs text-on-surface-variant/70">{drug.lab}</div>
+									</TableCell>
+									<TableCell className="text-secondary">{drug.dci}</TableCell>
+									<TableCell className="text-secondary">{drug.dci}</TableCell>
+									<TableCell className="text-secondary">{drug.dci}</TableCell>
+									<TableCell className="text-secondary">{drug.dci}</TableCell>
+									<TableCell className="text-secondary">{drug.dci}</TableCell>
+									<TableCell className="text-right font-mono font-bold">{drug.stock}</TableCell>
+									<TableCell>
+										<div className="flex items-center gap-2 text-sm">
+											<span className={`w-2 h-2 rounded-full ${drug.status === 'Critical' ? 'bg-[#d98f4c]' : 'bg-secondary'}`} />
+											{drug.status}
 										</div>
-										<div className="bg-slate-50 p-4 rounded-lg">
-											<p className="text-slate-500 text-sm">Prescriptions</p>
-											<p className="text-2xl font-bold">{stats?.activity.prescriptionsToday || 0}</p>
-										</div>
-										<div className="bg-slate-50 p-4 rounded-lg">
-											<p className="text-slate-500 text-sm">Total Dispensations</p>
-											<p className="text-2xl font-bold">{stats?.counts.totalDispensations || 0}</p>
-										</div>
-									</CardContent>
-								</Card>
+									</TableCell>
+									<TableCell className="text-right">
+										<MoreVertical size={16} className="text-outline cursor-pointer" />
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</div>
 
-								<Card className="col-span-12 lg:col-span-4 rounded-[2px] ring-0 border-1 border-[#C1C7CB] bg-white">
-									<CardHeader>
-										<CardTitle>Inventaire Global</CardTitle>
-									</CardHeader>
-									<CardContent className="space-y-4">
-										<div className="flex justify-between">
-											<span>Total Médicaments</span>
-											<span className="font-bold">{stats?.counts.totalDrugs}</span>
-										</div>
-										<div className="flex justify-between">
-											<span>Lots actifs</span>
-											<span className="font-bold">{stats?.counts.totalBatches}</span>
-										</div>
-										<div className="flex justify-between">
-											<span>Total Patients</span>
-											<span className="font-bold">{stats?.counts.totalPatients}</span>
-										</div>
-									</CardContent>
-								</Card>
-							</section>{' '}
-						</>
-					)}
+				<div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
+					<Table>
+						<TableHeader>
+							<TableRow className="bg-slate-50 hover:bg-slate-50">
+								<TableHead className="font-semibold text-slate-700">Code</TableHead>
+								<TableHead className="font-semibold text-slate-700">Nom</TableHead>
+								<TableHead className="font-semibold text-slate-700 hidden md:table-cell">DCI</TableHead>
+								<TableHead className="font-semibold text-slate-700 hidden lg:table-cell">Forme</TableHead>
+								<TableHead className="font-semibold text-slate-700 hidden lg:table-cell">Catégorie</TableHead>
+								<TableHead className="font-semibold text-slate-700 text-center">Lots</TableHead>
+								<TableHead className="font-semibold text-slate-700 text-center">Statut</TableHead>
+								<TableHead className="font-semibold text-slate-700 text-right"></TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{drugs.length === 0 ? (
+								<TableRow>
+									<TableCell colSpan={8} className="text-center py-12 text-slate-400">
+										Aucun médicament trouvé
+									</TableCell>
+								</TableRow>
+							) : (
+								drugs.map((drug) => (
+									<TableRow key={drug.id} className="hover:bg-slate-50/50">
+										<TableCell className="font-mono text-sm text-slate-600">{drug.id}</TableCell>
+										<TableCell>
+											<div className="font-medium text-slate-900">{drug.name}</div>
+											{drug.name && <div className="text-xs text-slate-500">{drug.name}</div>}
+										</TableCell>
+										<TableCell className="hidden md:table-cell text-sm text-slate-600">{drug.dci}</TableCell>
+										<TableCell className="hidden lg:table-cell">
+											<span className="text-sm text-slate-600">{drug.form}</span>
+										</TableCell>
+										<TableCell className="hidden lg:table-cell">
+											<span className="text-sm text-slate-600">{drug.category}</span>
+										</TableCell>
+										<TableCell className="text-center">
+											<Badge className="bg-slate-100 text-slate-700">{drug.stock || 0}</Badge>
+										</TableCell>
+										<TableCell className="text-center">
+											<Badge className={drug.status ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100' : 'bg-slate-100 text-slate-600 hover:bg-slate-100'}>
+												{drug.status}
+											</Badge>
+										</TableCell>
+										<TableCell className="text-right">
+											<div className="flex items-center justify-end gap-1">
+												<Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-[rgb(25,119,119)]">
+													<Link href={`/drugs/${drug.id}`}>
+														<Eye className="h-4 w-4" />
+													</Link>
+												</Button>
+												<Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-[rgb(40,185,180)]">
+													<Link href={`/drugs/${drug.id}/edit`}>
+														<Pencil className="h-4 w-4" />
+													</Link>
+												</Button>
+												<Button variant="ghost" size="sm" onClick={() => {}} className="h-8 w-8 p-0 text-slate-400 hover:text-red-600">
+													<Trash2 className="h-4 w-4" />
+												</Button>
+											</div>
+										</TableCell>
+									</TableRow>
+								))
+							)}
+						</TableBody>
+					</Table>
 				</div>
 			</main>
-
-			{/* FAB */}
-
-			<div className="flex">
-				{(isError || lastError) && (
-					<div className="fixed bottom-8 left-8 bg-red-100 text-red-700 px-4 py-2 rounded shadow-md flex items-center gap-2">
-						<AlertTriangle size={16} />
-
-						{lastError || 'Erreur de connexion au server distant'}
-					</div>
-				)}
-
-				<Button className="bg-[#eff7e4] hover:bg-[#4B866B] opacity-80 fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-xl">
-					<Plus size={24} />
-				</Button>
-			</div>
 		</>
 	);
-};
-
-export default DrugsPage;
+}
