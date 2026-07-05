@@ -25,13 +25,17 @@ export default function OfficInInventory() {
 		fetchDrugs();
 	}, [fetchDrugs]);
 
-	// 1. Filtrage local
 	const filteredDrugs = useMemo(() => {
 		if (!drugs) return [];
-		return drugs.filter((drug) => drug.name.toLowerCase().includes(search.toLowerCase()) || drug.code.toLowerCase().includes(search.toLowerCase()));
+		return drugs.filter(
+			(drug) =>
+				drug.name.toLowerCase().includes(search.toLowerCase()) ||
+				drug.code.toLowerCase().includes(search.toLowerCase()) ||
+				(drug.genericName && drug.genericName.toLowerCase().includes(search.toLowerCase())) ||
+				drug.dci.toLowerCase().includes(search.toLowerCase()),
+		);
 	}, [drugs, search]);
 
-	// 2. Pagination locale
 	const paginatedDrugs = useMemo(() => {
 		const start = (page - 1) * LIMIT;
 		return filteredDrugs.slice(start, start + LIMIT);
@@ -47,9 +51,11 @@ export default function OfficInInventory() {
 					<h2 className="text-2xl font-bold text-slate-900">Medication Inventory</h2>
 					{drugs && drugs.length > 0 ? <p className="text-slate-500 mt-2">{`${drugs.length} medicaments référencés`}</p> : null}
 				</div>
+
 				<Link href="/drugs/new">
-					<button className="bg-primary text-white px-6 py-2 flex items-center gap-2 hover:opacity-90">
-						<Plus size={18} /> Nouveau médicament
+					<button className="flex gap-2 items-center text-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
+						<Plus size={18} />
+						<span>Nouveau médicament</span>
 					</button>
 				</Link>
 			</div>
@@ -58,7 +64,7 @@ export default function OfficInInventory() {
 				<div className="relative w-full lg:w-1/2">
 					<Search className="absolute left-3 top-2.5 text-slate-400" size={18} />
 					<Input
-						placeholder="Rechercher par nom, code, ..."
+						placeholder="Rechercher par nom, code, nom générique ou dci ..."
 						className="pl-10 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-gray-100 focus-visible:border-primary"
 						onChange={(e) => {
 							setSearch(e.target.value);
@@ -72,9 +78,10 @@ export default function OfficInInventory() {
 			<div className="bento-card bg-white border border-outline-variant overflow-hidden">
 				<Table className="no-scrollbar">
 					<TableHeader className="bg-surface-container-low">
-						<TableRow>
+						<TableRow className="bg-[#F9F9FA]">
 							<TableHead className="text-xs uppercase font-semibold text-slate-700">Code</TableHead>
 							<TableHead className="text-xs uppercase font-semibold text-slate-700">Nom</TableHead>
+							<TableHead className="text-xs uppercase font-semibold text-slate-700">Nom générique / Produit</TableHead>
 							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden md:table-cell">DCI</TableHead>
 							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden lg:table-cell">Forme</TableHead>
 							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden lg:table-cell">Catégorie</TableHead>
@@ -98,8 +105,9 @@ export default function OfficInInventory() {
 								<TableRow key={drug.id} className="group hover:bg-surface-container-low/50">
 									<TableCell className="font-mono text-primary">{drug.code}</TableCell>
 									<TableCell>
-										<div className="font-bold text-primary">{drug.name}</div>
+										<span className="font-bold text-primary">{drug.name}</span>
 									</TableCell>
+									<TableCell className="font-mono text-primary">{drug.genericName}</TableCell>
 									<TableCell className="text-secondary hidden md:table-cell">{drug.dci}</TableCell>
 									<TableCell className="text-secondary hidden lg:table-cell">{drug.form}</TableCell>
 									<TableCell className="text-secondary hidden lg:table-cell">{drug.category}</TableCell>
@@ -158,7 +166,7 @@ export default function OfficInInventory() {
 			{/* Modale de confirmation (Glass effect) */}
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="bg-white p-8 rounded-lg shadow-xl border w-96">
+					<div className="bg-white p-8 rounded-lg shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
 						<h3 className="font-bold text-lg">Confirmer la suppression</h3>
 						<p className="my-4">Supprimer {drugToDelete.name} ?</p>
 						<div className="flex justify-end gap-2">
