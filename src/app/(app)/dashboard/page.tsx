@@ -21,7 +21,7 @@ const Dashboard = () => {
 			{/* Main Content */}
 
 			{/* perhaps bg-[#eff7e4] */}
-			<main className="flex-1 overflow-y-auto bg-[#eff3f5] w-full">
+			<main className="flex-1 overflow-y-auto bg-[#F9F9FA] w-full">
 				<div className="p-8 space-y-8">
 					{isLoading ? (
 						<Spinner />
