@@ -20,7 +20,8 @@ const Dashboard = () => {
 		<>
 			{/* Main Content */}
 
-			<main className="flex-1 overflow-y-auto bg-[#eff7e4] w-full">
+			{/* perhaps bg-[#eff7e4] */}
+			<main className="flex-1 overflow-y-auto bg-[#eff3f5] w-full">
 				<div className="p-8 space-y-8">
 					{isLoading ? (
 						<Spinner />
@@ -84,10 +85,10 @@ const Dashboard = () => {
 																		others[i].startsWith('Critical:')
 																			? 'text-red-800'
 																			: others[i].startsWith('Attention:') ||
-																				others[i].startsWith('Warning:') ||
-																				others[i].startsWith('In 90 days') ||
-																				others[i].startsWith('Dans 90 jours:') ||
-																				others[i].startsWith('Within 90 days:')
+																				  others[i].startsWith('Warning:') ||
+																				  others[i].startsWith('In 90 days') ||
+																				  others[i].startsWith('Dans 90 jours:') ||
+																				  others[i].startsWith('Within 90 days:')
 																				? 'text-orange-500'
 																				: 'text-slate-400'
 																	}
@@ -160,7 +161,7 @@ const Dashboard = () => {
 					</div>
 				)}
 
-				<Button className="bg-white opacity-80 fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-xl">
+				<Button className="bg-[#eff7e4] hover:bg-[#4B866B] opacity-80 fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-xl">
 					<Plus size={24} />
 				</Button>
 			</div>

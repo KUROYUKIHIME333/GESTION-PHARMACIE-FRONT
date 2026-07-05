@@ -86,7 +86,9 @@ const LoginPage = () => {
 							type="email"
 							placeholder="name@pharmacy.com"
 							{...register('email')}
-							className={`py-6 text-gray-800 placeholder:text-gray-400 w-full border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 ${errors.email ? 'border-red-500 bg-red-50 focus-visible:bg-red-100' : 'border-gray-300 bg-gray-100 focus-visible:bg-gray-100 focus-visible:border-primary'}`}
+							className={`py-6 text-gray-800 placeholder:text-gray-400 w-full border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 ${
+								errors.email ? 'border-red-500 bg-red-50 focus-visible:bg-red-100' : 'border-gray-300 bg-gray-100 focus-visible:bg-gray-100 focus-visible:border-primary'
+							}`}
 						/>
 					</div>
 
