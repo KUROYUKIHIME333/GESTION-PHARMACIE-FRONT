@@ -12,7 +12,6 @@ import { useDrugStore } from '@/src/stores/drugs.store';
 import Spinner from '@/src/components/layouts/Spinner';
 
 export default function OfficInInventory() {
-	// Récupération des données du store
 	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
 
 	const [search, setSearch] = useState('');
