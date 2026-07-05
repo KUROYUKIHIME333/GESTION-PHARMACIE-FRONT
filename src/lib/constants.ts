@@ -39,31 +39,31 @@ export const NAV_ITEMS = [
     href: "/drugs",
     icon: "Pill",
   },
-  {
-    label: "Stock",
-    href: "/stock",
-    icon: "Package",
-  },
-  {
-    label: "Patients",
-    href: "/patients",
-    icon: "Users",
-  },
-  {
-    label: "Ordonnances",
-    href: "/prescriptions",
-    icon: "FileText",
-  },
-  {
-    label: "Dispensations",
-    href: "/dispensations",
-    icon: "ShoppingCart",
-  },
-  {
-    label: "Alertes",
-    href: "/alerts",
-    icon: "AlertTriangle",
-  },
+  // {
+  //   label: "Stock",
+  //   href: "/stock",
+  //   icon: "Package",
+  // },
+  // {
+  //   label: "Patients",
+  //   href: "/patients",
+  //   icon: "Users",
+  // },
+  // {
+  //   label: "Ordonnances",
+  //   href: "/prescriptions",
+  //   icon: "FileText",
+  // },
+  // {
+  //   label: "Dispensations",
+  //   href: "/dispensations",
+  //   icon: "ShoppingCart",
+  // },
+  // {
+  //   label: "Alertes",
+  //   href: "/alerts",
+  //   icon: "AlertTriangle",
+  // },
 ] as const;
 
 export const ROLE_LABELS: Record<string, string> = {
