@@ -9,19 +9,19 @@ export const API_ENDPOINTS = {
   change_password: "/api/auth/change-password",
   get_me: "/api/auth/me",
   // DRUG
-  drugs: "/api/drugs/",
+  drugs: "/api/drugs",
   // BATCHES
-  batches: "/api/batches/",
+  batches: "/api/batches",
   // STOCK
-  stocks: "/api/stock/",
+  stocks: "/api/stock",
   // PATIENT
-  patients: "/api/patients/",
+  patients: "/api/patients",
   // PRESCRIPTIONS
-  prescriptions: "/api/prescriptions/",
+  prescriptions: "/api/prescriptions",
   //DISPENSATIONS
-  dispensations: "/api/dispensations/",
+  dispensations: "/api/dispensations",
   // ALERTS
-  alerts: "/api/alerts/",
+  alerts: "/api/alerts",
   // DASHBOARD
   stats: "/api/dashboard/stats",
 };
