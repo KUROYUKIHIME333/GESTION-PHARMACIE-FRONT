@@ -72,7 +72,7 @@ const Dashboard = () => {
 													{value}
 												</p>
 												{others.length > 0 && (
-													<div className="text-md mt-2 flex justify-between">
+													<div className="text-md mt-2 flex flex-col justify-between">
 														{others.map((el: string, i: number) => (
 															<span
 																key={i}
