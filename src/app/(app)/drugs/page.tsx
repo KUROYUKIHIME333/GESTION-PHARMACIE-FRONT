@@ -2,9 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Search, Plus, Eye, Pencil, Trash2 } from 'lucide-react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
@@ -15,7 +12,7 @@ import Spinner from '@/src/components/layouts/Spinner';
 import DrugForm from '@/src/components/forms/DrugForm';
 
 export default function OfficInInventory() {
-	const { drugs, isLoading, fetchDrugs, deleteDrug, createDrug, updateDrug, lastError } = useDrugStore();
+	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
 
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
