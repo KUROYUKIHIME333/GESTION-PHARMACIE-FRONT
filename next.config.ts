@@ -6,13 +6,15 @@ const nextConfig: NextConfig = {
     domains: [],
   },
   env: {
-    API_URL: process.env.API_URL || "http://localhost:3001",
+    API_URL: process.env.API_URL || "http://localhost:5001",
   },
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: `http://localhost:5001/api/:path*`,
+        destination: `${
+          process.env.API_URL || "http://localhost:5001"
+        }/api/:path*`,
       },
     ];
   },
