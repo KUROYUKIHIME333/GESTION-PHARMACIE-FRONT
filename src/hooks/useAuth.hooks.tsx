@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/src/stores/auth.store';
 import { api } from '@/src/lib/api';
 import { User } from '../types';
+import { redirect } from 'next/navigation';
 
 export function useAuth() {
 	const router = useRouter();
@@ -22,6 +23,7 @@ export function useAuth() {
 			} catch (error: unknown) {
 				// Si 401 ou autre erreur, on considère que l'utilisateur n'est pas connecté
 				setUser(null);
+				redirect('/login');
 			} finally {
 				setLoading(false);
 			}
