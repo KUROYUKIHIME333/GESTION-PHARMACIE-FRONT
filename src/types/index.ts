@@ -1,7 +1,7 @@
 // ============================================
 // TYPES EXISTANTS (Jour 1)
 // ============================================
-
+import { Drug } from "../schemas/drug.schemas";
 export interface User {
   id: string;
   employeeId: string | null;
@@ -158,65 +158,9 @@ export type StorageCondition =
   | "PROTECT_HUMIDITY"
   | "CONTROLLED_SUBSTANCE";
 
-export interface Drug {
-  id: string;
-  code: string;
-  name: string;
-  genericName: string | null | undefined;
-  dci: string;
-  form: string;
-  category: string;
-  isEssential: boolean;
-  isControlled: boolean;
-  unitPriceCDF: number | null | undefined;
-  unitPriceUSD: number | null | undefined;
-  minStockLevel: number;
-  criticalStockLevel: number;
-  isActive: boolean;
-  _count: {
-    batches: number;
-  };
-}
 
-export interface DrugCreateInput {
-  code: string; //required maxLength: 50
-  name: string; //required maxLength: 255
-  unitOfDispense: string; //required maxLength: 50
-  dci: string; //required maxLength: 255
-  form: DrugForm; //required
-  category: DrugCategory; //required
-  dosage: string; //required maxLength: 100
-  genericName?: string; //maxLength: 255
-  therapeuticClass?: string; //maxLength: 255
-  concentration?: string; //maxLength: 100
-  packSize?: number; //minimum: 1
-  packUnit?: string; //maxLength: 50
-  ammNumber?: string; //maxLength: 100
-  isEssential?: boolean;
-  isControlled?: boolean;
-  controlledSchedule?: string; //maxLength: 10
-  isProgramDrug?: boolean;
-  programName?: string; //maxLength: 100
-  storageConditions?: StorageCondition[];
-  requiresColdChain?: boolean;
-  minTemp?: number;
-  maxTemp?: number;
-  unitPriceCDF?: number; //minimum: 0
-  unitPriceUSD?: number; //minimum: 0
-  isPriceRegulated?: boolean; //minimum: 0
-  minStockLevel?: number; //minimum: 0
-  criticalStockLevel?: number; //minimum: 0
-  reorderPoint?: number; //minimum: 0
-  reorderQuantity?: number; //minimum: 0
-  isActive?: boolean;
-  notes?: string;
-}
 
-export interface DrugCreateResponse {
-  success: boolean;
-  data?: Drug;
-  message?: string;
-}
+
 
 export interface DrugUpdateInput {
   name?: string; //required maxLength: 255
@@ -252,22 +196,8 @@ export interface DrugUpdateInput {
   notes?: string;
 }
 
-export interface DrugsResponse {
-  success: boolean;
-  data?: {
-    drugs: Drug[];
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-  message?: string;
-}
 
-export interface DrugDeleteResponse {
-  success: boolean;
-  message?: string;
-}
+
 
 // ============================================
 // TYPES JOUR 2 — LOTS

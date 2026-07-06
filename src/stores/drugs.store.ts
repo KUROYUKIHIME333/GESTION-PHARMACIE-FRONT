@@ -6,7 +6,7 @@ import {
   DrugsResponse,
   DrugCreateResponse,
   DrugDeleteResponse,
-} from "@/src/types";
+} from "@/src/schemas/drug.schemas";
 import { api } from "../lib/api";
 import { API_ENDPOINTS } from "../lib/constants";
 
@@ -88,7 +88,7 @@ export const useDrugStore = create<DrugStore>((set) => ({
     try {
       const response = (await api.get(API_ENDPOINTS.drugs)) as DrugsResponse;
       // console.log(response);
-      // console.log("La vrai de vrai",await api.get(API_ENDPOINTS.drugs));
+      console.log("La vrai de vrai",await api.get(API_ENDPOINTS.drugs));
 
       if (response.success && response.data) {
         const { drugs, total, page, limit, totalPages } = response.data;
@@ -164,7 +164,7 @@ export const useDrugStore = create<DrugStore>((set) => ({
     const genericError =
       "Erreur inconnue lors de la modification d'un médicament";
     try {
-      const response = (await api.post(
+      const response = (await api.put(
         `${API_ENDPOINTS.drugs}/${id}`,
         drugData
       )) as DrugCreateResponse;

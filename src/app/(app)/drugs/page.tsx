@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Search, Plus, Eye, Pencil, Trash2 } from 'lucide-react';
-
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
@@ -10,16 +12,18 @@ import Link from 'next/link';
 import { Pagination } from '@/src/components/ui/pagination';
 import { useDrugStore } from '@/src/stores/drugs.store';
 import Spinner from '@/src/components/layouts/Spinner';
-import { DrugCreateInput, DrugUpdateInput } from '@/src/types';
+import DrugForm from '@/src/components/forms/DrugForm';
 
 export default function OfficInInventory() {
-	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
+	const { drugs, isLoading, fetchDrugs, deleteDrug, createDrug, updateDrug, lastError } = useDrugStore();
 
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
 	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
-	const [drugToUpdate, setDrugToUpdate] = useState<DrugCreateInput | null>(null);
-	const [drugToCreate, setDrugToCreate] = useState<DrugUpdateInput|null>(null);
+	const [modeState, setModeState] = useState<'create' | 'edit' | null>(null);
+	const [isHiddenState, setIsHiddenState] = useState<boolean>(true);
+	const [selectedDrugIndex, setSelectedDrugIndex] = useState<number | null>(null);
+
 	const LIMIT = 20;
 
 	// Chargement initial
@@ -54,12 +58,16 @@ export default function OfficInInventory() {
 					{drugs && drugs.length > 0 ? <p className="text-slate-500 mt-2">{`${drugs.length} medicaments référencés`}</p> : null}
 				</div>
 
-				<Link href="/drugs/new">
-					<button className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
-						<Plus size={18} />
-						<span>Nouveau médicament</span>
-					</button>
-				</Link>
+				<Button
+					onClick={() => {
+						setModeState('create');
+						setIsHiddenState(false);
+					}}
+					className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
+				>
+					<Plus size={18} />
+					<span>Nouveau médicament</span>
+				</Button>
 			</div>
 
 			<div className="flex items-center gap-4">
@@ -103,7 +111,7 @@ export default function OfficInInventory() {
 								</TableCell>
 							</TableRow>
 						) : (
-							paginatedDrugs?.map((drug) => (
+							paginatedDrugs?.map((drug, i) => (
 								<TableRow key={drug.id} className="group hover:bg-surface-container-low/50">
 									<TableCell className="font-mono text-primary">{drug.code}</TableCell>
 									<TableCell>
@@ -135,22 +143,23 @@ export default function OfficInInventory() {
 									</TableCell>
 									<TableCell className="text-right">
 										<div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-											<Button variant="ghost"  className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(25,119,119)]">
+											<Button variant="ghost" className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(25,119,119)]">
 												<Link href={`/drugs/${drug.id}`}>
 													<Eye size={40} />
 												</Link>
 											</Button>
-											<Button variant="ghost"  className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]">
-												<Link href={`/drugs/${drug.id}/edit`}>
-													<Pencil size={40} />
-												</Link>
-											</Button>
 											<Button
 												variant="ghost"
-												
-												onClick={() => setDrugToDelete({ id: drug.id, name: drug.name })}
-												className="cursor-pointer px-2 text-slate-400 hover:text-red-600"
+												onClick={() => {
+													setModeState('edit');
+													setIsHiddenState(false);
+													setSelectedDrugIndex(i);
+												}}
+												className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]"
 											>
+												<Pencil size={40} />
+											</Button>
+											<Button variant="ghost" onClick={() => setDrugToDelete({ id: drug.id, name: drug.name })} className="cursor-pointer px-2 text-slate-400 hover:text-red-600">
 												<Trash2 size={40} />
 											</Button>
 										</div>
@@ -165,7 +174,7 @@ export default function OfficInInventory() {
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
-			{/* Modale de confirmation (Glass effect)
+			{/* Modale de confirmation (Glass effect)*/}
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
 					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
@@ -187,42 +196,9 @@ export default function OfficInInventory() {
 						</div>
 					</div>
 				</div>
-			)} */}
-
-			{/* Modale de modification (Glass effect) */}
-			{drugToDelete && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-2/3 max-h-11/12 overflow-y-auto no-scrollbar">
-						<h3 className="text-slate-900 font-bold text-lg">Confirmer la suppression</h3>
-						<p className="text-slate-900 text-md my-4">Supprimer {drugToDelete.name} ?</p>
-						<div className="flex justify-end gap-2">
-							<Button className="text-slate-500 font-bold" variant="ghost" onClick={() => setDrugToDelete(null)}>
-								Annuler
-							</Button>
-
-							<Button
-								className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
-								onClick={() => {
-									deleteDrug(drugToDelete.id);
-									setDrugToDelete(null);
-								}}
-							>
-								<Pencil size={18} />
-								<span>Modifier</span>
-							</Button>
-							<Button
-								className="text-white font-bold  rounded-[2px] hover:bg-[#4B866B] bg-[#56AC35]"
-								onClick={() => {
-									deleteDrug(drugToDelete.id);
-									setDrugToDelete(null);
-								}}
-							>
-								Supprimer
-							</Button>
-						</div>
-					</div>
-				</div>
 			)}
+
+			{!isHiddenState && modeState && <DrugForm drug={drugs && selectedDrugIndex !== null ? drugs[selectedDrugIndex] : undefined} mode={modeState} setIsHidden={setIsHiddenState} />}
 		</main>
 	);
 }
