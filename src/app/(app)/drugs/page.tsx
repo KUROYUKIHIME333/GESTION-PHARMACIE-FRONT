@@ -52,19 +52,23 @@ export default function OfficInInventory() {
 	return (
 		<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-8">
 			{/* Header */}
-			<div className="flex justify-between items-end">
+			<div className="flex flex-col sm:flex-row justify-between items-start sm:justify-between sm:items-center gap-4 sm:gap-0">
+				{/* Partie Gauche : Titre et compteur */}
 				<div>
-					<h2 className="text-2xl font-bold text-slate-900">Medication Inventory</h2>
-					{drugs && drugs.length > 0 ? <p className="text-slate-500 mt-2">{`${drugs.length} medicaments référencés`}</p> : null}
+					<h2 className="text-xl sm:text-2xl font-bold text-slate-900">Medication Inventory</h2>
+					{drugs && drugs.length > 0 ? (
+						<p className="text-sm sm:text-base text-slate-500 mt-1 sm:mt-2">{`${drugs.length} médicament${drugs.length > 1 ? 's' : ''} référencé${drugs.length > 1 ? 's' : ''}`}</p>
+					) : null}
 				</div>
 
+				{/* Partie Droite : Bouton (Prend toute la largeur sur mobile) */}
 				<Button
 					onClick={() => {
 						setModeState('create');
 						setSelectedDrug(null);
 						setIsHiddenState(false);
 					}}
-					className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
+					className="flex gap-2 items-center justify-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px] w-full sm:w-auto"
 				>
 					<Plus size={18} />
 					<span>Nouveau médicament</span>
