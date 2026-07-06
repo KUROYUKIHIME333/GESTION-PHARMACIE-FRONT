@@ -198,22 +198,36 @@ export default function OfficInInventory() {
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
-			{/* Modale de confirmation de suppression */}
+			{/*  MODALE DE CONFIRMATION DE SUPPRESSION  */}
 			{drugToDelete && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
-						<h3 className="text-slate-900 font-bold text-lg">Confirmer la suppression</h3>
-						<p className="text-slate-900 text-md my-4">Supprimer {drugToDelete.name} ?</p>
-						<div className="flex justify-end gap-2">
-							<Button className="text-slate-500 font-bold" variant="ghost" onClick={() => setDrugToDelete(null)}>
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4">
+					<div className="bg-white w-full max-w-sm rounded-[2px] shadow-2xl border border-[#C1C7CB]/60 overflow-hidden">
+						{/* Header avec accent visuel */}
+						<div className="bg-red-50 px-6 py-4 border-b border-red-100">
+							<h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
+								<span className="w-2 h-2 rounded-full bg-red-500" />
+								Confirmer la suppression
+							</h3>
+						</div>
+
+						{/* Corps */}
+						<div className="px-6 py-5">
+							<p className="text-slate-600 text-sm leading-relaxed">
+								Êtes-vous sûr de vouloir supprimer <span className="font-semibold text-slate-900">{drugToDelete.name}</span> ? Cette action est irréversible.
+							</p>
+						</div>
+
+						{/* Footer actions */}
+						<div className="px-6 py-4 bg-slate-50 flex justify-end gap-3">
+							<Button variant="ghost" onClick={() => setDrugToDelete(null)} className="text-slate-500 font-semibold hover:text-slate-700 hover:bg-slate-200 rounded-[2px] px-4">
 								Annuler
 							</Button>
 							<Button
-								className="text-white font-bold bg-red-600 hover:bg-red-800 rounded-[2px]"
 								onClick={() => {
 									deleteDrug(drugToDelete.id);
 									setDrugToDelete(null);
 								}}
+								className="text-white font-semibold bg-red-600 hover:bg-red-700 rounded-[2px] px-5 shadow-sm"
 							>
 								Supprimer
 							</Button>
@@ -221,9 +235,16 @@ export default function OfficInInventory() {
 					</div>
 				</div>
 			)}
-			{/* Modale de creation ou modification */}
-			{!isHiddenState && modeState && <DrugForm key={modeState + (selectedDrug ? selectedDrug.id : 'new')} drug={selectedDrug} mode={modeState} setIsHidden={setIsHiddenState} />}
-		
+
+			{/*  MODALE DE CRÉATION / MODIFICATION (DrugForm wrapper) */}
+			{!isHiddenState && modeState && (
+				<div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-slate-900/30 backdrop-blur-sm p-0 sm:p-4 overflow-y-auto">
+					<div className="bg-white w-full sm:w-11/12 md:w-2/3 lg:w-2/3 sm:max-h-[90vh] sm:rounded-[2px] shadow-2xl border-0 sm:border border-[#C1C7CB]/60 overflow-hidden flex flex-col">
+						{/* DrugForm enfant gère son propre contenu scrollable */}
+						<DrugForm key={modeState + (selectedDrug ? selectedDrug.id : 'new')} drug={selectedDrug} mode={modeState} setIsHidden={setIsHiddenState} />
+					</div>
+				</div>
+			)}
 		</main>
 	);
 }
