@@ -19,9 +19,9 @@ export function useAuth() {
 					setUser(response.data.user as User);
 				} else {
 					setUser(null);
+					redirect('/login');
 				}
 			} catch (error: unknown) {
-				// Si 401 ou autre erreur, on considère que l'utilisateur n'est pas connecté
 				setUser(null);
 				redirect('/login');
 			} finally {
@@ -66,13 +66,30 @@ export function useAuth() {
 
 	const handleLogout = async () => {
 		try {
-			// Appel API pour invalider le cookie côté serveur
-			await api.post('/api/auth/logout', {});
+			const disconnection = await api.post('/api/auth/logout', {});
+
+			if (
+				disconnection &&
+				typeof disconnection === 'object' &&
+				'success' in disconnection &&
+				disconnection.success &&
+				'data' in disconnection &&
+				disconnection.data &&
+				typeof disconnection.data === 'object' &&
+				'user' in disconnection.data &&
+				disconnection.data?.user
+			) {
+				setUser(disconnection.data.user as User);
+				redirect('/login');
+			}
+
+			if (disconnection && typeof disconnection === 'object' && 'success' in disconnection && !disconnection.success && 'message' in disconnection && disconnection.message) {
+				return { success: false, error: disconnection.message };
+			}
+			return { success: false, error: 'Réponse invalide du serveur' };
 		} catch (error) {
-			// Ignorer les erreurs lors de la déconnexion
-		} finally {
-			logout();
-			router.push('/login');
+			const message = 'Erreur de déconnexion';
+			return { success: false, error: message };
 		}
 	};
 

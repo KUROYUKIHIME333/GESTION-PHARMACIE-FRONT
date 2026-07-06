@@ -2,19 +2,11 @@ import { usePathname } from 'next/navigation';
 import { NAV_ITEMS } from '@/src/lib/constants';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/src/hooks/useAuth.hooks';
-import {
-	LayoutDashboard,
-	Package,
-	FileText,
-	Users,
-	AlertTriangle,
-	LogOutIcon,
-	Pill,
-	ShoppingCart,
-} from 'lucide-react';
+import { LayoutDashboard, Package, FileText, Users, AlertTriangle, LogOutIcon, Pill, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ROLE_LABELS } from '@/src/lib/constants';
+import { Button } from '../ui/button';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 	LayoutDashboard,
@@ -27,7 +19,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export default function SideBar() {
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 	const pathname = usePathname();
 	const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -95,10 +87,10 @@ export default function SideBar() {
 						</div>
 					</div>
 				)}
-				<Link href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-red-100">
+				<Button onClick={logout} className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-red-100">
 					<LogOutIcon size={20} />
 					<span className="text-sm ">Déconnexion</span>
-				</Link>
+				</Button>
 			</div>
 		</div>
 	);
