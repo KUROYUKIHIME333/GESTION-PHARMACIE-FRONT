@@ -119,7 +119,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-			<div className="bg-white p-8 rounded-[2px] shadow-xl border w-2/3 max-h-11/12 overflow-y-auto no-scrollbar">
+			<div className="bg-white p-8 rounded-[2px] shadow-xl border w-11/12 md:w-2/3 lg:w-2/3  max-h-11/12 overflow-y-auto no-scrollbar">
 				{/* Erreur globale */}
 				{lastError && (
 					<div className="flex items-center gap-2 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700">
@@ -130,16 +130,20 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 
 				<form className="space-y-6" onSubmit={handleSubmitCreate(onSubmit)}>
 					{/* Informations de base */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Informations de base</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Informations de base</CardTitle>
 						</CardHeader>
 						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<Label htmlFor="code" className="text-slate-700">
 									Code <span className="text-red-500">*</span>
 								</Label>
-								<Input id="code" {...registerCreate('code')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="code"
+									{...registerCreate('code')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 								{errors.code && <p className="text-sm text-red-600">{errors.code.message}</p>}
 							</div>
 
@@ -147,7 +151,11 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Label htmlFor="name" className="text-slate-700">
 									Nom commercial <span className="text-red-500">*</span>
 								</Label>
-								<Input id="name" {...registerCreate('name')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="name"
+									{...registerCreate('name')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 								{errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
 							</div>
 
@@ -155,14 +163,22 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Label htmlFor="genericName" className="text-slate-700">
 									Nom générique
 								</Label>
-								<Input id="genericName" {...registerCreate('genericName')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="genericName"
+									{...registerCreate('genericName')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="dci" className="text-slate-700">
 									DCI <span className="text-red-500">*</span>
 								</Label>
-								<Input id="dci" {...registerCreate('dci')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="dci"
+									{...registerCreate('dci')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 								{errors.dci && <p className="text-sm text-red-600">{errors.dci.message}</p>}
 							</div>
 
@@ -173,7 +189,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<select
 									id="form"
 									{...registerCreate('form')}
-									className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:border-[rgb(25,119,119)] focus:ring-1 focus:ring-[rgb(25,119,119)]"
+									className="w-full pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								>
 									<option value="">Sélectionner...</option>
 									{DrugFormValues.map((form, i) => (
@@ -192,7 +208,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<select
 									id="category"
 									{...registerCreate('category')}
-									className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:border-[rgb(25,119,119)] focus:ring-1 focus:ring-[rgb(25,119,119)]"
+									className="w-full pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								>
 									<option value="">Sélectionner...</option>
 									{DrugCategoryValues.map((cat, i) => (
@@ -208,29 +224,41 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Label htmlFor="therapeuticClass" className="text-slate-700">
 									Classe thérapeutique
 								</Label>
-								<Input id="therapeuticClass" {...registerCreate('therapeuticClass')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="therapeuticClass"
+									{...registerCreate('therapeuticClass')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="ammNumber" className="text-slate-700">
 									N° AMM
 								</Label>
-								<Input id="ammNumber" {...registerCreate('ammNumber')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="ammNumber"
+									{...registerCreate('ammNumber')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 						</CardContent>
 					</Card>
 
 					{/* Dosage et conditionnement */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Dosage et conditionnement</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Dosage et conditionnement</CardTitle>
 						</CardHeader>
 						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<Label htmlFor="dosage" className="text-slate-700">
 									Dosage <span className="text-red-500">*</span>
 								</Label>
-								<Input id="dosage" {...registerCreate('dosage')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="dosage"
+									{...registerCreate('dosage')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 								{errors.dosage && <p className="text-sm text-red-600">{errors.dosage.message}</p>}
 							</div>
 
@@ -238,14 +266,22 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Label htmlFor="concentration" className="text-slate-700">
 									Concentration
 								</Label>
-								<Input id="concentration" {...registerCreate('concentration')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="concentration"
+									{...registerCreate('concentration')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="unitOfDispense" className="text-slate-700">
 									Unité de dispensation <span className="text-red-500">*</span>
 								</Label>
-								<Input id="unitOfDispense" {...registerCreate('unitOfDispense')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="unitOfDispense"
+									{...registerCreate('unitOfDispense')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 								{errors.unitOfDispense && <p className="text-sm text-red-600">{errors.unitOfDispense.message}</p>}
 							</div>
 
@@ -253,25 +289,44 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Label htmlFor="packSize" className="text-slate-700">
 									Taille du conditionnement
 								</Label>
-								<Input id="packSize" type="number" {...registerCreate('packSize')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="packSize"
+									type="number"
+									{...registerCreate('packSize')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="packUnit" className="text-slate-700">
 									Unité de conditionnement
 								</Label>
-								<Input id="packUnit" {...registerCreate('packUnit')} className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]" />
+								<Input
+									id="packUnit"
+									{...registerCreate('packUnit')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 						</CardContent>
 					</Card>
 
 					{/* Stockage */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Stockage</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Stockage</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-4">
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 gap-4">
+								<div className="flex items-center gap-2">
+									<Controller
+										name="requiresColdChain"
+										control={controlCreate}
+										render={({ field }) => <Checkbox id="requiresColdChain" checked={field.value} onCheckedChange={field.onChange} />}
+									/>
+									<Label htmlFor="requiresColdChain" className="text-slate-700 cursor-pointer">
+										Nécessite la chaîne du froid
+									</Label>
+								</div>
 								<div className="space-y-2">
 									<Label className="text-slate-700">Conditions de stockage</Label>
 									<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -285,29 +340,21 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</div>
 
 								<div className="space-y-4">
-									<div className="flex items-center gap-2">
-										<Controller
-											name="requiresColdChain"
-											control={controlCreate}
-											render={({ field }) => <Checkbox id="requiresColdChain" checked={field.value} onCheckedChange={field.onChange} />}
-										/>
-										<Label htmlFor="requiresColdChain" className="text-slate-700 cursor-pointer">
-											Nécessite la chaîne du froid
-										</Label>
-									</div>
+									<Label className="text-slate-700">Températures de stockage</Label>
 
 									<div className="grid grid-cols-2 gap-4">
 										<div className="space-y-2">
 											<Label htmlFor="minTemp" className="text-slate-700">
 												Temp. min (°C)
 											</Label>
-											<Input id="minTemp" type="number" step="0.1" {...registerCreate('minTemp')} className="border-slate-200" />
+											<Input id="minTemp" type="number" step="0.1" {...registerCreate('minTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
 										</div>
+
 										<div className="space-y-2">
 											<Label htmlFor="maxTemp" className="text-slate-700">
 												Temp. max (°C)
 											</Label>
-											<Input id="maxTemp" type="number" step="0.1" {...registerCreate('maxTemp')} className="border-slate-200" />
+											<Input id="maxTemp" type="number" step="0.1" {...registerCreate('maxTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
 										</div>
 									</div>
 								</div>
@@ -316,9 +363,9 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 					</Card>
 
 					{/* Prix */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Prix</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Prix</CardTitle>
 						</CardHeader>
 						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="space-y-2">
@@ -330,7 +377,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 									type="number"
 									step="0.01"
 									{...registerCreate('unitPriceCDF')}
-									className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]"
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 							</div>
 
@@ -343,7 +390,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 									type="number"
 									step="0.0001"
 									{...registerCreate('unitPriceUSD')}
-									className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)]"
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 							</div>
 
@@ -361,45 +408,65 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 					</Card>
 
 					{/* Seuils de stock */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Seuils de stock</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Seuils de stock</CardTitle>
 						</CardHeader>
-						<CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<Label htmlFor="minStockLevel" className="text-slate-700">
 									Seuil d&apos;alerte
 								</Label>
-								<Input id="minStockLevel" type="number" {...registerCreate('minStockLevel')} className="border-slate-200" />
+								<Input
+									id="minStockLevel"
+									type="number"
+									{...registerCreate('minStockLevel')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="criticalStockLevel" className="text-slate-700">
 									Seuil critique
 								</Label>
-								<Input id="criticalStockLevel" type="number" {...registerCreate('criticalStockLevel')} className="border-slate-200" />
+								<Input
+									id="criticalStockLevel"
+									type="number"
+									{...registerCreate('criticalStockLevel')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="reorderPoint" className="text-slate-700">
 									Point de commande
 								</Label>
-								<Input id="reorderPoint" type="number" {...registerCreate('reorderPoint')} className="border-slate-200" />
+								<Input
+									id="reorderPoint"
+									type="number"
+									{...registerCreate('reorderPoint')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="reorderQuantity" className="text-slate-700">
 									Qté de commande
 								</Label>
-								<Input id="reorderQuantity" type="number" {...registerCreate('reorderQuantity')} className="border-slate-200" />
+								<Input
+									id="reorderQuantity"
+									type="number"
+									{...registerCreate('reorderQuantity')}
+									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
+								/>
 							</div>
 						</CardContent>
 					</Card>
 
 					{/* Options et classification */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Classification et options</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Classification et options</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -456,7 +523,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 										<Label htmlFor="programName" className="text-slate-700">
 											Nom du programme
 										</Label>
-										<Input id="programName" {...registerCreate('programName')} className="border-slate-200" placeholder="VIH/ARV, PNLP, PNT..." />
+										<Input id="programName" {...registerCreate('programName')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" placeholder="VIH/ARV, PNLP, PNT..." />
 									</div>
 								)}
 
@@ -471,14 +538,14 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 					</Card>
 
 					{/* Notes */}
-					<Card className="border-slate-200">
+					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
-							<CardTitle className="text-lg text-slate-900">Notes</CardTitle>
+							<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900">Notes</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<Textarea
 								{...registerCreate('notes')}
-								className="border-slate-200 focus:border-[rgb(25,119,119)] focus:ring-[rgb(25,119,119)] min-h-[100px]"
+								className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary min-h-[100px]"
 								placeholder="Notes complémentaires..."
 							/>
 						</CardContent>

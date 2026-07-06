@@ -93,8 +93,8 @@
 /* --- Variables CSS (light mode par défaut) --- */
 @layer base {
 	:root {
-		--primary: 153 28% 41%;/* hsl(153, 28%, 41%) */
-		--test:  #eff7e4;
+		--primary: 153 28% 41%; /* hsl(153, 28%, 41%) */
+		--test: #eff7e4;
 		--primary-foreground: 200 25% 95%; /* hsl(200, 25%, 95%) */
 		--secondary: 103 53% 44%; /* hsl(103, 53%, 44%) */
 		--secondary-foreground: 83 53% 93%; /* hsl(83, 53%, 93%) */
@@ -143,7 +143,7 @@
 	}
 
 	body {
-		background-color: #F6F8FA;
+		background-color: #f6f8fa;
 		color: hsl(var(--color-foreground));
 		font-family: var(--font-sans);
 		font-feature-settings:
@@ -248,4 +248,8 @@
 
 .full-height {
 	height: 100vh;
+}
+
+.dark-official-green {
+	color: #4b866b;
 }
