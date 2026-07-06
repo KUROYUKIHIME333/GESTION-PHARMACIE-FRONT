@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = localFont({
+	src: '../../public/fonts/Inter/Inter-VariableFont_opsz,wght.ttf',
+	display: 'swap',
+});
 
 export const metadata: Metadata = {
 	title: 'OfficIn',
