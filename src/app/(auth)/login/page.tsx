@@ -75,7 +75,7 @@ const LoginPage = () => {
 				<h1 className="text-[18px] text-gray-500 tracking-[0.2em] uppercase">Portail d&apos;accès</h1>
 			</header>
 
-			<Card className="w-full max-w-[400px] p-8 lg:border-2 border-[#C1C7CB] rounded-none shadow-sm bg-[#eff3f5] lg:bg-white">
+			<Card className="w-full max-w-[400px] p-8 lg:border-2 ring-0 border-[#C1C7CB] rounded-none md:shadow-sm lg:shadow-sm bg-[#eff3f5] md:bg-white lg:bg-white">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
 					{/* Email */}
 					<div className="space-y-3">
