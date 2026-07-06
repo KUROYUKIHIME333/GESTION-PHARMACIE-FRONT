@@ -12,7 +12,7 @@ import Spinner from '@/src/components/layouts/Spinner';
 import DrugForm from '@/src/components/forms/DrugForm';
 
 export default function OfficInInventory() {
-	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
+	const { drugs, isLoading, fetchDrugs, deleteDrug, lastError } = useDrugStore();
 
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
@@ -105,6 +105,12 @@ export default function OfficInInventory() {
 							<TableRow>
 								<TableCell colSpan={8} className="text-center py-10">
 									<Spinner />
+								</TableCell>
+							</TableRow>
+						) : lastError ? (
+							<TableRow>
+								<TableCell colSpan={8} className="text-center py-10">
+									<span className="text-center font-mono">{lastError}</span>
 								</TableCell>
 							</TableRow>
 						) : (
