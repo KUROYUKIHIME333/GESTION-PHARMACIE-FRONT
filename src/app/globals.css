@@ -253,3 +253,7 @@
 .dark-official-green {
 	color: #4b866b;
 }
+
+.dark-official-green-hover:hover {
+	color: #4b866b;
+}

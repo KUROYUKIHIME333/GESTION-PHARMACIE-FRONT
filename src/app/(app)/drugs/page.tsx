@@ -62,13 +62,26 @@ export default function OfficInInventory() {
 				</div>
 
 				{/* Partie Droite : Bouton (Prend toute la largeur sur mobile) */}
+				{/* Mobile FAB */}
 				<Button
 					onClick={() => {
 						setModeState('create');
 						setSelectedDrug(null);
 						setIsHiddenState(false);
 					}}
-					className="flex gap-2 items-center justify-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px] w-full sm:w-auto"
+					className="sm:hidden fixed bottom-8 right-8 z-40 h-14 w-14 rounded-full bg-[#eff7e4] hover:bg-[#4B866B] opacity-80 hover:opacity-100 shadow-xl flex items-center justify-center"
+				>
+					<Plus size={18} className="text-[#4B866B] hover:text-white" />
+				</Button>
+
+				{/* Desktop Button */}
+				<Button
+					onClick={() => {
+						setModeState('create');
+						setSelectedDrug(null);
+						setIsHiddenState(false);
+					}}
+					className="hidden sm:flex gap-2 items-center justify-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px] w-full sm:w-auto"
 				>
 					<Plus size={18} />
 					<span>Nouveau médicament</span>
