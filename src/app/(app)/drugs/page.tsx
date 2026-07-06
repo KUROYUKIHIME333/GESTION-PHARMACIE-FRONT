@@ -198,7 +198,7 @@ export default function OfficInInventory() {
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
-			{/* Modale de confirmation */}
+			{/* Modale de confirmation de suppression */}
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
 					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
@@ -221,8 +221,9 @@ export default function OfficInInventory() {
 					</div>
 				</div>
 			)}
-
+			{/* Modale de creation ou modification */}
 			{!isHiddenState && modeState && <DrugForm key={modeState + (selectedDrug ? selectedDrug.id : 'new')} drug={selectedDrug} mode={modeState} setIsHidden={setIsHiddenState} />}
+		
 		</main>
 	);
 }
