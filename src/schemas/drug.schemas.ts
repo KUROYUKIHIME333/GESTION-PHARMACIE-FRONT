@@ -84,23 +84,19 @@ export const drugQuerySchema = z.object({
   limit: z.string().transform(Number).default(20),
 });
 
-export const drugSchemas = z.object({
-  id: z.string(),
+// Schéma de base (sans id, timestamps, _count)
+const drugBaseSchema = z.object({
   code: z.string().min(1, "Code requis").max(50),
-  name: z.string().min(1, "Nom requis"),
+  name: z.string().min(1, "Nom requis").max(255),
   genericName: z.string().max(255).nullable().optional(),
-  dci: z.string().min(1, "DCI requise"),
+  dci: z.string().min(1, "DCI requise").max(255),
   form: z.nativeEnum(DrugFormEnum),
   category: z.nativeEnum(DrugCategoryEnum),
   therapeuticClass: z.string().max(255).nullable().optional(),
-  dosage: z.string().min(1, "Dosage requis").max(100).nullable().optional(),
+  dosage: z.string().max(100).nullable().optional(),
   concentration: z.string().max(100).nullable().optional(),
-  unitOfDispense: z
-    .string()
-    .min(1, "Unité de dispensation requise")
-    .nullable()
-    .optional(),
-  packSize: z.number().int().min(1).default(1).nullable().optional(),
+  unitOfDispense: z.string().max(50).nullable().optional(),
+  packSize: z.coerce.number().int().min(1).default(1).nullable().optional(),
   packUnit: z.string().max(50).default("boîte").nullable().optional(),
   ammNumber: z.string().max(100).nullable().optional(),
   isEssential: z.boolean().default(false).nullable().optional(),
@@ -110,60 +106,65 @@ export const drugSchemas = z.object({
   programName: z.string().max(100).nullable().optional(),
   storageConditions: z.array(z.nativeEnum(StorageConditionEnum)).default([]),
   requiresColdChain: z.boolean().default(false),
-  minTemp: z.number().nullable().optional(),
-  maxTemp: z.number().nullable().optional(),
-  unitPriceCDF: z.coerce.number().positive("Le prix doit être positif"),
-  unitPriceUSD: z.coerce.number().positive("Le prix doit être positif"),
-  isPriceRegulated: z.boolean().default(false),
-  minStockLevel: z.number().int().nonnegative().default(0),
-  criticalStockLevel: z.number().int().nonnegative().default(0),
-  reorderPoint: z.number().int().nonnegative().default(0),
-  reorderQuantity: z.number().int().nonnegative().default(0),
-  isActive: z.boolean().default(true),
-  notes: z.string().nullable().optional(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
-  _count: z.object({
-    batches: z.number().optional(),
-  }).optional(),
-});
-
-export const drugCreateSchema = z.object({
-  code: z.string().min(1, "Code requis").max(50),
-  name: z.string().min(1, "Nom requis").max(255),
-  genericName: z.string().max(255).nullable().optional(),
-  dci: z.string().min(1, "DCI requise").max(255),
-  form: z.nativeEnum(DrugFormEnum),
-  category: z.nativeEnum(DrugCategoryEnum),
-  therapeuticClass: z.string().max(255).nullable().optional(),
-  dosage: z.string().min(1, "Dosage requis").max(100),
-  concentration: z.string().max(100).nullable().optional(),
-  unitOfDispense: z.string().min(1, "Unité de dispensation requise").max(50),
-  packSize: z.number().int().min(1).default(1),
-  packUnit: z.string().max(50).default("boîte"),
-  ammNumber: z.string().max(100).nullable().optional(),
-  isEssential: z.boolean().default(false),
-  isControlled: z.boolean().default(false),
-  controlledSchedule: z.string().max(10).nullable().optional(),
-  isProgramDrug: z.boolean().default(false),
-  programName: z.string().max(100).nullable().optional(),
-  storageConditions: z.array(z.nativeEnum(StorageConditionEnum)).default([]),
-  requiresColdChain: z.boolean().default(false),
-  minTemp: z.number().nullable().optional(),
-  maxTemp: z.number().nullable().optional(),
+  minTemp: z.preprocess(
+    (val) =>
+      val === "" || val === null || val === undefined ? null : Number(val),
+    z.number().nullable().optional()
+  ),
+  maxTemp: z.preprocess(
+    (val) =>
+      val === "" || val === null || val === undefined ? null : Number(val),
+    z.number().nullable().optional()
+  ),
   unitPriceCDF: z.number().nonnegative().nullable().optional(),
   unitPriceUSD: z.number().nonnegative().nullable().optional(),
   isPriceRegulated: z.boolean().default(false),
-  minStockLevel: z.number().int().nonnegative().default(0),
-  criticalStockLevel: z.number().int().nonnegative().default(0),
-  reorderPoint: z.number().int().nonnegative().default(0),
-  reorderQuantity: z.number().int().nonnegative().default(0),
+  minStockLevel: z
+    .number()
+    .int()
+    .nonnegative()
+    .default(0)
+    .nullable()
+    .optional(),
+  criticalStockLevel: z
+    .number()
+    .int()
+    .nonnegative()
+    .default(0)
+    .nullable()
+    .optional(),
+  reorderPoint: z.number().int().nonnegative().default(0).nullable().optional(),
+  reorderQuantity: z
+    .number()
+    .int()
+    .nonnegative()
+    .default(0)
+    .nullable()
+    .optional(),
   isActive: z.boolean().default(true),
   notes: z.string().nullable().optional(),
 });
 
-export const drugUpdateSchema = drugCreateSchema.partial();
+// Schéma complet Drug (avec id, timestamps, _count)
+export const drugSchemas = drugBaseSchema.extend({
+  id: z.string(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
+  _count: z
+    .object({
+      batches: z.number().optional(),
+    })
+    .optional(),
+});
 
+// Schéma de création (strict, pour le formulaire)──
+// Aligné avec drugCreateJsonSchema du backend
+export const drugCreateSchema = drugBaseSchema;
+
+// Schéma de mise à jour (tous les champs optionnels) ─────────────────────
+export const drugUpdateSchema = drugBaseSchema.partial();
+
+// Types────────────────────────────────────────────
 export type Drug = z.infer<typeof drugSchemas>;
 export type DrugCreateInput = z.infer<typeof drugCreateSchema>;
 export type DrugUpdateInput = z.infer<typeof drugUpdateSchema>;
@@ -174,7 +175,6 @@ export type DrugCategoryType =
 export type StorageConditionType =
   typeof StorageConditionEnum[keyof typeof StorageConditionEnum];
 
-// On définit le tableau avec ce type précis
 export const DrugFormValues = Object.values(
   DrugFormEnum
 ) as readonly DrugFormType[];

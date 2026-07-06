@@ -10,20 +10,23 @@ import { Pagination } from '@/src/components/ui/pagination';
 import { useDrugStore } from '@/src/stores/drugs.store';
 import Spinner from '@/src/components/layouts/Spinner';
 import DrugForm from '@/src/components/forms/DrugForm';
+import type { Drug } from '@/src/schemas/drug.schemas';
 
 export default function OfficInInventory() {
 	const { drugs, isLoading, fetchDrugs, deleteDrug, lastError } = useDrugStore();
 
 	const [search, setSearch] = useState('');
 	const [page, setPage] = useState(1);
-	const [drugToDelete, setDrugToDelete] = useState<{ id: string; name: string } | null>(null);
+	const [drugToDelete, setDrugToDelete] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
 	const [modeState, setModeState] = useState<'create' | 'edit' | null>(null);
 	const [isHiddenState, setIsHiddenState] = useState<boolean>(true);
-	const [selectedDrugIndex, setSelectedDrugIndex] = useState<number | null>(null);
+	const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
 
 	const LIMIT = 20;
 
-	// Chargement initial
 	useEffect(() => {
 		fetchDrugs();
 	}, [fetchDrugs]);
@@ -58,6 +61,7 @@ export default function OfficInInventory() {
 				<Button
 					onClick={() => {
 						setModeState('create');
+						setSelectedDrug(null);
 						setIsHiddenState(false);
 					}}
 					className="flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
@@ -103,18 +107,18 @@ export default function OfficInInventory() {
 					<TableBody>
 						{isLoading ? (
 							<TableRow>
-								<TableCell colSpan={8} className="text-center py-10">
+								<TableCell colSpan={12} className="text-center py-10">
 									<Spinner />
 								</TableCell>
 							</TableRow>
 						) : lastError ? (
 							<TableRow>
-								<TableCell colSpan={8} className="text-center py-10">
+								<TableCell colSpan={12} className="text-center py-10">
 									<span className="text-center font-mono">{lastError}</span>
 								</TableCell>
 							</TableRow>
 						) : (
-							paginatedDrugs?.map((drug, i) => (
+							paginatedDrugs?.map((drug) => (
 								<TableRow key={drug.id} className="group hover:bg-surface-container-low/50">
 									<TableCell className="font-mono text-primary">{drug.code}</TableCell>
 									<TableCell>
@@ -155,8 +159,8 @@ export default function OfficInInventory() {
 												variant="ghost"
 												onClick={() => {
 													setModeState('edit');
+													setSelectedDrug(drug);
 													setIsHiddenState(false);
-													setSelectedDrugIndex(i);
 												}}
 												className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]"
 											>
@@ -177,7 +181,7 @@ export default function OfficInInventory() {
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
-			{/* Modale de confirmation (Glass effect)*/}
+			{/* Modale de confirmation */}
 			{drugToDelete && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
 					<div className="bg-white p-8 rounded-[2px] shadow-xl border w-96 max-h-11/12 overflow-y-auto no-scrollbar">
@@ -201,7 +205,7 @@ export default function OfficInInventory() {
 				</div>
 			)}
 
-			{!isHiddenState && modeState && <DrugForm drug={drugs && selectedDrugIndex !== null ? drugs[selectedDrugIndex] : undefined} mode={modeState} setIsHidden={setIsHiddenState} />}
+			{!isHiddenState && modeState && <DrugForm key={modeState + (selectedDrug ? selectedDrug.id : 'new')} drug={selectedDrug} mode={modeState} setIsHidden={setIsHiddenState} />}
 		</main>
 	);
 }

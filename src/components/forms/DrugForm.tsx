@@ -1,10 +1,9 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { Drug, DrugCategoryValues, DrugFormValues, StorageConditionValues, drugSchemas } from '@/src/schemas/drug.schemas';
+import { Drug, DrugCategoryValues, DrugFormValues, StorageConditionValues, drugCreateSchema, drugUpdateSchema, drugSchemas } from '@/src/schemas/drug.schemas';
 import { Button } from '../ui/button';
 import { AlertCircle, Pencil } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { DrugCreateInput, DrugUpdateInput } from '@/src/schemas/drug.schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useDrugStore } from '@/src/stores/drugs.store';
 import { StorageCondition } from '@/src/types';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -13,46 +12,49 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
 import Spinner from '../layouts/Spinner';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface DrugFormProps {
 	drug?: Drug | null;
 	mode: 'create' | 'edit';
 	setIsHidden: Dispatch<SetStateAction<boolean>>;
 }
+
 const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 	const { isLoading, lastError, createDrug, updateDrug, setDrugsLastError } = useDrugStore();
+
+	const resolver = mode === 'create' ? drugCreateSchema : drugUpdateSchema;
+
 	const {
-		register: registerCreate,
-		handleSubmit: handleSubmitCreate,
-		setValue: setValueCreate,
-		control: controlCreate,
-		reset: resetCreate,
+		register,
+		handleSubmit,
+		setValue,
+		control,
+		reset,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(drugSchemas),
-		defaultValues: drug
-			? drugSchemas.parse(drug)
-			: {
-					packSize: 1,
-					packUnit: 'boîte',
-					isEssential: false,
-					isControlled: false,
-					isProgramDrug: false,
-					requiresColdChain: false,
-					isPriceRegulated: false,
-					minStockLevel: 0,
-					criticalStockLevel: 0,
-					reorderPoint: 0,
-					reorderQuantity: 0,
-					isActive: true,
-					storageConditions: [],
-				},
+		resolver: zodResolver(resolver),
+		defaultValues: {
+			packSize: 1,
+			packUnit: 'boîte',
+			isEssential: false,
+			isControlled: false,
+			isProgramDrug: false,
+			requiresColdChain: false,
+			isPriceRegulated: false,
+			minStockLevel: 0,
+			criticalStockLevel: 0,
+			reorderPoint: 0,
+			reorderQuantity: 0,
+			isActive: true,
+			storageConditions: [],
+		},
 	});
 
 	useEffect(() => {
 		if (mode === 'create') {
 			console.log('Mode:', mode, 'Drug:', drug || 'aucun');
-			resetCreate({
+			reset({
 				packSize: 1,
 				packUnit: 'boîte',
 				isEssential: false,
@@ -70,21 +72,25 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 		}
 		if (drug && mode === 'edit') {
 			console.log('Mode:', mode, 'Drug:', drug || 'aucun');
-			resetCreate(drugSchemas.parse(drug));
+			// On ne garde que les champs du schéma de base (pas id, createdAt, etc.)
+			const { id, createdAt, updatedAt, _count, ...drugData } = drug;
+			console.log('Drug data to reset:', id, createdAt, updatedAt, _count);
+			reset(drugData);
 		}
-	}, [mode, drug, resetCreate]);
+	}, [mode, drug, reset]);
 
 	const isControlled = useWatch({
-		control: controlCreate,
+		control,
 		name: 'isControlled',
 	});
 
 	const isProgramDrug = useWatch({
-		control: controlCreate,
+		control,
 		name: 'isProgramDrug',
 	});
+
 	const storageConditions = useWatch({
-		control: controlCreate,
+		control,
 		name: 'storageConditions',
 		defaultValue: [],
 	});
@@ -92,18 +98,17 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 	const toggleStorageCondition = (condition: string) => {
 		const current = storageConditions || [];
 		const newConditions = current.includes(condition as StorageCondition) ? current.filter((c: string) => c !== condition) : [...current, condition];
-		setValueCreate('storageConditions', newConditions as StorageCondition[]);
+		setValue('storageConditions', newConditions as StorageCondition[]);
 	};
 
-	const onSubmit = async (data: Drug) => {
+	const onSubmit = async (data: DrugCreateInput | DrugUpdateInput) => {
 		console.log('Le new: ', data);
-
 		try {
 			if (mode === 'create') {
 				createDrug(data as DrugCreateInput);
 			}
-			if (mode === 'edit') {
-				updateDrug(data as DrugUpdateInput, data.id);
+			if (mode === 'edit' && drug?.id) {
+				updateDrug(data as DrugUpdateInput, drug.id);
 			}
 
 			setIsHidden(true);
@@ -119,7 +124,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-			<div className="bg-white p-8 rounded-[2px] shadow-xl border w-11/12 md:w-2/3 lg:w-2/3  max-h-11/12 overflow-y-auto no-scrollbar">
+			<div className="bg-white p-8 rounded-[2px] shadow-xl border w-11/12 md:w-2/3 lg:w-2/3 max-h-11/12 overflow-y-auto no-scrollbar">
 				{/* Erreur globale */}
 				{lastError && (
 					<div className="flex items-center gap-2 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700">
@@ -128,7 +133,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 					</div>
 				)}
 
-				<form className="space-y-6" onSubmit={handleSubmitCreate(onSubmit)}>
+				<form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 					{/* Informations de base */}
 					<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
 						<CardHeader>
@@ -141,7 +146,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="code"
-									{...registerCreate('code')}
+									{...register('code')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 								{errors.code && <p className="text-sm text-red-600">{errors.code.message}</p>}
@@ -153,7 +158,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="name"
-									{...registerCreate('name')}
+									{...register('name')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 								{errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
@@ -165,9 +170,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="genericName"
-									{...registerCreate('genericName')}
+									{...register('genericName')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.genericName && <p className="text-sm text-red-600">{errors.genericName.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -176,7 +182,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="dci"
-									{...registerCreate('dci')}
+									{...register('dci')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 								{errors.dci && <p className="text-sm text-red-600">{errors.dci.message}</p>}
@@ -188,7 +194,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<select
 									id="form"
-									{...registerCreate('form')}
+									{...register('form')}
 									className="w-full pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								>
 									<option value="">Sélectionner...</option>
@@ -207,7 +213,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<select
 									id="category"
-									{...registerCreate('category')}
+									{...register('category')}
 									className="w-full pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								>
 									<option value="">Sélectionner...</option>
@@ -226,9 +232,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="therapeuticClass"
-									{...registerCreate('therapeuticClass')}
+									{...register('therapeuticClass')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.therapeuticClass && <p className="text-sm text-red-600">{errors.therapeuticClass.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -237,9 +244,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="ammNumber"
-									{...registerCreate('ammNumber')}
+									{...register('ammNumber')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.ammNumber && <p className="text-sm text-red-600">{errors.ammNumber.message}</p>}
 							</div>
 						</CardContent>
 					</Card>
@@ -252,11 +260,11 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<Label htmlFor="dosage" className="text-slate-700">
-									Dosage <span className="text-red-500">*</span>
+									Dosage
 								</Label>
 								<Input
 									id="dosage"
-									{...registerCreate('dosage')}
+									{...register('dosage')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 								{errors.dosage && <p className="text-sm text-red-600">{errors.dosage.message}</p>}
@@ -268,18 +276,19 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="concentration"
-									{...registerCreate('concentration')}
+									{...register('concentration')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.concentration && <p className="text-sm text-red-600">{errors.concentration.message}</p>}
 							</div>
 
 							<div className="space-y-2">
 								<Label htmlFor="unitOfDispense" className="text-slate-700">
-									Unité de dispensation <span className="text-red-500">*</span>
+									Unité de dispensation
 								</Label>
 								<Input
 									id="unitOfDispense"
-									{...registerCreate('unitOfDispense')}
+									{...register('unitOfDispense')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
 								{errors.unitOfDispense && <p className="text-sm text-red-600">{errors.unitOfDispense.message}</p>}
@@ -292,9 +301,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Input
 									id="packSize"
 									type="number"
-									{...registerCreate('packSize')}
+									{...register('packSize', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.packSize && <p className="text-sm text-red-600">{errors.packSize.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -303,9 +313,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								</Label>
 								<Input
 									id="packUnit"
-									{...registerCreate('packUnit')}
+									{...register('packUnit')}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.packUnit && <p className="text-sm text-red-600">{errors.packUnit.message}</p>}
 							</div>
 						</CardContent>
 					</Card>
@@ -320,13 +331,14 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<div className="flex items-center gap-2">
 									<Controller
 										name="requiresColdChain"
-										control={controlCreate}
+										control={control}
 										render={({ field }) => <Checkbox id="requiresColdChain" checked={field.value} onCheckedChange={field.onChange} />}
 									/>
 									<Label htmlFor="requiresColdChain" className="text-slate-700 cursor-pointer">
 										Nécessite la chaîne du froid
 									</Label>
 								</div>
+
 								<div className="space-y-2">
 									<Label className="text-slate-700">Conditions de stockage</Label>
 									<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -336,25 +348,27 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 												<span className="text-sm text-slate-700">{condition}</span>
 											</label>
 										))}
+										{errors.storageConditions && <p className="text-sm text-red-600">{errors.storageConditions.message}</p>}
 									</div>
 								</div>
 
 								<div className="space-y-4">
 									<Label className="text-slate-700">Températures de stockage</Label>
-
 									<div className="grid grid-cols-2 gap-4">
 										<div className="space-y-2">
 											<Label htmlFor="minTemp" className="text-slate-700">
 												Temp. min (°C)
 											</Label>
-											<Input id="minTemp" type="number" step="0.1" {...registerCreate('minTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
+											<Input id="minTemp" type="number" step="0.1" {...register('minTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
+											{errors.minTemp && <p className="text-sm text-red-600">{errors.minTemp.message}</p>}
 										</div>
 
 										<div className="space-y-2">
 											<Label htmlFor="maxTemp" className="text-slate-700">
 												Temp. max (°C)
 											</Label>
-											<Input id="maxTemp" type="number" step="0.1" {...registerCreate('maxTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
+											<Input id="maxTemp" type="number" step="0.1" {...register('maxTemp')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" />
+											{errors.maxTemp && <p className="text-sm text-red-600">{errors.maxTemp.message}</p>}
 										</div>
 									</div>
 								</div>
@@ -376,9 +390,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 									id="unitPriceCDF"
 									type="number"
 									step="0.01"
-									{...registerCreate('unitPriceCDF')}
+									{...register('unitPriceCDF', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.unitPriceCDF && <p className="text-sm text-red-600">{errors.unitPriceCDF.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -389,15 +404,16 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 									id="unitPriceUSD"
 									type="number"
 									step="0.0001"
-									{...registerCreate('unitPriceUSD')}
+									{...register('unitPriceUSD', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.unitPriceUSD && <p className="text-sm text-red-600">{errors.unitPriceUSD.message}</p>}
 							</div>
 
 							<div className="flex items-center gap-2 md:col-span-2">
 								<Controller
 									name="isPriceRegulated"
-									control={controlCreate}
+									control={control}
 									render={({ field }) => <Checkbox id="isPriceRegulated" checked={field.value} onCheckedChange={field.onChange} />}
 								/>
 								<Label htmlFor="isPriceRegulated" className="text-slate-700 cursor-pointer">
@@ -420,9 +436,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Input
 									id="minStockLevel"
 									type="number"
-									{...registerCreate('minStockLevel')}
+									{...register('minStockLevel', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.minStockLevel && <p className="text-sm text-red-600">{errors.minStockLevel.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -432,9 +449,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Input
 									id="criticalStockLevel"
 									type="number"
-									{...registerCreate('criticalStockLevel')}
+									{...register('criticalStockLevel', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.criticalStockLevel && <p className="text-sm text-red-600">{errors.criticalStockLevel.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -444,9 +462,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Input
 									id="reorderPoint"
 									type="number"
-									{...registerCreate('reorderPoint')}
+									{...register('reorderPoint', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.reorderPoint && <p className="text-sm text-red-600">{errors.reorderPoint.message}</p>}
 							</div>
 
 							<div className="space-y-2">
@@ -456,9 +475,10 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 								<Input
 									id="reorderQuantity"
 									type="number"
-									{...registerCreate('reorderQuantity')}
+									{...register('reorderQuantity', { valueAsNumber: true })}
 									className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary"
 								/>
+								{errors.reorderQuantity && <p className="text-sm text-red-600">{errors.reorderQuantity.message}</p>}
 							</div>
 						</CardContent>
 					</Card>
@@ -471,22 +491,14 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 						<CardContent className="space-y-4">
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 								<div className="flex items-center gap-2">
-									<Controller
-										name="isEssential"
-										control={controlCreate}
-										render={({ field }) => <Checkbox id="isEssential" checked={field.value !== null ? field.value : undefined} onCheckedChange={field.onChange} />}
-									/>
+									<Controller name="isEssential" control={control} render={({ field }) => <Checkbox id="isEssential" checked={!!field.value} onCheckedChange={field.onChange} />} />
 									<Label htmlFor="isEssential" className="text-slate-700 cursor-pointer">
 										Médicament essentiel
 									</Label>
 								</div>
 
 								<div className="flex items-center gap-2">
-									<Controller
-										name="isControlled"
-										control={controlCreate}
-										render={({ field }) => <Checkbox id="isControlled" checked={field.value !== null ? field.value : undefined} onCheckedChange={field.onChange} />}
-									/>
+									<Controller name="isControlled" control={control} render={({ field }) => <Checkbox id="isControlled" checked={!!field.value} onCheckedChange={field.onChange} />} />
 									<Label htmlFor="isControlled" className="text-slate-700 cursor-pointer">
 										Substance contrôlée
 									</Label>
@@ -497,21 +509,16 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 										<Label htmlFor="controlledSchedule" className="text-slate-700">
 											Tableau de classement
 										</Label>
-										<Input
-											id="controlledSchedule"
-											{...registerCreate('controlledSchedule')}
-											className="border-slate-200 w-full sm:w-48"
-											placeholder="I, II, III..."
-											maxLength={10}
-										/>
+										<Input id="controlledSchedule" {...register('controlledSchedule')} className="border-slate-200 w-full sm:w-48" placeholder="I, II, III..." maxLength={10} />
+										{errors.controlledSchedule && <p className="text-sm text-red-600">{errors.controlledSchedule.message}</p>}
 									</div>
 								)}
 
 								<div className="flex items-center gap-2">
 									<Controller
 										name="isProgramDrug"
-										control={controlCreate}
-										render={({ field }) => <Checkbox id="isProgramDrug" checked={field.value !== null ? field.value : undefined} onCheckedChange={field.onChange} />}
+										control={control}
+										render={({ field }) => <Checkbox id="isProgramDrug" checked={!!field.value} onCheckedChange={field.onChange} />}
 									/>
 									<Label htmlFor="isProgramDrug" className="text-slate-700 cursor-pointer">
 										Médicament de programme
@@ -523,12 +530,13 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 										<Label htmlFor="programName" className="text-slate-700">
 											Nom du programme
 										</Label>
-										<Input id="programName" {...registerCreate('programName')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" placeholder="VIH/ARV, PNLP, PNT..." />
+										<Input id="programName" {...register('programName')} className="border-none ring-0 rounded-[2px] bg-[#eff7e4]" placeholder="VIH/ARV, PNLP, PNT..." />
+										{errors.programName && <p className="text-sm text-red-600">{errors.programName.message}</p>}
 									</div>
 								)}
 
 								<div className="flex items-center gap-2">
-									<Controller name="isActive" control={controlCreate} render={({ field }) => <Checkbox id="isActive" checked={field.value} onCheckedChange={field.onChange} />} />
+									<Controller name="isActive" control={control} render={({ field }) => <Checkbox id="isActive" checked={field.value} onCheckedChange={field.onChange} />} />
 									<Label htmlFor="isActive" className="text-slate-700 cursor-pointer">
 										Actif
 									</Label>
@@ -544,10 +552,11 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 						</CardHeader>
 						<CardContent>
 							<Textarea
-								{...registerCreate('notes')}
+								{...register('notes')}
 								className="pl-3 text-gray-800 placeholder:text-gray-400 border-0 border-b rounded-none transition-all duration-200 focus-visible:ring-0 border-gray-300 focus-visible:bg-white focus-visible:border-primary min-h-[100px]"
 								placeholder="Notes complémentaires..."
 							/>
+							{errors.notes && <p className="text-sm text-red-600">{errors.notes.message}</p>}
 						</CardContent>
 					</Card>
 
@@ -582,4 +591,5 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 		</div>
 	);
 };
+
 export default DrugForm;
