@@ -28,18 +28,58 @@ export class PersonnalDateFormatter {
     return new Date(dateInTimestamp);
   };
 
+  /**
+   * Convertit une chaine timestampTz (format de dates dans POSTGRESQL) en une date js mais comme une chaine string
+   *
+   * @param dateInTimestamp Date au format timestampTz (string)
+   * @returns La même date au format Date de js mais comme une chaine string
+   */
   static toDate = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleString("fr-FR");
   };
 
-  static toDateTime = (dateInTimestamp: string) => {
+  /**
+   * Convertit une chaine timestampTz (format de dates dans POSTGRESQL) en une date js mais comme une chaine string, avec en plus l'heure (hh:mm)
+   *
+   * @param dateInTimestamp Date au format timestampTz (string)
+   * @returns La même date au format Date de js mais comme une chaine string, mais avec en plus l'heure (hh:mm)
+   */
+  static toDateTime = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleString("fr-FR", {
       dateStyle: "short",
       timeStyle: "short",
     });
   };
 
-  static toLongDate = (dateInTimestamp: string) => {
+  /**
+   * Convertit une chaine timestampTz (format de dates dans POSTGRESQL) en une date js mais comme une chaine string, avec en plus l'heure (hh:mm:ss)
+   *
+   * @param dateInTimestamp Date au format timestampTz (string)
+   * @returns La même date au format Date de js mais comme une chaine string, mais avec en plus l'heure (hh:mm:ss)
+   */
+  static toDateTimeSecond = (dateInTimestamp: string): string => {
+    return new Date(dateInTimestamp).toLocaleString("fr-FR", {
+      dateStyle: "short",
+      timeStyle: "short",
+      second: "2-digit",
+    });
+  };
+
+  /**
+   * Convertit une chaine timestampTz (format de dates dans POSTGRESQL) en une date js mais comme une chaine string, avec en plus l'heure (hh:mm:secondes décimales)
+   *
+   * @param dateInTimestamp Date au format timestampTz (string)
+   * @returns La même date au format Date de js mais comme une chaine string, mais avec en plus l'heure (hh:mm:secondes décimales)
+   */
+  static toDatePreciseTime = (dateInTimestamp: string): string => {
+    return new Date(dateInTimestamp).toLocaleString("fr-FR", {
+      dateStyle: "short",
+      timeStyle: "short",
+      second: "numeric",
+    });
+  };
+
+  static toLongDate = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleDateString("fr-FR", {
       weekday: "long",
       day: "numeric",
@@ -48,7 +88,7 @@ export class PersonnalDateFormatter {
     });
   };
 
-  static toLongDateTime = (dateInTimestamp: string) => {
+  static toLongDateTime = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleDateString("fr-FR", {
       weekday: "long",
       day: "numeric",
@@ -59,18 +99,18 @@ export class PersonnalDateFormatter {
     });
   };
 
-  static toIsoDate = (dateInTimestamp: string) => {
+  static toIsoDate = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toISOString().split("T")[0];
   };
 
-  static toTime = (dateInTimestamp: string) => {
+  static toTime = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleTimeString("fr-FR", {
       hour: "2-digit",
       minute: "2-digit",
     });
   };
 
-  static toTimeWithSecond = (dateInTimestamp: string) => {
+  static toTimeWithSecond = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleTimeString("fr-FR", {
       hour: "2-digit",
       minute: "2-digit",
@@ -78,7 +118,7 @@ export class PersonnalDateFormatter {
     });
   };
 
-  static toPreciseTime = (dateInTimestamp: string) => {
+  static toPreciseTime = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleTimeString("fr-FR", {
       hour: "2-digit",
       minute: "2-digit",
