@@ -1,17 +1,34 @@
 export class PersonnalDateFormatter {
-  static toTimestamptz = (date: Date) => {
+  /**
+   * Convertit une date au format Date en une chaine timestampTz (format de dates dans POSTGRESQL)
+   *
+   * @param date Date au format Date
+   * @returns La meme date en chaine timestampTz
+   */
+  static toTimestamptz = (date: Date): string => {
     return date.toISOString();
   };
 
-  static actualTimestamptz = () => {
+  /**
+   * Donne la date actuelle mais au format timestampTz
+   *
+   * @returns La date actuelle chaine timestampTz
+   */
+  static actualTimestamptz = (): string => {
     return new Date().toISOString();
   };
 
-  static fromTimestampTz = (dateInTimestamp: string) => {
+  /**
+   * Convertit une chaine timestampTz (format de dates dans POSTGRESQL) en une date au format Date
+   *
+   * @param dateInTimestamp Date au format timestampTz (string)
+   * @returns La même date au format Date de js
+   */
+  static fromTimestampTz = (dateInTimestamp: string): Date => {
     return new Date(dateInTimestamp);
   };
 
-  static toDate = (dateInTimestamp: string) => {
+  static toDate = (dateInTimestamp: string): string => {
     return new Date(dateInTimestamp).toLocaleString("fr-FR");
   };
 
