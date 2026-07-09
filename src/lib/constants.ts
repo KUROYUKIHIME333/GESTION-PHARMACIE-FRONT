@@ -1,37 +1,78 @@
+/**
+ * URL de base de l'API backend.
+ * Utilise la variable d'environnement NEXT_PUBLIC_API_URL si définie,
+ * sinon fallback sur localhost:3001 (développement local).
+ */
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+/**
+ * Collection des endpoints API utilisés dans l'application.
+ * Organisés par domaine fonctionnel (auth, drugs, batches, etc.).
+ */
 export const API_ENDPOINTS = {
-  // AUTH
+  // AUTHENTIFICATION
+  /** POST - Connexion utilisateur (email + password) */
   login: "/api/auth/login",
+  /** POST - Inscription d'un nouvel utilisateur */
   register: "/api/auth/register",
+  /** POST - Déconnexion (invalidation du token côté serveur) */
   logout: "/api/auth/logout",
+  /** POST - Changement de mot de passe */
   change_password: "/api/auth/change-password",
+  /** GET - Récupération de l'utilisateur connecté */
   get_me: "/api/auth/me",
-  // DRUG
+
+  // MÉDICAMENTS
+  /** CRUD - Gestion du catalogue de médicaments */
   drugs: "/api/drugs",
-  // BATCHES
+
+  // LOTS
+  /** CRUD - Gestion des lots de stock */
   batches: "/api/batches",
+
   // STOCK
+  /** GET/POST - Mouvements et niveaux de stock */
   stocks: "/api/stock",
-  // PATIENT
+
+  // PATIENTS
+  /** CRUD - Dossiers patients */
   patients: "/api/patients",
-  // PRESCRIPTIONS
+
+  // ORDONNANCES
+  /** CRUD - Prescriptions médicales */
   prescriptions: "/api/prescriptions",
-  //DISPENSATIONS
+
+  // DISPENSATIONS
+  /** POST - Distribution de médicaments aux patients */
   dispensations: "/api/dispensations",
-  // ALERTS
+
+  // ALERTES
+  /** GET - Alertes de stock, péremption, etc. */
   alerts: "/api/alerts",
-  // DASHBOARD
+
+  // TABLEAU DE BORD
+  /** GET - Statistiques et indicateurs */
   stats: "/api/dashboard/stats",
 };
 
+/**
+ * Nom de l'application affiché dans l'interface (titres, meta, etc.).
+ */
 export const APP_NAME = "OfficIn";
 
+/**
+ * Items de navigation du sidebar.
+ * Chaque item définit un label, un chemin href et une clé d'icône Lucide.
+ * Les items commentés sont des fonctionnalités futures/planifiées.
+ */
 export const NAV_ITEMS = [
   {
+    /** Label affiché dans le menu */
     label: "Tableau de bord",
+    /** Route Next.js */
     href: "/dashboard",
+    /** Clé correspondant à l'icône Lucide (mappée dans iconMap du SideBar) */
     icon: "LayoutDashboard",
   },
   {
@@ -66,6 +107,10 @@ export const NAV_ITEMS = [
   // },
 ] as const;
 
+/**
+ * Mapping des rôles utilisateurs vers leurs labels en français.
+ * Utilisé dans le profil utilisateur et les interfaces d'administration.
+ */
 export const ROLE_LABELS: Record<string, string> = {
   SUPERADMIN: "Super Administrateur",
   PHARMACIST: "Pharmacien",
@@ -77,7 +122,12 @@ export const ROLE_LABELS: Record<string, string> = {
   AUDITOR: "Auditeur",
 };
 
-// Labels pour les enums
+//  LABELS D'ENUMS — Traductions en français pour l'affichage UI
+
+/**
+ * Labels des formes galéniques (DrugFormEnum).
+ * Utilisé dans les formulaires, tableaux et fiches de détail.
+ */
 export const DRUG_FORM_LABELS: Record<string, string> = {
   TABLET: "Comprimé",
   CAPSULE: "Gélule",
@@ -101,6 +151,10 @@ export const DRUG_FORM_LABELS: Record<string, string> = {
   PESSARY: "Ovule",
   OTHER: "Autre",
 };
+
+/**
+ * Labels des catégories thérapeutiques (DrugCategoryEnum).
+ */
 export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   ANTIRETROVIRAL: "Antirétroviral",
   ANTIMALARIAL: "Antipaludéen",
@@ -128,6 +182,11 @@ export const DRUG_CATEGORY_LABELS: Record<string, string> = {
   DIAGNOSTIC_REAGENT: "Réactif de diagnostic",
   OTHER: "Autre",
 };
+
+/**
+ * Labels des conditions de stockage (StorageConditionEnum).
+ * Affichés dans les fiches médicaments et alertes de stockage.
+ */
 export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   ROOM_TEMP: "Température ambiante",
   COOL: "Zone fraîche (8-15°C)",
@@ -137,24 +196,41 @@ export const STORAGE_CONDITION_LABELS: Record<string, string> = {
   PROTECT_HUMIDITY: "Protéger de l'humidité",
   CONTROLLED_SUBSTANCE: "Substance contrôlée",
 };
+
+/**
+ * Labels des genres (PatientGenderEnum).
+ */
 export const GENDER_LABELS: Record<string, string> = {
   MALE: "Masculin",
   FEMALE: "Féminin",
   OTHER: "Autre",
   UNKNOWN: "Non précisé",
 };
+
+/**
+ * Labels des niveaux de gravité des allergies.
+ */
 export const ALLERGY_SEVERITY_LABELS: Record<string, string> = {
   MILD: "Légère",
   MODERATE: "Modérée",
   SEVERE: "Sévère",
   ANAPHYLAXIS: "Anaphylaxie",
 };
+
+/**
+ * Classes Tailwind pour le color-coding des allergies selon leur gravité.
+ * Utilisé pour les badges/pills dans les dossiers patients.
+ */
 export const ALLERGY_SEVERITY_COLORS: Record<string, string> = {
   MILD: "bg-yellow-100 text-yellow-700 border-yellow-200",
   MODERATE: "bg-orange-100 text-orange-700 border-orange-200",
   SEVERE: "bg-red-100 text-red-700 border-red-200",
   ANAPHYLAXIS: "bg-red-200 text-red-800 border-red-300 font-semibold",
 };
+
+/**
+ * Labels des statuts d'ordonnance (PrescriptionStatusEnum).
+ */
 export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   DRAFT: "Brouillon",
   PENDING: "En attente",
@@ -163,6 +239,11 @@ export const PRESCRIPTION_STATUS_LABELS: Record<string, string> = {
   CANCELLED: "Annulée",
   EXPIRED: "Expirée",
 };
+
+/**
+ * Classes Tailwind pour le color-coding des statuts d'ordonnance.
+ * Permet un repère visuel immédiat de l'état d'une prescription.
+ */
 export const PRESCRIPTION_STATUS_COLORS: Record<string, string> = {
   DRAFT: "bg-slate-100 text-slate-600 border-slate-200",
   PENDING: "bg-sky-100 text-sky-700 border-sky-200",
