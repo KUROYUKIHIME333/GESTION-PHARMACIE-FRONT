@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/src/stores/auth.store';
 import { api } from '@/src/lib/api';
 import { User } from '../types';
-import { redirect } from 'next/navigation';
 
 export function useAuth() {
 	const router = useRouter();
@@ -15,15 +14,24 @@ export function useAuth() {
 		const checkAuth = async () => {
 			try {
 				const response = await api.get('/api/auth/me');
-				if (response && typeof response === 'object' && 'success' in response && 'data' in response && response.data && typeof response.data === 'object' && 'user' in response.data) {
+				if (
+					response &&
+					typeof response === 'object' &&
+					'success' in response &&
+					response.success &&
+					'data' in response &&
+					response.data &&
+					typeof response.data === 'object' &&
+					'user' in response.data
+				) {
 					setUser(response.data.user as User);
 				} else {
 					setUser(null);
-					redirect('/login');
+					// Pas de redirect ici — le middleware ou le composant gère ça
 				}
 			} catch (error: unknown) {
 				setUser(null);
-				redirect('/login');
+				// Pas de redirect ici non plus
 			} finally {
 				setLoading(false);
 			}
@@ -54,7 +62,7 @@ export function useAuth() {
 			}
 
 			if (response && typeof response === 'object' && 'success' in response && !response.success && 'message' in response && response.message) {
-				return { success: false, error: response.message };
+				return { success: false, error: response.message as string };
 			}
 
 			return { success: false, error: 'Réponse invalide du serveur' };
@@ -68,27 +76,22 @@ export function useAuth() {
 		try {
 			const disconnection = await api.post('/api/auth/logout', {});
 
-			if (
-				disconnection &&
-				typeof disconnection === 'object' &&
-				'success' in disconnection &&
-				disconnection.success &&
-				'data' in disconnection &&
-				disconnection.data &&
-				typeof disconnection.data === 'object' &&
-				'user' in disconnection.data &&
-				disconnection.data?.user
-			) {
-				setUser(disconnection.data.user as User);
-				logout();
-				router.replace('/lofin');
-			}
+			// On appelle toujours logout côté client, même si l'API échoue
+			logout();
 
-			if (disconnection && typeof disconnection === 'object' && 'success' in disconnection && !disconnection.success && 'message' in disconnection && disconnection.message) {
-				return { success: false, error: disconnection.message };
-			}
-			return { success: false, error: 'Réponse invalide du serveur' };
+			// Redirection après déconnexion
+			router.replace('/login');
+
+			// Vider l'historique pour empêcher le retour arrière
+			window.history.replaceState(null, '', '/login');
+
+			return { success: true };
 		} catch (error) {
+			// Même en cas d'erreur API, on déconnecte côté client
+			logout();
+			router.replace('/login');
+			window.history.replaceState(null, '', '/login');
+
 			const message = 'Erreur de déconnexion';
 			return { success: false, error: message };
 		}
