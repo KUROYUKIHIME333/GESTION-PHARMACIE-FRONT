@@ -11,8 +11,6 @@ import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
 import DrugForm from '@/src/components/forms/DrugForm';
 import type { Drug } from '@/src/schemas/drug.schemas';
 
-// ─── Helpers ───────────────────────────────────────────────────────────────
-
 const formatDate = (dateString: string) => {
 	return new Date(dateString).toLocaleDateString('fr-FR', {
 		day: '2-digit',
@@ -46,8 +44,7 @@ const storageConditionLabel: Record<string, string> = {
 	CONTROLLED_SUBSTANCE: 'Substance contrôlée',
 };
 
-// ─── Composant Section ─────────────────────────────────────────────────────
-
+// Composant Section
 interface DetailSectionProps {
 	title: string;
 	icon: React.ReactNode;
@@ -83,8 +80,7 @@ function DetailField({ label, value, className = '' }: DetailFieldProps) {
 	);
 }
 
-// ─── Page principale ───────────────────────────────────────────────────────
-
+// Page principale
 export default function DrugDetailPage() {
 	const { id } = useParams<{ id: string }>();
 	const router = useRouter();
@@ -135,7 +131,7 @@ export default function DrugDetailPage() {
 
 	return (
 		<main className="flex-1 flex flex-col gap-6 overflow-y-auto p-3 md:p-6 lg:p-8">
-			{/* ─── Header ───────────────────────────────────────────────────────── */}
+			{/*Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div className="flex items-center gap-3">
 					<Link href="/drugs">
@@ -167,7 +163,7 @@ export default function DrugDetailPage() {
 				</div>
 			</div>
 
-			{/* ─── Badges de statut ─────────────────────────────────────────────── */}
+			{/*Badges de statut */}
 			<div className="flex flex-wrap gap-2">
 				{booleanBadge(drug.isActive, 'Actif', 'Inactif')}
 				{drug.isEssential && (
@@ -202,7 +198,7 @@ export default function DrugDetailPage() {
 				)}
 			</div>
 
-			{/* ─── Grille de sections ───────────────────────────────────────────── */}
+			{/*Grille de sections */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 				{/* Informations de base */}
 				<DetailSection title="Informations de base" icon={<Barcode size={20} />}>
@@ -298,14 +294,14 @@ export default function DrugDetailPage() {
 				</DetailSection>
 			</div>
 
-			{/* ─── Notes ────────────────────────────────────────────────────────── */}
+			{/*Notes*/}
 			{drug.notes && (
 				<DetailSection title="Notes" icon={<FileText size={20} />}>
 					<p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{drug.notes}</p>
 				</DetailSection>
 			)}
 
-			{/* ─── Métadonnées ──────────────────────────────────────────────────── */}
+			{/*Métadonnées*/}
 			<div className="flex flex-col sm:flex-row gap-2 text-xs text-slate-400 border-t border-[#C1C7CB]/50 pt-4">
 				<span className="flex items-center gap-1">
 					<Calendar size={12} />
@@ -318,7 +314,7 @@ export default function DrugDetailPage() {
 				</span>
 			</div>
 
-			{/* ─── Dialogs ──────────────────────────────────────────────────────── */}
+			{/*Dialogs ─ */}
 			<ConfirmDialog
 				open={showDeleteDialog}
 				onOpenChange={setShowDeleteDialog}
