@@ -7,8 +7,9 @@ import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import Link from 'next/link';
 import { Pagination } from '@/src/components/ui/pagination';
+import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
 import { useDrugStore } from '@/src/stores/drugs.store';
-import Spinner from '@/src/components/layouts/Spinner';
+import Spinner from '@/src/components/ui/spinner';
 import DrugForm from '@/src/components/forms/DrugForm';
 import type { Drug } from '@/src/schemas/drug.schemas';
 
@@ -50,7 +51,7 @@ export default function OfficInInventory() {
 	const totalPages = Math.ceil(filteredDrugs.length / LIMIT);
 
 	return (
-		<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-8">
+		<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-3 md:p-6 lg:p-8">
 			{/* Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:justify-between sm:items-center gap-4 sm:gap-0">
 				{/* Partie Gauche : Titre et compteur */}
@@ -199,42 +200,21 @@ export default function OfficInInventory() {
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
 
 			{/*  MODALE DE CONFIRMATION DE SUPPRESSION  */}
-			{drugToDelete && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4">
-					<div className="bg-white w-full max-w-sm rounded-[2px] shadow-2xl border border-[#C1C7CB]/60 overflow-hidden">
-						{/* Header avec accent visuel */}
-						<div className="bg-red-50 px-6 py-4 border-b border-red-100">
-							<h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
-								<span className="w-2 h-2 rounded-full bg-red-500" />
-								Confirmer la suppression
-							</h3>
-						</div>
-
-						{/* Corps */}
-						<div className="px-6 py-5">
-							<p className="text-slate-600 text-sm leading-relaxed">
-								Êtes-vous sûr de vouloir supprimer <span className="font-semibold text-slate-900">{drugToDelete.name}</span> ? Cette action est irréversible.
-							</p>
-						</div>
-
-						{/* Footer actions */}
-						<div className="px-6 py-4 bg-slate-50 flex justify-end gap-3">
-							<Button variant="ghost" onClick={() => setDrugToDelete(null)} className="text-slate-500 font-semibold hover:text-slate-700 hover:bg-slate-200 rounded-[2px] px-4">
-								Annuler
-							</Button>
-							<Button
-								onClick={() => {
-									deleteDrug(drugToDelete.id);
-									setDrugToDelete(null);
-								}}
-								className="text-white font-semibold bg-red-600 hover:bg-red-700 rounded-[2px] px-5 shadow-sm"
-							>
-								Supprimer
-							</Button>
-						</div>
-					</div>
-				</div>
-			)}
+			<ConfirmDialog
+				open={!!drugToDelete}
+				onOpenChange={(open) => !open && setDrugToDelete(null)}
+				title="Confirmer la suppression"
+				description={drugToDelete ? `Êtes-vous sûr de vouloir supprimer ${drugToDelete.name} ? Cette action est irréversible.` : ''}
+				onConfirm={() => {
+					if (drugToDelete) {
+						deleteDrug(drugToDelete.id);
+						setDrugToDelete(null);
+					}
+				}}
+				confirmText="Supprimer"
+				cancelText="Annuler"
+				variant="destructive"
+			/>
 
 			{/*  MODALE DE CRÉATION / MODIFICATION (DrugForm wrapper) */}
 			{!isHiddenState && modeState && (

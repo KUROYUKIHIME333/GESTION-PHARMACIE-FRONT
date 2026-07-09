@@ -11,7 +11,7 @@ import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
-import Spinner from '../layouts/Spinner';
+import Spinner from '../ui/spinner';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface DrugFormProps {

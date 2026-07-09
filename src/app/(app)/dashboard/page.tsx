@@ -5,7 +5,7 @@ import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus } from 'lucide
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { useDashboardStore } from '@/src/stores/dashboard.store';
-import Spinner from '@/src/components/layouts/Spinner';
+import Spinner from '@/src/components/ui/spinner';
 
 const Dashboard = () => {
 	const { stats, isLoading, isError, lastError, fetchStats } = useDashboardStore();
