@@ -105,11 +105,17 @@ const SideBar = ({ mobileOpen, onToggleMobile, onCloseMobile }: SideBarProps) =>
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const handleLogoutEffects = () => {
-		logout();
-		// Remplace l'URL courante par /login sans ajouter à l'historique
-		window.history.replaceState(null, '', '/login');
-		router.replace('/login');
+	const handleLogoutEffects = async () => {
+		const result = await logout();
+		if (result.success) {
+			window.history.replaceState(null, '', '/login');
+			router.replace('/login');
+		} else {
+			console.error('Erreur déconnexion:', result.error);
+			// On déconnecte quand même côté client
+			window.history.replaceState(null, '', '/login');
+			router.replace('/login');
+		}
 	};
 
 	// Empecher le scroll du body quand le menu mobile est ouvert
