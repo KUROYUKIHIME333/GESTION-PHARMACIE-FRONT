@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Search, Plus, Eye, Pencil, Trash2 } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
+import { Search, Plus } from 'lucide-react';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
-import Link from 'next/link';
+import DataTable, { Column } from '@/src/components/ui/data-table';
+import RowActionsModal from '@/src/components/ui/raw-actions-modal';
 import { Pagination } from '@/src/components/ui/pagination';
 import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
 import { useDrugStore } from '@/src/stores/drugs.store';
-import Spinner from '@/src/components/ui/spinner';
 import DrugForm from '@/src/components/forms/DrugForm';
 import type { Drug } from '@/src/schemas/drug.schemas';
 
@@ -25,6 +24,8 @@ export default function OfficInInventory() {
 	const [modeState, setModeState] = useState<'create' | 'edit' | null>(null);
 	const [isHiddenState, setIsHiddenState] = useState<boolean>(true);
 	const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
+	const [selectedRowForActions, setSelectedRowForActions] = useState<Drug | null>(null);
+	const [isActionsModalOpen, setIsActionsModalOpen] = useState(false);
 
 	const LIMIT = 20;
 
@@ -49,6 +50,113 @@ export default function OfficInInventory() {
 	}, [filteredDrugs, page]);
 
 	const totalPages = Math.ceil(filteredDrugs.length / LIMIT);
+
+	// AJOUTER ces handlers :
+	const handleView = (drug: Drug) => {
+		// Navigation vers la page de détail
+		window.location.href = `/drugs/${drug.id}`;
+	};
+
+	const handleEdit = (drug: Drug) => {
+		setModeState('edit');
+		setSelectedDrug(drug);
+		setIsHiddenState(false);
+	};
+
+	const handleDelete = (drug: Drug) => {
+		setDrugToDelete({ id: drug.id, name: drug.name });
+	};
+
+	const handleRowDoubleClick = (drug: Drug) => {
+		// Ouvrir le modal d'actions sur mobile (détecté par la classe sm:)
+		// Ou toujours ouvrir — le modal est responsive
+		setSelectedRowForActions(drug);
+		setIsActionsModalOpen(true);
+	};
+
+	// AJOUTER avant le return :
+	const columns: Column<Drug>[] = [
+		{
+			key: 'code',
+			header: 'Code',
+			render: (drug) => <span className="font-mono text-primary">{drug.code}</span>,
+		},
+		{
+			key: 'name',
+			header: 'Nom',
+			render: (drug) => <span className="font-bold text-primary">{drug.name}</span>,
+		},
+		{
+			key: 'genericName',
+			header: 'Nom générique / Produit',
+			render: (drug) => <span className="font-mono text-primary">{drug.genericName}</span>,
+		},
+		{
+			key: 'dci',
+			header: 'DCI',
+			hidden: 'md',
+			render: (drug) => <span className="text-secondary">{drug.dci}</span>,
+		},
+		{
+			key: 'form',
+			header: 'Forme',
+			hidden: 'lg',
+			render: (drug) => <span className="text-secondary">{drug.form}</span>,
+		},
+		{
+			key: 'category',
+			header: 'Catégorie',
+			hidden: 'lg',
+			render: (drug) => <span className="text-secondary">{drug.category}</span>,
+		},
+		{
+			key: 'batches',
+			header: 'Lots',
+			align: 'center',
+			cellClassName: 'font-mono',
+			render: (drug) => drug._count?.batches || 0,
+		},
+		{
+			key: 'unitPrice',
+			header: 'Prix unitaire',
+			align: 'center',
+			cellClassName: 'font-mono',
+			render: (drug) => `${drug.unitPriceCDF} Fc`,
+		},
+		{
+			key: 'status',
+			header: 'Statut',
+			align: 'center',
+			render: (drug) => (
+				<div className="flex items-center justify-center gap-2 text-sm">
+					<span className={`w-2 h-2 rounded-full ${!drug.isActive ? 'bg-red-400' : 'bg-green-500'}`} />
+					{drug.isActive ? 'Actif' : 'Inactif'}
+				</div>
+			),
+		},
+		{
+			key: 'essential',
+			header: 'Essentiel',
+			align: 'center',
+			render: (drug) => (
+				<div className="flex items-center justify-center gap-2 text-sm">
+					<span className={`w-2 h-2 rounded-full ${!drug.isEssential ? 'bg-red-400' : 'bg-green-500'}`} />
+					{drug.isEssential ? 'OUI' : 'NON'}
+				</div>
+			),
+		},
+		{
+			key: 'controlled',
+			header: 'Controlé',
+			align: 'center',
+			render: (drug) => (
+				<div className="flex items-center justify-center gap-2 text-sm">
+					<span className={`w-2 h-2 rounded-full ${!drug.isControlled ? 'bg-red-400' : 'bg-green-500'}`} />
+					{drug.isControlled ? 'OUI' : 'NON'}
+				</div>
+			),
+		},
+	];
 
 	return (
 		<main className="flex-1 flex flex-col gap-8 overflow-y-auto p-3 md:p-6 lg:p-8">
@@ -104,97 +212,19 @@ export default function OfficInInventory() {
 			</div>
 
 			{/* Table Container */}
-			<div className="bento-card bg-white border border-outline-variant overflow-hidden">
-				<Table className="no-scrollbar">
-					<TableHeader className="bg-surface-container-low">
-						<TableRow className="bg-[#F9F9FA]">
-							<TableHead className="text-xs uppercase font-semibold text-slate-700">Code</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700">Nom</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700">Nom générique / Produit</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden md:table-cell">DCI</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden lg:table-cell">Forme</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 hidden lg:table-cell">Catégorie</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-center">Lots</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-center">Prix unitaire</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-center">Statut</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-center">Essentiel</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-center">Controlé</TableHead>
-							<TableHead className="text-xs uppercase font-semibold text-slate-700 text-right"></TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{isLoading ? (
-							<TableRow>
-								<TableCell colSpan={12} className="text-center py-10">
-									<Spinner />
-								</TableCell>
-							</TableRow>
-						) : lastError ? (
-							<TableRow>
-								<TableCell colSpan={12} className="text-center py-10">
-									<span className="text-center font-mono">{lastError}</span>
-								</TableCell>
-							</TableRow>
-						) : (
-							paginatedDrugs?.map((drug) => (
-								<TableRow key={drug.id} className="group hover:bg-surface-container-low/50">
-									<TableCell className="font-mono text-primary">{drug.code}</TableCell>
-									<TableCell>
-										<span className="font-bold text-primary">{drug.name}</span>
-									</TableCell>
-									<TableCell className="font-mono text-primary">{drug.genericName}</TableCell>
-									<TableCell className="text-secondary hidden md:table-cell">{drug.dci}</TableCell>
-									<TableCell className="text-secondary hidden lg:table-cell">{drug.form}</TableCell>
-									<TableCell className="text-secondary hidden lg:table-cell">{drug.category}</TableCell>
-									<TableCell className="text-center font-mono">{drug._count?.batches || 0}</TableCell>
-									<TableCell className="text-center font-mono">{`${drug.unitPriceCDF} Fc`}</TableCell>
-									<TableCell>
-										<div className="flex items-center justify-center gap-2 text-sm">
-											<span className={`w-2 h-2 rounded-full ${!drug.isActive ? 'bg-red-400' : 'bg-green-500'}`} />
-											{drug.isActive ? 'Actif' : 'Inactif'}
-										</div>
-									</TableCell>
-									<TableCell>
-										<div className="flex items-center justify-center gap-2 text-sm">
-											<span className={`w-2 h-2 rounded-full ${!drug.isEssential ? 'bg-red-400' : 'bg-green-500'}`} />
-											{drug.isEssential ? 'OUI' : 'NON'}
-										</div>
-									</TableCell>
-									<TableCell>
-										<div className="flex items-center justify-center gap-2 text-sm">
-											<span className={`w-2 h-2 rounded-full ${!drug.isControlled ? 'bg-red-400' : 'bg-green-500'}`} />
-											{drug.isControlled ? 'OUI' : 'NON'}
-										</div>
-									</TableCell>
-									<TableCell className="text-right">
-										<div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-											<Button variant="ghost" className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(25,119,119)]">
-												<Link href={`/drugs/${drug.id}`}>
-													<Eye size={40} />
-												</Link>
-											</Button>
-											<Button
-												variant="ghost"
-												onClick={() => {
-													setModeState('edit');
-													setSelectedDrug(drug);
-													setIsHiddenState(false);
-												}}
-												className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]"
-											>
-												<Pencil size={40} />
-											</Button>
-											<Button variant="ghost" onClick={() => setDrugToDelete({ id: drug.id, name: drug.name })} className="cursor-pointer px-2 text-slate-400 hover:text-red-600">
-												<Trash2 size={40} />
-											</Button>
-										</div>
-									</TableCell>
-								</TableRow>
-							))
-						)}
-					</TableBody>
-				</Table>
-			</div>
+			{/* SUPPRIMER tout le div "Table Container" et son contenu, et REMPLACER par : */}
+			<DataTable
+				data={paginatedDrugs}
+				columns={columns}
+				isLoading={isLoading}
+				error={lastError}
+				emptyMessage="Aucun médicament trouvé"
+				actions={{ canView: true, canEdit: true, canDelete: true }}
+				onView={handleView}
+				onEdit={handleEdit}
+				onDelete={handleDelete}
+				onRowDoubleClick={handleRowDoubleClick}
+			/>
 
 			{/* Pagination locale */}
 			<Pagination currentPage={page} totalPages={totalPages || 1} onPageChange={setPage} totalItems={filteredDrugs.length} itemsPerPage={LIMIT} />
@@ -214,6 +244,19 @@ export default function OfficInInventory() {
 				confirmText="Supprimer"
 				cancelText="Annuler"
 				variant="destructive"
+			/>
+
+			{/* modal d'actions mobile : */}
+			<RowActionsModal
+				isOpen={isActionsModalOpen}
+				onClose={() => setIsActionsModalOpen(false)}
+				rowName={selectedRowForActions?.name}
+				onView={selectedRowForActions ? () => handleView(selectedRowForActions) : undefined}
+				onEdit={selectedRowForActions ? () => handleEdit(selectedRowForActions) : undefined}
+				onDelete={selectedRowForActions ? () => handleDelete(selectedRowForActions) : undefined}
+				canView={true}
+				canEdit={true}
+				canDelete={true}
 			/>
 
 			{/*  MODALE DE CRÉATION / MODIFICATION (DrugForm wrapper) */}
