@@ -80,7 +80,8 @@ export function useAuth() {
 				disconnection.data?.user
 			) {
 				setUser(disconnection.data.user as User);
-				redirect('/login');
+				logout();
+				router.replace('/lofin');
 			}
 
 			if (disconnection && typeof disconnection === 'object' && 'success' in disconnection && !disconnection.success && 'message' in disconnection && disconnection.message) {
@@ -95,7 +96,7 @@ export function useAuth() {
 
 	const requireAuth = () => {
 		if (!isLoading && !isAuthenticated) {
-			router.push('/login');
+			router.replace('/login');
 		}
 	};
 

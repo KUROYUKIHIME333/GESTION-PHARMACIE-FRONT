@@ -1,4 +1,4 @@
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { NAV_ITEMS } from '@/src/lib/constants';
 import { useEffect } from 'react';
 import { useAuth } from '@/src/hooks/useAuth.hooks';
@@ -98,11 +98,19 @@ const SidebarContent = ({ pathname, user, onLogout, onNavClick, showCloseButton 
 			</div>
 		</>
 	);
-}
+};
 
-const SideBar=({ mobileOpen, onToggleMobile, onCloseMobile }: SideBarProps)=> {
+const SideBar = ({ mobileOpen, onToggleMobile, onCloseMobile }: SideBarProps) => {
 	const { user, logout } = useAuth();
+	const router = useRouter();
 	const pathname = usePathname();
+
+	const handleLogoutEffects = () => {
+		logout();
+		// Remplace l'URL courante par /login sans ajouter à l'historique
+		window.history.replaceState(null, '', '/login');
+		router.replace('/login');
+	};
 
 	// Empecher le scroll du body quand le menu mobile est ouvert
 	useEffect(() => {
@@ -123,17 +131,13 @@ const SideBar=({ mobileOpen, onToggleMobile, onCloseMobile }: SideBarProps)=> {
 	return (
 		<>
 			{/*  BOUTON HAMBURGER */}
-			<button
-				onClick={onToggleMobile}
-				className="lg:hidden fixed top-3 left-4 z-50 p-3 transition-all duration-200 cursor-pointer"
-				aria-label="Ouvrir le menu"
-			>
+			<button onClick={onToggleMobile} className="lg:hidden fixed top-3 left-4 z-50 p-3 transition-all duration-200 cursor-pointer" aria-label="Ouvrir le menu">
 				<Menu size={20} className="text-slate-700 hover:w-6 hover:h-6 dark-official-green-hover" />
 			</button>
 
 			{/*  SIDEBAR DESKTOP */}
 			<div className="hidden lg:flex h-screen w-1/5 sticky top-0 flex-col bg-[#eff3f5] px-4 border-r border-[#C1C7CB]">
-				<SidebarContent pathname={pathname} user={user} onLogout={logout} onNavClick={() => {}} />
+				<SidebarContent pathname={pathname} user={user} onLogout={handleLogoutEffects} onNavClick={() => {}} />
 			</div>
 
 			{/*  SIDEBAR MOBILE / TABLETTE — Drawer glissant avec overlay */}
@@ -148,10 +152,10 @@ const SideBar=({ mobileOpen, onToggleMobile, onCloseMobile }: SideBarProps)=> {
 					mobileOpen ? 'translate-x-0' : '-translate-x-full'
 				}`}
 			>
-				<SidebarContent pathname={pathname} user={user} onLogout={logout} onNavClick={onCloseMobile} showCloseButton={true} />
+				<SidebarContent pathname={pathname} user={user} onLogout={handleLogoutEffects} onNavClick={onCloseMobile} showCloseButton={true} />
 			</div>
 		</>
 	);
-}
+};
 
 export default SideBar;
