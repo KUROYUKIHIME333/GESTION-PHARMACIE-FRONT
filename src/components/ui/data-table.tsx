@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/src/components/ui/table';
-import Spinner from '@/src/components/ui/spinner';
+import Pulser from '@/src/components/ui/pulser';
 import { Button } from '@/src/components/ui/button';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 
@@ -111,7 +111,7 @@ export default function DataTable<T extends { id: string }>({
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={colCount} className="text-center py-10">
-                <Spinner />
+                <Pulser />
               </TableCell>
             </TableRow>
           ) : error ? (

@@ -11,7 +11,7 @@ import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
-import Spinner from '../ui/spinner';
+import Pulser from '../ui/pulser';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface DrugFormProps {
@@ -577,7 +577,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 							className={`flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] ${isLoading ? 'bg-[#4B866B]' : 'bg-[#56AC35]'} rounded-[2px]`}
 						>
 							{isLoading ? (
-								<Spinner />
+								<Pulser />
 							) : (
 								<>
 									<Pencil size={18} />

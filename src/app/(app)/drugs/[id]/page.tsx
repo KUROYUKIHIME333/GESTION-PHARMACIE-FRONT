@@ -10,16 +10,8 @@ import Link from 'next/link';
 import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
 import DrugForm from '@/src/components/forms/DrugForm';
 import type { Drug } from '@/src/schemas/drug.schemas';
-
-const formatDate = (dateString: string) => {
-	return new Date(dateString).toLocaleDateString('fr-FR', {
-		day: '2-digit',
-		month: '2-digit',
-		year: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit',
-	});
-};
+import { PersonnalDateFormatter } from '@/src/lib/dates';
+import Pulser from '@/src/components/ui/pulser';
 
 const formatPrice = (value: string | number | null) => {
 	if (value === null || value === undefined || value === '') return '—';
@@ -109,7 +101,7 @@ export default function DrugDetailPage() {
 	if (isLoading || !drugs) {
 		return (
 			<main className="flex-1 flex items-center justify-center min-h-screen">
-				<div className="animate-pulse text-slate-500">Chargement...</div>
+				<Pulser />
 			</main>
 		);
 	}
@@ -305,12 +297,12 @@ export default function DrugDetailPage() {
 			<div className="flex flex-col sm:flex-row gap-2 text-xs text-slate-400 border-t border-[#C1C7CB]/50 pt-4">
 				<span className="flex items-center gap-1">
 					<Calendar size={12} />
-					Créé le {formatDate(drug.createdAt || '')}
+					Créé le {PersonnalDateFormatter.toLongDateTime(drug.createdAt || '')}
 				</span>
 				<span className="hidden sm:inline">·</span>
 				<span className="flex items-center gap-1">
 					<Calendar size={12} />
-					Modifié le {formatDate(drug.updatedAt || '')}
+					Modifié le {PersonnalDateFormatter.toLongDateTime(drug.updatedAt || '')}
 				</span>
 			</div>
 

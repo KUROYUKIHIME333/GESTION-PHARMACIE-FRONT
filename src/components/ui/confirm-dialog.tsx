@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/src/components/ui/dialog';
 import { Button } from '@/src/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
-import Spinner from './spinner';
+import Pulser from './pulser';
 
 interface ConfirmDialogProps {
 	open: boolean;
@@ -44,7 +44,7 @@ export function ConfirmDialog({ open, onOpenChange, title, description, onConfir
 						{cancelText}
 					</Button>
 					<Button onClick={onConfirm} disabled={isLoading} className="cursor-pointer font-semibold bg-red-500 text-white hover:bg-red-600 rounded-[2px] px-5 shadow-sm">
-						{isLoading ? <Spinner /> : confirmText}
+						{isLoading ? <Pulser /> : confirmText}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

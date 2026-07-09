@@ -5,7 +5,7 @@ import { Package, AlertTriangle, Banknote, CalendarX2, Pill, Plus } from 'lucide
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { useDashboardStore } from '@/src/stores/dashboard.store';
-import Spinner from '@/src/components/ui/spinner';
+import Pulser from '@/src/components/ui/pulser';
 
 const Dashboard = () => {
 	const { stats, isLoading, isError, lastError, fetchStats } = useDashboardStore();
@@ -14,7 +14,7 @@ const Dashboard = () => {
 		fetchStats();
 	}, [fetchStats]);
 
-	if (isLoading) return <Spinner />;
+	if (isLoading) return <Pulser />;
 
 	return (
 		<>
@@ -24,7 +24,7 @@ const Dashboard = () => {
 			<main className="flex-1 overflow-y-auto bg-[#F9F9FA] w-full">
 				<div className="p-8 space-y-8">
 					{isLoading ? (
-						<Spinner />
+						<Pulser />
 					) : (
 						<>
 							<section className="grid grid-cols-1  md:grid-cols-3 lg:grid-col-4 gap-4">
