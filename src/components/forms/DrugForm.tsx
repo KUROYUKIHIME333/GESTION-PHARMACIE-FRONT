@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { Drug, DrugCategoryValues, DrugFormValues, StorageConditionValues, drugCreateSchema, drugUpdateSchema, drugSchemas } from '@/src/schemas/drug.schemas';
+import { Drug, DrugCategoryValues, DrugFormValues, StorageConditionValues, drugCreateSchema, drugUpdateSchema } from '@/src/schemas/drug.schemas';
 import { Button } from '../ui/button';
 import { AlertCircle, Pencil } from 'lucide-react';
 import { useForm, Controller, useWatch } from 'react-hook-form';
