@@ -11,8 +11,10 @@ import { ConfirmDialog } from '@/src/components/ui/confirm-dialog';
 import { useDrugStore } from '@/src/stores/drugs.store';
 import DrugForm from '@/src/components/forms/DrugForm';
 import type { Drug } from '@/src/schemas/drug.schemas';
+import { useMediaQuery } from '@/src/hooks/useMediaQuery.hooks';
 
 export default function OfficInInventory() {
+	const isDesktop = useMediaQuery('(min-width: 768px)');
 	const { drugs, isLoading, fetchDrugs, deleteDrug, lastError } = useDrugStore();
 
 	const [search, setSearch] = useState('');
@@ -247,17 +249,19 @@ export default function OfficInInventory() {
 			/>
 
 			{/* modal d'actions mobile : */}
-			<RowActionsModal
-				isOpen={isActionsModalOpen}
-				onClose={() => setIsActionsModalOpen(false)}
-				rowName={selectedRowForActions?.name}
-				onView={selectedRowForActions ? () => handleView(selectedRowForActions) : undefined}
-				onEdit={selectedRowForActions ? () => handleEdit(selectedRowForActions) : undefined}
-				onDelete={selectedRowForActions ? () => handleDelete(selectedRowForActions) : undefined}
-				canView={true}
-				canEdit={true}
-				canDelete={true}
-			/>
+			{!isDesktop && (
+				<RowActionsModal
+					isOpen={isActionsModalOpen}
+					onClose={() => setIsActionsModalOpen(false)}
+					rowName={selectedRowForActions?.name}
+					onView={selectedRowForActions ? () => handleView(selectedRowForActions) : undefined}
+					onEdit={selectedRowForActions ? () => handleEdit(selectedRowForActions) : undefined}
+					onDelete={selectedRowForActions ? () => handleDelete(selectedRowForActions) : undefined}
+					canView={true}
+					canEdit={true}
+					canDelete={true}
+				/>
+			)}
 
 			{/*  MODALE DE CRÉATION / MODIFICATION (DrugForm wrapper) */}
 			{!isHiddenState && modeState && (
