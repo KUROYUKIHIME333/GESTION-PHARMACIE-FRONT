@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useStockStore } from '@/src/stores/stock.store';
 import { useBatchStore } from '@/src/stores/batches.store';
 import { Button } from '@/src/components/ui/button';
@@ -226,11 +226,12 @@ export default function StockDetailPage() {
 			</div>
 
 			{/* Alertes */}
+			{/* Alertes */}
 			{alerts && alerts.length > 0 && (
 				<div className="flex flex-col gap-2">
-					{alerts.map((alert, i) => (
+					{alerts.map((alert, index) => (
 						<div
-							key={`alert-${i}-${alert.severity}`}
+							key={`alert-${index}-${alert.severity}`}
 							className={`flex items-center gap-3 p-4 rounded-[2px] border-0 shadow-xs ${
 								alert.severity === 'critical' ? 'bg-red-50 text-red-700' : alert.severity === 'warning' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'
 							}`}
