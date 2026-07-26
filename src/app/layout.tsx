@@ -1,22 +1,23 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
+import localFont from 'next/font/local';
 
-const inter = Inter({
-	subsets: ['latin'],
+const inter = localFont({
+	src: '../../public/fonts/Inter/Inter-VariableFont_opsz,wght.ttf',
 	display: 'swap',
-	variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
-	title: 'Pharmacie Hospitalière',
+	title: 'OfficIn',
 	description: 'Système de gestion de pharmacie hospitalière',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<html lang="fr" className={inter.variable}>
-			<body className="font-sans">{children}</body>
+		<html lang="fr">
+			<body className={`${inter.className}`}>{children}</body>
 		</html>
 	);
-}
+};
+
+export default RootLayout;

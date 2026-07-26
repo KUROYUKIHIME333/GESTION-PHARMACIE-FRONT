@@ -5,52 +5,114 @@
 	--font-sans: 'Inter', 'Geist', system-ui, sans-serif;
 
 	/* --- Couleurs --- */
-	/* Background: #f6f8fa | rgb(246 248 250) */
-	--color-background: 246 248 250;
-	/* Surface: #ffffff | rgb(255 255 255) */
-	--color-surface: 255 255 255;
-	/* Foreground: #0f172a | rgb(15 23 42) */
-	--color-foreground: 15 23 42;
-	/* Border: #e2e8f0 | rgb(226 232 240) */
-	--color-border: 226 232 240;
-	/* Input: #e2e8f0 | rgb(226 232 240) */
-	--color-input: 226 232 240;
-	/* Ring: #103b4a | rgb(16 59 74) */
-	--color-ring: 16 59 74;
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
 
-	/* Primary: #103b4a | rgb(16 59 74) */
-	--color-primary: 16 59 74;
-	--color-primary-foreground: 255 255 255;
-	/* Primary-50: #e8f0f2 | rgb(232 240 242) */
-	--color-primary-50: 232 240 242;
-	/* Primary-500: #103b4a | rgb(16 59 74) */
-	--color-primary-500: 16 59 74;
+	/* Primary: #103B4A | hsl(199 66% 17%) */
+	--color-primary: 199 66% 17%;
+	--color-primary-foreground: 210 40% 98%;
 
-	/* Secondary: #6d8b74 | rgb(109 139 116) */
-	--color-secondary: 109 139 116;
-	--color-secondary-foreground: 255 255 255;
+	/* Secondary: #6D8B74 | hsl(137 14% 49%) */
+	--color-secondary: 137 14% 49%;
+	--color-secondary-foreground: 210 40% 98%;
+
+	/* Accent: #B87333 | hsl(28 56% 46%) */
+	--color-accent: 28 56% 46%;
+	--color-accent-foreground: 210 40% 98%;
+
+	/* Destructive: #DC2626 | hsl(0 84.2% 60.2%) */
+	--color-destructive: 0 84.2% 60.2%;
+	--color-destructive-foreground: 210 40% 98%;
+
+	/* Success: #16A34A | hsl(142 71% 45%) */
+	--color-success: 142 71% 45%;
+	--color-success-foreground: 255 255 255;
+
+	/* Warning: #D97706 | hsl(32 95% 43%) */
+	--color-warning: 32 95% 43%;
+	--color-warning-foreground: 255 255 255;
+
+	/* Info: #0284C7 | hsl(200 98% 40%) */
+	--color-info: 200 98% 40%;
+	--color-info-foreground: 255 255 255;
+
+	/* Muted */
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+
+	/* Popover */
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+
+	/* Card */
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
 
 	/* --- Typographie --- */
+	--text-display: 4rem;
+	--text-display-leading: 1.1;
+	--text-display-weight: 700;
+
 	--text-h1: 3rem;
-	--text-h1-leading: 1.15;
+	--text-h1-leading: 1.2;
 	--text-h1-weight: 700;
 
 	--text-h2: 2.25rem;
-	--text-h2-leading: 1.25;
+	--text-h2-leading: 1.3;
 	--text-h2-weight: 600;
 
+	--text-h3: 1.75rem;
+	--text-h3-leading: 1.4;
+	--text-h3-weight: 600;
+
+	--text-h4: 1.375rem;
+	--text-h4-leading: 1.5;
+	--text-h4-weight: 600;
+
 	--text-body: 1rem;
-	--text-body-leading: 1.5;
+	--text-body-leading: 1.6;
 	--text-body-weight: 400;
 
+	--text-small: 0.875rem;
+	--text-small-leading: 1.5;
+	--text-small-weight: 400;
+
 	/* --- Border Radius --- */
-	--radius-lg: 0.75rem;
-	--radius-md: 0.5rem;
-	--radius-sm: 0.25rem;
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
 
 	/* --- Animations --- */
 	--animate-accordion-down: accordion-down 0.2s ease-out;
 	--animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* --- Variables CSS (light mode par défaut) --- */
+@layer base {
+	:root {
+		--primary: 153 28% 41%; /* hsl(153, 28%, 41%) */
+		--test: #eff7e4;
+		--primary-foreground: 200 25% 95%; /* hsl(200, 25%, 95%) */
+		--secondary: 103 53% 44%; /* hsl(103, 53%, 44%) */
+		--secondary-foreground: 83 53% 93%; /* hsl(83, 53%, 93%) */
+		--destructive: 0 84.2% 60.2%; /* hsl(0 84.2% 60.2%) */
+		--border: 205 9% 75%; /* hsl(205 9% 75%) */
+		--input: 0 0% 96%; /* hsl(0 0% 96%) */
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--primary: 199 66% 17%;
+		--primary-foreground: 210 40% 98%;
+		--secondary: 137 14% 49%;
+		--secondary-foreground: 210 40% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--border: 217.2 32.6% 17.5%;
+		--input: 217.2 32.6% 17.5%;
+	}
 }
 
 /* --- Animations --- */
@@ -77,34 +139,99 @@
 	*,
 	::after,
 	::before {
-		border-color: rgb(var(--color-border));
+		border-color: hsl(var(--color-border));
 	}
 
 	body {
-		background-color: rgb(var(--color-background));
-		color: rgb(var(--color-foreground));
+		background-color: #f6f8fa;
+		color: hsl(var(--color-foreground));
 		font-family: var(--font-sans);
 		font-feature-settings:
 			'rlig' 1,
 			'calt' 1;
 	}
-}
 
-/* --- Components --- */
-@layer components {
-	.glass {
-		/* Blanc avec opacité 0.85 */
-		background-color: rgb(255 255 255 / 1);
-		backdrop-filter: blur(12px);
-		border: 1px solid rgb(255 255 255 / 0.2);
+	h1 {
+		font-size: var(--text-h1);
+		line-height: var(--text-h1-leading);
+		font-weight: var(--text-h1-weight);
+		letter-spacing: -0.025em;
 	}
 
-	.bento-card {
-		background-color: rgb(var(--color-surface));
-		border-radius: var(--radius-lg);
-		border: 1px solid rgb(var(--color-border));
-		padding: 1.5rem;
-		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	h2 {
+		font-size: var(--text-h2);
+		line-height: var(--text-h2-leading);
+		font-weight: var(--text-h2-weight);
+		letter-spacing: -0.025em;
+	}
+
+	h3 {
+		font-size: var(--text-h3);
+		line-height: var(--text-h3-leading);
+		font-weight: var(--text-h3-weight);
+	}
+
+	h4 {
+		font-size: var(--text-h4);
+		line-height: var(--text-h4-leading);
+		font-weight: 500;
+	}
+}
+
+/* --- Container --- */
+@layer components {
+	.container {
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+
+	@media (min-width: 1400px) {
+		.container {
+			max-width: 1400px;
+		}
+	}
+}
+
+/* --- Utilities (Bento Grid) --- */
+@layer utilities {
+	.bento-grid {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: 24px;
+	}
+
+	.bento-item-6 {
+		grid-column: span 6;
+	}
+
+	.bento-item-4 {
+		grid-column: span 4;
+	}
+
+	.bento-item-3 {
+		grid-column: span 3;
+	}
+
+	.bento-item-12 {
+		grid-column: span 12;
+	}
+
+	@media (max-width: 1024px) {
+		.bento-item-6,
+		.bento-item-4,
+		.bento-item-3 {
+			grid-column: span 6;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.bento-item-6,
+		.bento-item-4,
+		.bento-item-3 {
+			grid-column: span 12;
+		}
 	}
 }
 
@@ -121,4 +248,12 @@
 
 .full-height {
 	height: 100vh;
+}
+
+.dark-official-green {
+	color: #4b866b;
+}
+
+.dark-official-green-hover:hover {
+	color: #4b866b;
 }
