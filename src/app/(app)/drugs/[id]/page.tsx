@@ -126,11 +126,17 @@ export default function DrugDetailPage() {
 			{/*Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div className="flex items-center gap-3">
-					<Link href="/drugs">
-						<Button variant="ghost" size="sm" className="text-slate-500 hover:text-[#4B866B] hover:bg-[#eff7e4] rounded-[2px]">
-							<ArrowLeft size={18} />
-						</Button>
-					</Link>
+					<Button
+						onClick={() => {
+							router.back();
+						}}
+						variant="ghost"
+						size="sm"
+						className="text-slate-500 hover:text-[#4B866B] hover:bg-[#eff7e4] rounded-[2px]"
+					>
+						<ArrowLeft size={18} />
+					</Button>
+
 					<div>
 						<h1 className="text-xl sm:text-2xl font-bold text-slate-900">{drug.name}</h1>
 						<p className="text-sm text-slate-500">
