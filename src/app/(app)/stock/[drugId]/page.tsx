@@ -18,13 +18,6 @@ const formatPrice = (value: string | number | null) => {
 	return num.toLocaleString('fr-FR');
 };
 
-// const booleanBadge = (value: boolean, labelTrue: string, labelFalse: string) => (
-// 	<span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-// 		{value ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
-// 		{value ? labelTrue : labelFalse}
-// 	</span>
-// );
-
 interface DetailSectionProps {
 	title: string;
 	icon: React.ReactNode;
@@ -33,14 +26,14 @@ interface DetailSectionProps {
 
 function DetailSection({ title, icon, children }: DetailSectionProps) {
 	return (
-		<Card className="border-none ring-0 rounded-[2px] bg-[#eff7e4]">
-			<CardHeader className="pb-3">
-				<CardTitle className="dark-official-green pb-3 border-b border-[#C1C7CB] text-lg text-slate-900 flex items-center gap-2">
-					{icon}
+		<Card className="border-0 ring-0 shadow-xs rounded-[2px] bg-white">
+			<CardHeader className="pb-3 border-b border-slate-100 bg-[#eff7e4]/40">
+				<CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+					<span className="p-1.5 bg-[#56AC35]/15 text-[#4B866B] rounded-[2px]">{icon}</span>
 					{title}
 				</CardTitle>
 			</CardHeader>
-			<CardContent>{children}</CardContent>
+			<CardContent className="pt-4">{children}</CardContent>
 		</Card>
 	);
 }
@@ -54,8 +47,8 @@ interface DetailFieldProps {
 function DetailField({ label, value, className = '' }: DetailFieldProps) {
 	return (
 		<div className={`space-y-1 ${className}`}>
-			<p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
-			<div className="text-sm text-slate-900 font-medium">{value || '—'}</div>
+			<p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{label}</p>
+			<div className="text-sm text-slate-800 font-medium">{value || '—'}</div>
 		</div>
 	);
 }
@@ -76,37 +69,43 @@ function BatchRow({ batch, onQuarantine }: BatchRowProps) {
 	const [showQuarantineDialog, setShowQuarantineDialog] = useState(false);
 
 	return (
-		<div className="grid grid-cols-12 gap-2 md:gap-4 items-center p-4 bg-white rounded-[2px] border border-[#C1C7CB]/30">
+		<div className="grid grid-cols-12 gap-2 md:gap-4 items-center p-4 bg-white rounded-[2px] border-0 hover:bg-slate-50/80 transition-all shadow-xs">
 			{/* Numéro de lot */}
 			<div className="col-span-4 md:col-span-3 flex flex-col gap-1">
-				<span className="font-mono text-sm font-semibold text-[#103B4A]">{batch.batchNumber}</span>
+				<span className="font-mono text-sm font-bold text-[#103B4A]">{batch.batchNumber}</span>
 				{batch.isQuarantined && (
-					<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700 w-fit">
-						<Ban size={10} />
+					<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] text-xs font-semibold bg-red-50 text-red-700 border border-red-200 w-fit">
+						<Ban size={11} />
 						Quarantaine
 					</span>
 				)}
 			</div>
 
 			{/* Quantité */}
-			<div className="col-span-2 md:col-span-2 flex flex-col items-end md:items-start gap-1">
-				<span className={`text-lg font-bold ${batch.currentQuantity <= 0 ? 'text-red-600' : 'text-[#4B866B]'}`}>{batch.currentQuantity}</span>
+			<div className="col-span-2 md:col-span-2 flex flex-col items-end md:items-start gap-0.5">
+				<span className={`text-base md:text-lg font-bold ${batch.currentQuantity <= 0 ? 'text-red-600' : 'text-[#4B866B]'}`}>{batch.currentQuantity}</span>
 				<span className="text-xs text-slate-400 hidden md:inline">unités</span>
 			</div>
 
 			{/* Péremption */}
-			<div className="col-span-3 md:col-span-3 flex flex-col gap-1">
-				<div className="flex items-center gap-2 text-sm">
-					<Calendar size={14} className="text-slate-400" />
+			<div className="col-span-3 md:col-span-3 flex flex-col gap-0.5">
+				<div className="flex items-center gap-1.5 text-xs text-slate-700 font-medium">
+					<Calendar size={13} className="text-slate-400 shrink-0" />
 					<span>{PersonnalDateFormatter.toLongDateTime(batch.expiryDate)}</span>
 				</div>
 				<div
-					className={`flex items-center gap-1 text-xs ${
-						batch.daysUntilExpiry <= 0 ? 'text-red-600 font-bold' : batch.daysUntilExpiry <= 30 ? 'text-red-600' : batch.daysUntilExpiry <= 90 ? 'text-amber-600' : 'text-green-600'
+					className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-[2px] w-fit ${
+						batch.daysUntilExpiry <= 0
+							? 'bg-red-50 text-red-700 font-bold border border-red-200'
+							: batch.daysUntilExpiry <= 30
+								? 'bg-red-50 text-red-600 font-semibold border border-red-200'
+								: batch.daysUntilExpiry <= 90
+									? 'bg-amber-50 text-amber-600 border border-amber-200'
+									: 'text-emerald-700'
 					}`}
 				>
-					<AlertTriangle size={12} className={batch.daysUntilExpiry > 90 ? 'hidden' : ''} />
-					<span>{batch.daysUntilExpiry <= 0 ? 'PÉRIMÉ' : `${batch.daysUntilExpiry} jour${batch.daysUntilExpiry > 1 ? 's' : ''}`}</span>
+					<AlertTriangle size={12} className={batch.daysUntilExpiry > 90 ? 'hidden' : 'shrink-0'} />
+					<span>{batch.daysUntilExpiry <= 0 ? 'PÉRIMÉ' : `Expire dans ${batch.daysUntilExpiry}j`}</span>
 				</div>
 			</div>
 
@@ -116,7 +115,7 @@ function BatchRow({ batch, onQuarantine }: BatchRowProps) {
 					variant="outline"
 					size="sm"
 					onClick={() => setShowQuarantineDialog(true)}
-					className={`text-xs rounded-[2px] ${batch.isQuarantined ? 'border-green-200 text-green-600 hover:bg-green-50' : 'border-red-200 text-red-600 hover:bg-red-50'}`}
+					className={`text-xs rounded-[2px] cursor-pointer ${batch.isQuarantined ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-50' : 'border-red-200 text-red-600 hover:bg-red-50'}`}
 				>
 					{batch.isQuarantined ? 'Lever quarantaine' : 'Quarantaine'}
 				</Button>
@@ -141,23 +140,25 @@ function BatchRow({ batch, onQuarantine }: BatchRowProps) {
 	);
 }
 
-// ── Page principale ───────────────────────────────────────────────────────
+// Page principale
 
 export default function StockDetailPage() {
 	const { drugId } = useParams<{ drugId: string }>();
-	const router = useRouter();
+	// const router = useRouter();
 	const { stockDetail, isLoading, fetchStockDetail } = useStockStore();
 	const { quarantineBatch } = useBatchStore();
 
 	useEffect(() => {
-		fetchStockDetail(drugId);
+		if (drugId) {
+			fetchStockDetail(drugId);
+		}
 	}, [drugId, fetchStockDetail]);
 
 	const handleQuarantine = async (batchId: string, isQuarantined: boolean) => {
 		await quarantineBatch(batchId, isQuarantined, isQuarantined ? undefined : 'Quarantaine manuelle');
-		// Rafraîchir les données
-		fetchStockDetail(drugId);
-		router.push('/drug');
+		if (drugId) {
+			fetchStockDetail(drugId);
+		}
 	};
 
 	if (isLoading && !stockDetail) {
@@ -186,9 +187,9 @@ export default function StockDetailPage() {
 	const { drug, totalQuantity, batches, alerts } = stockDetail;
 
 	return (
-		<main className="flex-1 flex flex-col gap-6 overflow-y-auto p-3 md:p-6 lg:p-8">
+		<main className="flex-1 flex flex-col gap-6 overflow-y-auto p-3 md:p-6 lg:p-8 bg-slate-50/50">
 			{/* Header */}
-			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-[2px] border-0 shadow-xs">
 				<div className="flex items-center gap-3">
 					<Link href="/stock">
 						<Button variant="ghost" size="sm" className="text-slate-500 hover:text-[#4B866B] hover:bg-[#eff7e4] rounded-[2px]">
@@ -197,8 +198,8 @@ export default function StockDetailPage() {
 					</Link>
 					<div>
 						<h1 className="text-xl sm:text-2xl font-bold text-slate-900">{drug.name}</h1>
-						<p className="text-sm text-slate-500">
-							{drug.dci} · {drug.code} · Stock total:{' '}
+						<p className="text-sm text-slate-500 mt-0.5">
+							{drug.dci} · <span className="font-mono font-medium text-slate-700">{drug.code}</span> · Stock total:{' '}
 							<span
 								className={`font-bold ${totalQuantity <= (drug.criticalStockLevel || 0) ? 'text-red-600' : totalQuantity <= (drug.minStockLevel || 0) ? 'text-amber-600' : 'text-[#4B866B]'}`}
 							>
@@ -229,16 +230,12 @@ export default function StockDetailPage() {
 				<div className="flex flex-col gap-2">
 					{alerts.map((alert, i) => (
 						<div
-							key={i}
-							className={`flex items-center gap-3 p-4 rounded-[2px] border ${
-								alert.severity === 'critical'
-									? 'bg-red-50 border-red-200 text-red-700'
-									: alert.severity === 'warning'
-										? 'bg-amber-50 border-amber-200 text-amber-700'
-										: 'bg-blue-50 border-blue-200 text-blue-700'
+							key={`alert-${i}-${alert.severity}`}
+							className={`flex items-center gap-3 p-4 rounded-[2px] border-0 shadow-xs ${
+								alert.severity === 'critical' ? 'bg-red-50 text-red-700' : alert.severity === 'warning' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'
 							}`}
 						>
-							<AlertTriangle size={20} />
+							<AlertTriangle size={20} className="shrink-0" />
 							<span className="font-medium text-sm">{alert.message}</span>
 						</div>
 					))}
@@ -249,36 +246,36 @@ export default function StockDetailPage() {
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				{/* Colonne info */}
 				<div className="lg:col-span-1 flex flex-col gap-6">
-					<DetailSection title="Informations" icon={<Boxes size={20} />}>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<DetailField label="Code" value={drug.code} />
-							<DetailField label="DCI" value={drug.dci} />
-							<DetailField label="Nom générique" value={drug.genericName} />
-							<DetailField label="Stock total" value={<span className="text-2xl font-bold text-[#4B866B]">{totalQuantity}</span>} />
-							<DetailField label="Seuil d'alerte" value={drug.minStockLevel ?? '—'} />
+					<DetailSection title="Informations générales" icon={<Boxes size={18} />}>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+							<DetailField label="Code d'identification" value={drug.code} />
+							<DetailField label="Dénomination Commune Internationale (DCI)" value={drug.dci} />
+							<DetailField label="Nom commercial / générique" value={drug.genericName} />
+							<DetailField label="Stock total disponible" value={<span className="text-xl font-bold text-[#4B866B]">{totalQuantity} unités</span>} />
+							<DetailField label="Seuil d'alerte (Min)" value={drug.minStockLevel ?? '—'} />
 							<DetailField label="Seuil critique" value={drug.criticalStockLevel ?? '—'} />
-							{drug.unitPriceCDF && <DetailField label="Prix unitaire (CDF)" value={<span className="text-lg font-bold text-[#4B866B]">{formatPrice(drug.unitPriceCDF)} Fc</span>} />}
-							{drug.unitPriceUSD && <DetailField label="Prix unitaire (USD)" value={<span className="text-lg font-bold text-slate-700">$ {formatPrice(drug.unitPriceUSD)}</span>} />}
+							{drug.unitPriceCDF && <DetailField label="Prix unitaire (CDF)" value={<span className="text-base font-bold text-[#4B866B]">{formatPrice(drug.unitPriceCDF)} Fc</span>} />}
+							{drug.unitPriceUSD && <DetailField label="Prix unitaire (USD)" value={<span className="text-base font-bold text-slate-700">$ {formatPrice(drug.unitPriceUSD)}</span>} />}
 						</div>
 					</DetailSection>
 				</div>
 
 				{/* Colonne lots */}
 				<div className="lg:col-span-2 flex flex-col gap-4">
-					<DetailSection title={`Lots actifs (${batches.length})`} icon={<Package size={20} />}>
+					<DetailSection title={`Lots actifs (${batches.length})`} icon={<Package size={18} />}>
 						<div className="flex flex-col gap-2">
-							{/* Header */}
-							<div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wide">
-								<div className="col-span-3">Lot</div>
+							{/* Header du tableau */}
+							<div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2.5 text-xs font-bold text-slate-600 uppercase tracking-wider bg-slate-100/80 rounded-[2px] border-0">
+								<div className="col-span-3">N° de Lot</div>
 								<div className="col-span-2">Quantité</div>
 								<div className="col-span-3">Péremption</div>
 								<div className="col-span-4 text-right">Actions</div>
 							</div>
 
 							{batches.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-12 gap-3">
+								<div className="flex flex-col items-center justify-center py-12 gap-3 text-center">
 									<Package size={40} className="text-slate-300" />
-									<p className="text-slate-500 font-medium">Aucun lot actif</p>
+									<p className="text-slate-500 font-medium">Aucun lot actif enregistré</p>
 									<Link href="/batches/new">
 										<Button className="gap-2 items-center font-bold text-white px-4 py-2 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
 											<Package size={16} />
