@@ -115,7 +115,7 @@ function BatchRow({ batch, onQuarantine }: BatchRowProps) {
 					variant="outline"
 					size="sm"
 					onClick={() => setShowQuarantineDialog(true)}
-					className={`text-xs rounded-[2px] cursor-pointer ${batch.isQuarantined ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-50' : 'border-red-200 text-red-600 hover:bg-red-50'}`}
+					className={`text-xs rounded-[2px] cursor-pointer ${batch.isQuarantined ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-50' : 'border-red-200 text-red-600 hover:bg-red-100'}`}
 				>
 					{batch.isQuarantined ? 'Lever quarantaine' : 'Quarantaine'}
 				</Button>
