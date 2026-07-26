@@ -74,6 +74,7 @@ const DrugForm = ({ drug, mode, setIsHidden }: DrugFormProps) => {
 			console.log('Mode:', mode, 'Drug:', drug || 'aucun');
 			// On ne garde que les champs du schéma de base (pas id, createdAt, etc.)
 			const { id, createdAt, updatedAt, _count, ...drugData } = drug;
+			//TODO: Remove after debugging
 			console.log('Drug data to reset:', id, createdAt, updatedAt, _count);
 			reset(drugData);
 		}
