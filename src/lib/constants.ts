@@ -80,11 +80,11 @@ export const NAV_ITEMS = [
     href: "/drugs",
     icon: "Pill",
   },
-  // {
-  //   label: "Stock",
-  //   href: "/stock",
-  //   icon: "Package",
-  // },
+  {
+    label: "Stock",
+    href: "/stock",
+    icon: "Package",
+  },
   // {
   //   label: "Patients",
   //   href: "/patients",
