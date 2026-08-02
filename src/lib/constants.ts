@@ -85,16 +85,16 @@ export const NAV_ITEMS = [
     href: "/stock",
     icon: "Package",
   },
-  // {
-  //   label: "Patients",
-  //   href: "/patients",
-  //   icon: "Users",
-  // },
-  // {
-  //   label: "Ordonnances",
-  //   href: "/prescriptions",
-  //   icon: "FileText",
-  // },
+  {
+    label: "Patients",
+    href: "/patients",
+    icon: "Users",
+  },
+  {
+    label: "Ordonnances",
+    href: "/prescriptions",
+    icon: "FileText",
+  },
   // {
   //   label: "Dispensations",
   //   href: "/dispensations",
