@@ -1,5 +1,8 @@
 import { create } from "zustand";
-import { DashboardStats } from "@/src/types";
+import {
+  DashboardStats,
+  dashboardStatsSchema,
+} from "@/src/schemas/dashboard.schemas";
 import { api } from "../lib/api";
 import { API_ENDPOINTS } from "../lib/constants";
 
@@ -13,17 +16,12 @@ interface DashboardState {
 }
 
 interface DashboardStore extends DashboardState {
-  setDashboardStats: (stat: DashboardStats | null) => void;
+  setStats: (stats: DashboardStats | null) => void;
   setDashboardLoading: (loading: boolean) => void;
-  setDashboardErrors: (isError: boolean) => void;
-  setDashboardIsFetched: (fetched: boolean) => void;
-  setDashboardLastFetched: (lastFetched: Date | null) => void;
-  setDashboardLastError: (lastError: string | null) => void;
+  setDashboardError: (isError: boolean) => void;
   resetDashboardErrors: () => void;
-  fetchStats: () => void;
+  fetchDashboard: () => Promise<void>;
   resetDashboardStore: () => void;
-  setDashboardGoodFetch: () => void;
-  setDashboardBadFetch: () => void;
 }
 
 const initialDashboardState: DashboardState = {
@@ -38,86 +36,36 @@ const initialDashboardState: DashboardState = {
 export const useDashboardStore = create<DashboardStore>((set) => ({
   ...initialDashboardState,
 
-  setDashboardStats: (stats) => set({ stats }),
-
+  setStats: (stats) => set({ stats }),
   setDashboardLoading: (isLoading) => set({ isLoading }),
+  setDashboardError: (isError) => set({ isError }),
+  resetDashboardErrors: () => set({ isError: false, lastError: null }),
+  resetDashboardStore: () => set(initialDashboardState),
 
-  setDashboardErrors: (isError) => set({ isError }),
-
-  setDashboardIsFetched: (isFetched) => set({ isFetched }),
-
-  setDashboardLastFetched: (lastFetched) => set({ lastFetched }),
-
-  setDashboardLastError: (lastError) => set({ lastError }),
-
-  resetDashboardErrors: () =>
-    set({
-      isError: false,
-      lastError: null,
-    }),
-
-  fetchStats: async () => {
-    set({ isLoading: true, lastError: null });
+  fetchDashboard: async () => {
+    set({ isLoading: true, isError: false });
+    const genericMessage = "Erreur lors du chargement du tableau de bord";
     try {
       const response = await api.get(API_ENDPOINTS.stats);
-      if (response && typeof response === "object" && "success" in response) {
+      const parsed = dashboardStatsSchema.safeParse(response);
+      if (parsed.success && parsed.data.data) {
         set({
+          stats: parsed.data.data,
+          isLoading: false,
           isFetched: true,
           lastFetched: new Date(),
         });
-        
-        if (
-          response.success &&
-          "data" in response &&
-          response.data &&
-          typeof response.data === "object"
-        ) {
-          set({
-            stats: response.data as DashboardStats,
-            isLoading: false,
-            isFetched: true,
-            isError: false,
-          });
-        } else if (
-          !response.success &&
-          "message" in response &&
-          response.message &&
-          typeof response.message === "string"
-        ) {
-          set({ lastError: response.message, isLoading: false, isError: true });
-        } else {
-          set({
-            lastError: "Erreur de connexion au server",
-            isLoading: false,
-            isError: true,
-          });
-        }
+      } else {
+        set({
+          isLoading: false,
+          isError: true,
+          lastError: genericMessage,
+        });
       }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        set({ lastError: error.message, isLoading: false, isError: true });
-      } else {
-        set({ lastError: "Erreur inconnue", isLoading: false, isError: true });
-      }
+      let message = genericMessage;
+      if (error instanceof Error) message = error.message;
+      set({ isLoading: false, isError: true, lastError: message });
     }
   },
-
-  resetDashboardStore: () => set(initialDashboardState),
-
-  setDashboardGoodFetch: () =>
-    set({
-      isLoading: false,
-      isFetched: true,
-      isError: false,
-      lastError: null,
-      lastFetched: new Date(),
-    }),
-
-  setDashboardBadFetch: () =>
-    set({
-      isLoading: false,
-      isFetched: true,
-      isError: true,
-      lastFetched: new Date(),
-    }),
 }));

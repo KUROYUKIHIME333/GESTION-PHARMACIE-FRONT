@@ -67,14 +67,7 @@ export const APP_NAME = "OfficIn";
  * Les items commentés sont des fonctionnalités futures/planifiées.
  */
 export const NAV_ITEMS = [
-  // {
-  //   /** Label affiché dans le menu */
-  //   label: "Tableau de bord",
-  //   /** Route Next.js */
-  //   href: "/dashboard",
-  //   /** Clé correspondant à l'icône Lucide (mappée dans iconMap du SideBar) */
-  //   icon: "LayoutDashboard",
-  // },
+ 
   {
     label: "Stock",
     href: "/stock",
@@ -101,11 +94,26 @@ export const NAV_ITEMS = [
     href: "/dispensations",
     icon: "ShoppingCart",
   },
-  // {
-  //   label: "Alertes",
-  //   href: "/alerts",
-  //   icon: "AlertTriangle",
-  // },
+  {
+    label: "Alertes",
+    href: "/alerts",
+    icon: "AlertTriangle",
+  },
+
+   {
+    /** Label affiché dans le menu */
+    label: "Tableau de bord",
+    /** Route Next.js */
+    href: "/dashboard",
+    /** Clé correspondant à l'icône Lucide (mappée dans iconMap du SideBar) */
+    icon: "LayoutDashboard",
+  },
+
+   {
+    label: "Rapport",
+    href: "/reports",
+    icon: "AlertTriangle",
+  },
 ] as const;
 
 /**
