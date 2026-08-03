@@ -3,7 +3,7 @@ import { Focus, BellRing } from 'lucide-react';
 
 const MainContentHeader = () => {
 	return (
-		<header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#C1C7CB] px-4 sm:px-8 py-3 sm:py-4 flex justify-between items-center gap-3">
+		<header className="lg:hidden sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#C1C7CB] px-4 sm:px-8 py-3 sm:py-4 flex justify-between items-center gap-3">
 			<div className="flex items-center gap-4 flex-1 min-w-0">
 				<div className="relative w-full sm:w-96" />
 			</div>
