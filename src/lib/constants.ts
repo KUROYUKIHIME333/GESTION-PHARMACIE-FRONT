@@ -96,11 +96,11 @@ export const NAV_ITEMS = [
     href: "/prescriptions",
     icon: "FileText",
   },
-  // {
-  //   label: "Dispensations",
-  //   href: "/dispensations",
-  //   icon: "ShoppingCart",
-  // },
+  {
+    label: "Dispensations",
+    href: "/dispensations",
+    icon: "ShoppingCart",
+  },
   // {
   //   label: "Alertes",
   //   href: "/alerts",

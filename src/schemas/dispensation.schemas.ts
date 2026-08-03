@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 // Enums
-
 export const PaymentMethodEnum = {
   CASH_CDF: "CASH_CDF",
   CASH_USD: "CASH_USD",
@@ -29,7 +28,6 @@ export const PaymentMethodLabels: Record<PaymentMethod, string> = {
 };
 
 // Schéma DispensationLine (base)
-
 const dispensationLineBaseSchema = z.object({
   drugId: z.string().min(1, "Médicament requis"),
   quantity: z.coerce.number().int().min(1, "Quantité minimale 1"),
@@ -37,7 +35,6 @@ const dispensationLineBaseSchema = z.object({
 });
 
 // Schéma Dispensation (base)
-
 const dispensationBaseSchema = z.object({
   patientId: z.string().min(1, "Patient requis"),
   prescriptionId: z.string().nullable().optional(),
@@ -55,7 +52,6 @@ const dispensationBaseSchema = z.object({
 });
 
 // Schéma complet Dispensation
-
 export const dispensationSchema = dispensationBaseSchema.extend({
   id: z.string(),
   dispensationNumber: z.string(),
@@ -78,7 +74,7 @@ export const dispensationSchema = dispensationBaseSchema.extend({
   prescription: z
     .object({
       id: z.string(),
-      prescriptionNumber: z.string(),
+      prescriptionNumber: z.string().nullable(),
     })
     .nullable()
     .optional(),
@@ -105,17 +101,14 @@ export const dispensationSchema = dispensationBaseSchema.extend({
 });
 
 // Schémas de création
-
 export const dispensationCreateSchema = dispensationBaseSchema;
 
 // Types
-
 export type Dispensation = z.infer<typeof dispensationSchema>;
 export type DispensationCreateInput = z.infer<typeof dispensationCreateSchema>;
 export type DispensationLineInput = z.infer<typeof dispensationLineBaseSchema>;
 
 // Response types
-
 export interface DispensationCreateResponse {
   success: boolean;
   data?: Dispensation;
