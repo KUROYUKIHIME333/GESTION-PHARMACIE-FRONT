@@ -169,7 +169,7 @@ export default function DataTable<T extends { id: string }>({
                             e.stopPropagation();
                             onEdit(row);
                           }}
-                          className="cursor-pointer px-2 text-slate-400 hover:text-[rgb(40,185,180)]"
+                          className="cursor-pointer px-2 text-slate-400 hover:text-[bg-[#56AC35]"
                         >
                           <Pencil size={40} />
                         </Button>

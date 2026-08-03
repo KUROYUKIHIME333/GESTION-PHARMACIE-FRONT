@@ -3,9 +3,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-// ============================================================================
 // TYPES — Domaine Médicaments (Drugs)
-// ============================================================================
 
 export type DrugForm =
   | "TABLET"
@@ -138,9 +136,7 @@ export interface DrugCreateInput {
   notes?: string;
 }
 
-// ============================================================================
 // TYPES — Domaine Lots (Batches)
-// ============================================================================
 
 export interface Batch {
   id: string;
@@ -191,9 +187,7 @@ export interface BatchQuarantineInput {
   quarantineReason?: string;
 }
 
-// ============================================================================
 // TYPES — Domaine Stock
-// ============================================================================
 
 export interface StockOverviewItem {
   drugId: string;
@@ -233,9 +227,7 @@ export interface StockDrugDetail {
   }[];
 }
 
-// ============================================================================
 // TYPES — Domaine Patients
-// ============================================================================
 
 export type Gender = "MALE" | "FEMALE" | "OTHER" | "UNKNOWN";
 
@@ -292,9 +284,7 @@ export interface PatientCreateInput {
   notes?: string;
 }
 
-// ============================================================================
 // TYPES — Domaine Allergies
-// ============================================================================
 
 export type AllergySeverity = "MILD" | "MODERATE" | "SEVERE" | "ANAPHYLAXIS";
 
@@ -319,9 +309,7 @@ export interface AllergyCreateInput {
   notes?: string;
 }
 
-// ============================================================================
 // TYPES — Domaine Ordonnances (Prescriptions)
-// ============================================================================
 
 export type PrescriptionStatus =
   | "DRAFT"
@@ -405,9 +393,7 @@ export interface PrescriptionStatusUpdate {
   status: PrescriptionStatus;
 }
 
-// ============================================================================
 // TYPES — Domaine Dispensations
-// ============================================================================
 
 export type PaymentMethod =
   | "CASH_CDF"
@@ -491,9 +477,7 @@ export interface DispensationLineCreateInput {
   quantity: number;
 }
 
-// ============================================================================
 // TYPES — Domaine Alertes
-// ============================================================================
 
 export type AlertType =
   | "LOW_STOCK"
@@ -542,9 +526,7 @@ export interface AlertSummary {
   byType: Record<string, number>;
 }
 
-// ============================================================================
 // TYPES — Domaine Dashboard
-// ============================================================================
 
 export interface DashboardStats {
   alerts: AlertSummary;
@@ -578,9 +560,7 @@ export interface DashboardStats {
   };
 }
 
-// ============================================================================
 // TYPES — Pagination & UI State
-// ============================================================================
 
 export interface PaginationParams {
   page?: number;
@@ -605,9 +585,7 @@ export interface UIState {
   filters: Record<string, unknown>;
 }
 
-// ============================================================================
 // ÉTATS PAR DOMAINE
-// ============================================================================
 
 interface DrugState {
   drugs: Drug[];
@@ -729,9 +707,7 @@ interface DashboardState {
   dashboardUI: UIState;
 }
 
-// ============================================================================
 // STORE COMPLET
-// ============================================================================
 
 export interface PharmacyStore
   extends DrugState,
@@ -837,9 +813,7 @@ export interface PharmacyStore
   resetStore: () => void;
 }
 
-// ============================================================================
 // ÉTAT INITIAL
-// ============================================================================
 
 const initialDrugState: DrugState = {
   drugs: [],
@@ -912,9 +886,7 @@ const initialDashboardState: DashboardState = {
   dashboardUI: { isLoading: false, error: null, selectedId: null, filters: {} },
 };
 
-// ============================================================================
 // STORE FACTORY
-// ============================================================================
 
 export const usePharmacyStore = create<PharmacyStore>()(
   devtools(
@@ -1473,9 +1445,7 @@ export const usePharmacyStore = create<PharmacyStore>()(
   )
 );
 
-// ============================================================================
 // SELECTORS (hooks utilitaires pour éviter les re-renders inutiles)
-// ============================================================================
 
 export const useDrugList = () => usePharmacyStore((s) => s.drugs);
 export const useSelectedDrug = () => usePharmacyStore((s) => s.selectedDrug);
@@ -1517,9 +1487,7 @@ export const useDashboardLoading = () =>
   usePharmacyStore((s) => s.dashboardUI.isLoading);
 export const useDashboardError = () => usePharmacyStore((s) => s.dashboardUI.error);
 
-// ============================================================================
 // UTILITAIRE : Nombre total d'alertes actives (pour badge sidebar)
-// ============================================================================
 
 export const useActiveAlertCount = () =>
   usePharmacyStore(
