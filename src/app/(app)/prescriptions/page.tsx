@@ -40,8 +40,9 @@ export default function PrescriptionsPage() {
 		return prescriptions.filter(
 			(p) =>
 				p.prescriptionNumber?.toLowerCase().includes(search.toLowerCase()) ||
-				p.patient?.lastName.toLowerCase().includes(search.toLowerCase()) ||
+				`${p.patient?.lastName} ${p.patient?.firstName}`.toLowerCase().includes(search.toLowerCase()) ||
 				p.patient?.firstName.toLowerCase().includes(search.toLowerCase()) ||
+				p.patient?.lastName.toLowerCase().includes(search.toLowerCase()) ||
 				p.diagnosisLabel?.toLowerCase().includes(search.toLowerCase()),
 		);
 	}, [prescriptions, search]);
@@ -54,13 +55,9 @@ export default function PrescriptionsPage() {
 	const totalPages = Math.ceil(filteredPrescriptions.length / LIMIT);
 
 	const handleView = (prescription: Prescription) => {
-		// Pour l'instant, pas de page détail — on pourrait l'ajouter plus tard
+		// Pour l'instant, pas de page détail TODO: on va l'ajouter plus tard
 		console.log('View prescription', prescription.id);
 	};
-
-	useEffect(()=>{
-		console.log(prescriptions)
-	}, [prescriptions])
 
 	const columns: Column<Prescription>[] = [
 		{
