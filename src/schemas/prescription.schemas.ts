@@ -111,6 +111,7 @@ export const prescriptionSchema = prescriptionBaseSchema.extend({
       })
     )
     .optional(),
+    lineCount: z.number().optional(),
 });
 
 // Schémas de création

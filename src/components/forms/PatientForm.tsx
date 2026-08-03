@@ -285,10 +285,12 @@ const PatientForm = ({ patient, mode, setIsHidden }: PatientFormProps) => {
 						<Button className="text-slate-500 font-bold" variant="ghost" onClick={() => setIsHidden(true)} type="button">
 							Annuler
 						</Button>
+						
 						<Button
 							type="submit"
 							disabled={isLoading}
-							className={`flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] ${isLoading ? 'bg-[rgb(25,119,119)]' : 'bg-[bg-[#56AC35]'} rounded-[2px]`}
+							
+							className={`flex gap-2 items-center font-bold text-white px-6 py-2 hover:bg-[#4B866B] ${isLoading ? 'bg-[#4B866B]' : 'bg-[#56AC35]'} rounded-[2px]`}
 						>
 							{isLoading ? (
 								<Pulser />

@@ -121,18 +121,16 @@ export default function PatientsPage() {
 			{/* Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div>
-					<h1 className="text-xl sm:text-2xl font-bold text-slate-900">Patients</h1>
+					<h2 className="text-xl sm:text-2xl font-bold text-slate-900">Patients</h2>
 					{patients && patients.length > 0 ? <p className="text-sm sm:text-base text-slate-500 mt-1">{`${patients.length} patient${patients.length > 1 ? 's' : ''}`}</p> : null}
 				</div>
-
-				{/* Desktop Button */}
 				<Button
 					onClick={() => {
 						setModeState('create');
 						setSelectedPatient(null);
 						setIsHiddenState(false);
 					}}
-					className="hidden sm:flex gap-2 items-center justify-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[bg-[#56AC35] rounded-[2px]"
+					className="hidden sm:flex gap-2 items-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]"
 				>
 					<Plus size={18} />
 					<span>Nouveau patient</span>

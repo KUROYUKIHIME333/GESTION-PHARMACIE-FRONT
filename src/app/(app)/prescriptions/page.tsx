@@ -58,6 +58,10 @@ export default function PrescriptionsPage() {
 		console.log('View prescription', prescription.id);
 	};
 
+	useEffect(()=>{
+		console.log(prescriptions)
+	}, [prescriptions])
+
 	const columns: Column<Prescription>[] = [
 		{
 			key: 'prescriptionNumber',
@@ -93,7 +97,7 @@ export default function PrescriptionsPage() {
 			key: 'lines',
 			header: 'Lignes',
 			align: 'center',
-			render: (p) => <span className="font-mono text-slate-600">{p.lines?.length || 0}</span>,
+			render: (p) => <span className="font-mono text-slate-600">{p.lineCount}</span>,
 		},
 		{
 			key: 'diagnosis',
@@ -108,16 +112,12 @@ export default function PrescriptionsPage() {
 			{/* Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div>
-					<h1 className="text-xl sm:text-2xl font-bold text-slate-900">Ordonnances</h1>
+					<h2 className="text-xl sm:text-2xl font-bold text-slate-900">Ordonnances</h2>
 					{prescriptions && prescriptions.length > 0 ? (
 						<p className="text-sm sm:text-base text-slate-500 mt-1">{`${prescriptions.length} ordonnance${prescriptions.length > 1 ? 's' : ''}`}</p>
 					) : null}
 				</div>
-
-				<Button
-					onClick={() => setIsHiddenState(false)}
-					className="hidden sm:flex gap-2 items-center justify-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[bg-[#56AC35] rounded-[2px]"
-				>
+				<Button onClick={() => setIsHiddenState(false)} className="hidden sm:flex gap-2 items-center font-bold text-white px-6 py-2.5 hover:bg-[#4B866B] bg-[#56AC35] rounded-[2px]">
 					<Plus size={18} />
 					<span>Nouvelle ordonnance</span>
 				</Button>
@@ -128,7 +128,7 @@ export default function PrescriptionsPage() {
 				onClick={() => setIsHiddenState(false)}
 				className="sm:hidden fixed bottom-8 right-8 z-40 h-14 w-14 rounded-full bg-[#eff7e4] hover:bg-[#4B866B] opacity-80 hover:opacity-100 shadow-xl flex items-center justify-center"
 			>
-				<Plus size={18} className="text-[bg-[#56AC35] hover:text-white" />
+				<Plus size={18} className="text-[#56AC35] hover:text-white" />
 			</Button>
 
 			{/* Search */}

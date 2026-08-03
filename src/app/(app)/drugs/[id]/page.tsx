@@ -73,7 +73,7 @@ function DetailField({ label, value, className = '' }: DetailFieldProps) {
 }
 
 // Page principale
-export default function DrugDetailPage() {
+const DrugDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const router = useRouter();
 	const { drugs, isLoading, fetchDrugs, deleteDrug } = useDrugStore();
@@ -132,7 +132,7 @@ export default function DrugDetailPage() {
 						}}
 						variant="ghost"
 						size="sm"
-						className="text-slate-500 hover:text-[#4B866B] hover:bg-[#eff7e4] rounded-[2px]"
+						className="cursor-pointer text-slate-500 hover:text-[#4B866B] hover:bg-[#eff7e4] rounded-[2px]"
 					>
 						<ArrowLeft size={18} />
 					</Button>
@@ -342,4 +342,6 @@ export default function DrugDetailPage() {
 			)}
 		</main>
 	);
-}
+};
+
+export default DrugDetailPage;
