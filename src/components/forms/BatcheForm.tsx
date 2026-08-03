@@ -54,10 +54,6 @@ const BatchForm = ({ batch, mode, setIsHidden }: BatchFormProps) => {
 	// });
 
 	useEffect(() => {
-		fetchDrugs();
-	}, [fetchDrugs]);
-
-	useEffect(() => {
 		if (mode === 'create') {
 			reset({
 				batchNumber: '',
@@ -74,13 +70,10 @@ const BatchForm = ({ batch, mode, setIsHidden }: BatchFormProps) => {
 			});
 		}
 		if (batch && mode === 'edit') {
-			const { id, currentQuantity, isQuarantined, quarantineReason, isActive, receivedAt, createdAt, updatedAt, drug, supplier, location, ...batchData } = batch;
-			//TODO: Remove after debugging
-			console.log('Batches data to reset:', id, currentQuantity, isQuarantined, quarantineReason, isActive, receivedAt, createdAt, updatedAt, drug, supplier, location);
 			reset({
-				...batchData,
-				expiryDate: batchData.expiryDate ? new Date(batchData.expiryDate).toISOString().slice(0, 16) : '',
-				manufacturingDate: batchData.manufacturingDate ? new Date(batchData.manufacturingDate).toISOString().slice(0, 16) : '',
+				...batch,
+				expiryDate: batch.expiryDate ? new Date(batch.expiryDate).toISOString().slice(0, 16) : '',
+				manufacturingDate: batch.manufacturingDate ? new Date(batch.manufacturingDate).toISOString().slice(0, 16) : '',
 			});
 		}
 	}, [mode, batch, reset]);
