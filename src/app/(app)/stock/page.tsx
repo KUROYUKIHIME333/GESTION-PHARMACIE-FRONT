@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Package, AlertTriangle, TrendingDown, Boxes, ArrowRight, ArrowLeft, Plus } from 'lucide-react';
+import { Search, Package, AlertTriangle, TrendingDown, Boxes, ArrowRight } from 'lucide-react';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import { useStockStore } from '@/src/stores/stock.store';
@@ -126,7 +126,7 @@ function StockRow({ drugId, drugName, drugCode, totalQuantity, isBelowMin, isCri
 }
 
 export default function StockPage() {
-	const { drugs, isLoading: isLoadingDrugs, isFetched: isFetchedDrugs, fetchDrugs, lastError } = useDrugStore();
+	const { drugs, isLoading: isLoadingDrugs, isFetched: isFetchedDrugs, fetchDrugs } = useDrugStore();
 	const { stockItems, isLoading: isLoadingStock, isFetched: isFetchedStock, fetchStock, drugsBelowMin, drugsCritical, totalDrugs, drugsInStock } = useStockStore();
 
 	const [search, setSearch] = useState('');

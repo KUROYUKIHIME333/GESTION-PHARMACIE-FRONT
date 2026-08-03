@@ -14,7 +14,8 @@ interface ConfirmDialogProps {
 	isLoading?: boolean;
 	confirmText?: string;
 	cancelText?: string;
-	variant?: 'destructive' | 'default';
+	variant?: "default" | "destructive";
+  children?: React.ReactNode;
 }
 
 export function ConfirmDialog({ open, onOpenChange, title, description, onConfirm, isLoading = false, confirmText = 'Confirmer', cancelText = 'Annuler' }: ConfirmDialogProps) {

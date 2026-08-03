@@ -60,7 +60,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, totalItems, 
 							onClick={() => onPageChange(page as number)}
 							className={cn(
 								'h-5 w-5 p-0 text-[12px] font-medium',
-								currentPage === page ? 'bg-[rgb(25,119,119)] text-white hover:bg-[rgb(25,119,119)]/90' : 'border-slate-200 text-slate-600 hover:bg-slate-50',
+								currentPage === page ? 'bg-[rgb(25,119,119)] text-white hover:bg-[#4B866B]/90' : 'border-slate-200 text-slate-600 hover:bg-slate-50',
 							)}
 						>
 							{page}
