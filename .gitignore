@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+#VSCodeCounter
+/.VSCodeCounter
+
 # next.js
 /.next/
 /out/
