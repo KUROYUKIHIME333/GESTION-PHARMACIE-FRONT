@@ -50,7 +50,7 @@ const LoginPage = () => {
 			if (response && typeof response === 'object' && 'success' in response) {
 				if (response.success && 'data' in response && response.data && typeof response.data === 'object' && 'user' in response.data && response.data.user) {
 					loginUserInStore(response.data.user as User);
-					router.push('/dashboard');
+					router.push('/stock');
 				} else if (!response.success && 'message' in response && response.message && typeof response.message === 'string') {
 					setServerError(response.message);
 				} else {

@@ -67,7 +67,40 @@ export const APP_NAME = "OfficIn";
  * Les items commentés sont des fonctionnalités futures/planifiées.
  */
 export const NAV_ITEMS = [
+ 
   {
+    label: "Stock",
+    href: "/stock",
+    icon: "Package",
+  },
+  {
+    label: "Médicaments",
+    href: "/drugs",
+    icon: "Pill",
+  },
+
+  {
+    label: "Patients",
+    href: "/patients",
+    icon: "Users",
+  },
+  {
+    label: "Ordonnances",
+    href: "/prescriptions",
+    icon: "FileText",
+  },
+  {
+    label: "Dispensations",
+    href: "/dispensations",
+    icon: "ShoppingCart",
+  },
+  {
+    label: "Alertes",
+    href: "/alerts",
+    icon: "AlertTriangle",
+  },
+
+   {
     /** Label affiché dans le menu */
     label: "Tableau de bord",
     /** Route Next.js */
@@ -75,36 +108,12 @@ export const NAV_ITEMS = [
     /** Clé correspondant à l'icône Lucide (mappée dans iconMap du SideBar) */
     icon: "LayoutDashboard",
   },
-  {
-    label: "Médicaments",
-    href: "/drugs",
-    icon: "Pill",
+
+   {
+    label: "Rapport",
+    href: "/reports",
+    icon: "AlertTriangle",
   },
-  {
-    label: "Stock",
-    href: "/stock",
-    icon: "Package",
-  },
-  // {
-  //   label: "Patients",
-  //   href: "/patients",
-  //   icon: "Users",
-  // },
-  // {
-  //   label: "Ordonnances",
-  //   href: "/prescriptions",
-  //   icon: "FileText",
-  // },
-  // {
-  //   label: "Dispensations",
-  //   href: "/dispensations",
-  //   icon: "ShoppingCart",
-  // },
-  // {
-  //   label: "Alertes",
-  //   href: "/alerts",
-  //   icon: "AlertTriangle",
-  // },
 ] as const;
 
 /**
